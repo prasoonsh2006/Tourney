@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Souls Of Soulcity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body style="background: url('images/Test.jpg') no-repeat center/cover;">')>
+<!-- LOGO -->
+<a href="#swiper">
+    <div class="logo">Souls Of Soulcity</div>
+</a>
+
+<!-- 🔥 HAMBURGER NAVBAR -->
+<nav>
+    <ul class='nav-bar'>
+        <input type='checkbox' id='check' />
+        <span class="menu">
+                <li><a href="index.html" >Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="crews.html">Crews</a></li>
+                <li><a href="rankings.html">Rankings</a></li>
+                <li><a href="Watch.html">Watch</a></li>
+                <li><a href="login.html">Login</a></li>
+                <label for="check"><i class="fas fa-times"></i></label>
+            </span>
+        <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
+    </ul>
+</nav>
+
+<!-- SOCIAL ICONS -->
+<div class="social">
+    <div class="bar"></div>
+    <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
+    <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+</div>
+
+
+<main>
+    <section id="watch" class="page">
+        <div class="container">
+            <h1>Watch</h1>
+            <div class="search-container">
+                <input type="text" id="watch-search" placeholder="Search by title or driver..." class="search-input">
+            </div>
+            <div id="watch-content" class="video-grid">
+                <div class="loading">Loading videos...</div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="Js/watch.js"></script>
+<script src="cdn.jsdelivr.net/npm/papaparse%405.4.1/papaparse.min.js"></script>
+
+</body>
+</html>

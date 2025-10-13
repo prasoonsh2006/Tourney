@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Team Auction Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#0e1217',
+                        'secondary-dark': '#1f272f',
+                        'card-border': '#36404e',
+                        'accent-orange': '#f7a83c',
+                        'accent-cyan': '#03d9ce',
+                        'bid-blue': '#4e65b2',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles integrated with Tailwind for aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: theme('colors.primary-dark');
+            color: theme('colors.gray.100');
+            padding-top: 1.25rem;
+        }
+        .page-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 1.25rem;
+        }
+        .team-card, .auction-card {
+            background: theme('colors.secondary-dark');
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid theme('colors.card-border');
+            margin-bottom: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.75rem;
+            align-items: center;
+        }
+        .label {
+            color: theme('colors.accent-orange');
+            font-weight: 500;
+        }
+        .value {
+            font-weight: 700;
+            color: theme('colors.gray.50');
+        }
+        .submit-bid-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: 600;
+        }
+        #place-bid-btn {
+            background: theme('colors.bid-blue');
+            color: white;
+        }
+        #place-bid-btn:hover {
+            background: #3e508f;
+        }
+        #recharge-btn {
+            background: theme('colors.accent-cyan');
+            color: theme('colors.primary-dark');
+        }
+        #recharge-btn:hover {
+            background: #00b8aa;
+        }
+        .bid-input, #svc-input, #payment-note {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid theme('colors.card-border');
+            background: #2a3541;
+            color: theme('colors.gray.50');
+            box-sizing: border-box;
+        }
+        #bid-input {
+            width: 60%;
+            max-width: 200px;
+        }
+        /* Modal styles */
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); }
+        .modal-content { background-color: theme('colors.secondary-dark'); margin: 10% auto; padding: 25px; border: 1px solid theme('colors.card-border'); width: 90%; max-width: 450px; border-radius: 1rem; }
+        .close-btn { color: theme('colors.gray.400'); float: right; font-size: 28px; font-weight: bold; cursor: pointer; transition: color 0.2s; }
+        .close-btn:hover { color: theme('colors.gray.100'); }
+        .form-group label { display: block; margin-bottom: 8px; color: theme('colors.accent-orange'); }
+        #svc-input { max-width: 100%; }
+        #payment-note { resize: vertical; }
+    </style>
+</head>
+<body>
+<div class="page-container">
+    <header class="flex justify-between items-center mb-5 p-2 bg-secondary-dark rounded-lg shadow-lg">
+        <h1 id="team-name" class="text-2xl font-bold text-accent-cyan">Loading Team...</h1>
+        <button id="logout-btn" class="submit-bid-btn bg-red-600 text-white hover:bg-red-700">Logout</button>
+    </header>
+
+    <div class="team-card">
+        <h2 class="text-xl font-semibold mb-3 border-b border-card-border pb-2">Your Team Info</h2>
+        <div class="info-row"><span class="label">Owner:</span> <span class="value" id="owner-name">N/A</span></div>
+        <div class="info-row"><span class="label">Balance:</span> <span class="value" id="remaining-balance" style="color: theme('colors.accent-cyan');">0 SVC</span></div>
+        <div class="info-row"><span class="label">Racers Won:</span> <span class="value" id="racers-won">0/6</span></div>
+        <button id="recharge-btn" class="submit-bid-btn mt-4 w-full">
+            Recharge SVC 💳
+        </button>
+    </div>
+
+    <div class="auction-card">
+        <h2 class="text-xl font-semibold mb-3 border-b border-card-border pb-2">Live Auction</h2>
+        <div class="info-row"><span class="label">Racer:</span> <span class="value" id="racer-name">Awaiting...</span></div>
+        <div class="info-row"><span class="label">Current Bid:</span> <span class="value text-green-400 text-2xl font-extrabold" id="current-bid">0 SVC</span></div>
+        <div class="info-row"><span class="label">Last Bidder:</span> <span class="value" id="last-bidder">N/A</span></div>
+        <div class="info-row"><span class="label">Timer:</span> <span class="value text-xl font-mono" id="auction-timer">--:--</span></div>
+
+        <div class="mt-5 flex items-center justify-between">
+            <input type="number" id="bid-input" class="bid-input flex-grow mr-2" placeholder="Enter bid amount" min="1">
+            <button id="place-bid-btn" class="submit-bid-btn">Place Bid</button>
+        </div>
+        <p id="bid-message" class="mt-2 text-sm text-red-400 min-h-[1.25em]"></p>
+    </div>
+
+    <div class="team-card">
+        <h2 class="text-xl font-semibold mb-3 border-b border-card-border pb-2">Your Roster</h2>
+        <ul id="roster-list" class="list-disc pl-5 space-y-2">
+            <li class="text-gray-400 italic" id="empty-roster-msg">No racers won yet.</li>
+        </ul>
+    </div>
+</div>
+
+<div id="recharge-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2 class="text-2xl font-bold mb-3">SVC Recharge Request</h2>
+        <p class="mb-4 text-sm">Current Exchange Rate: <strong class="text-accent-cyan">1 SVC = $200 USD</strong></p>
+        <div class="form-group mb-4">
+            <label for="svc-input">Amount of SVC to Buy:</label>
+            <input type="number" id="svc-input" placeholder="e.g., 5" min="1" step="0.01" class="block w-full">
+        </div>
+        <p class="mb-4">This will cost: <strong id="usd-estimate" class="text-green-400 font-bold">$0.00 USD</strong></p>
+        <div class="form-group mb-6">
+            <label for="payment-note">Payment Details / Proof (REQUIRED for Admin Verification):</label>
+            <textarea id="payment-note" placeholder="Enter your transaction ID, PayPal email, or payment proof details." class="block w-full h-24"></textarea>
+        </div>
+        <button id="submit-recharge-btn" class="submit-bid-btn w-full bg-accent-orange text-primary-dark hover:bg-orange-400">Submit Request</button>
+    </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+<script>
+    // Paste your Firebase Project configuration here
+    const firebaseConfig = {
+        apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0",
+        authDomain: "souls-of-soulcity.firebaseapp.com",
+        projectId: "souls-of-soulcity",
+        storageBucket: "souls-of-soulcity.firebasestorage.app",
+        messagingSenderId: "402427120355",
+        appId: "1:402427120355:web:f0fa030a0a9034198213d6"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let userId = null;
+    let teamBalance = 0;
+    let currentMinBid = 0; // Tracks the current highest bid + 1
+    let countdownInterval = null;
+
+    // --- UTILITY FUNCTIONS ---
+
+    // Safely display messages without using alert()
+    function displayMessage(elementId, message, isError = true) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = message;
+            element.style.color = isError ? '#f87171' : '#4ade80'; // Red for error, green for success
+        }
+        setTimeout(() => { element.textContent = ''; }, 5000); // Clear message after 5 seconds
+    }
+
+    // Converts Firestore Timestamp to readable countdown
+    function updateCountdown(endTime) {
+        const now = new Date().getTime();
+        // Convert Firestore Timestamp to milliseconds
+        const end = endTime.toDate().getTime();
+        const distance = end - now;
+
+        const timerEl = document.getElementById('auction-timer');
+
+        if (distance < 0) {
+            clearInterval(countdownInterval);
+            timerEl.textContent = "Auction Ended";
+            timerEl.style.color = '#f7a83c';
+            document.getElementById('place-bid-btn').disabled = true;
+            return;
+        }
+
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        const pad = (n) => n.toString().padStart(2, '0');
+
+        timerEl.textContent = `${pad(minutes)}:${pad(seconds)}`;
+        timerEl.style.color = distance < 10000 ? '#ef4444' : '#03d9ce'; // Red if less than 10 seconds
+    }
+
+
+    // --- DATA LISTENERS ---
+
+    // 1. Listen for Team Data changes
+    function startTeamListener(uid) {
+        const teamRef = db.collection('teams').doc(uid);
+        teamRef.onSnapshot(doc => {
+            if (doc.exists) {
+                const teamData = doc.data();
+                teamBalance = teamData.balance || 0; // Update global balance
+                document.getElementById('team-name').textContent = teamData.teamName || 'Your Team';
+                document.getElementById('owner-name').textContent = teamData.ownerName || 'N/A';
+                document.getElementById('remaining-balance').textContent = `${teamData.balance.toFixed(2)} SVC`;
+                document.getElementById('racers-won').textContent = `${(teamData.roster?.length || 0)}/6`;
+
+                // Update Roster
+                const rosterList = document.getElementById('roster-list');
+                rosterList.innerHTML = ''; // Clear existing list
+                if (teamData.roster && teamData.roster.length > 0) {
+                    teamData.roster.forEach(racer => {
+                        const li = document.createElement('li');
+                        li.textContent = racer;
+                        li.className = 'text-gray-200';
+                        rosterList.appendChild(li);
+                    });
+                } else {
+                    document.getElementById('roster-list').innerHTML = '<li class="text-gray-400 italic" id="empty-roster-msg">No racers won yet.</li>';
+                }
+
+            } else {
+                // If team document doesn't exist, create a placeholder (This is common for new users)
+                console.log("Creating default team profile...");
+                teamRef.set({
+                    teamName: 'New Team',
+                    ownerName: auth.currentUser.email,
+                    balance: 10000, // Starting balance
+                    roster: [],
+                    racersWon: 0
+                });
+            }
+        }, err => {
+            console.error("Error getting team document:", err);
+            displayMessage('bid-message', 'Failed to load team data.', true);
+        });
+    }
+
+    // 2. Listen for Live Auction changes
+    function startAuctionListener() {
+        // Assuming a single document holds the current auction state
+        const auctionRef = db.collection('auction').doc('live');
+
+        auctionRef.onSnapshot(doc => {
+            if (doc.exists) {
+                const auctionData = doc.data();
+                document.getElementById('racer-name').textContent = auctionData.racerName || 'No Racer Up Now';
+                document.getElementById('current-bid').textContent = `${auctionData.currentBid.toFixed(2)} SVC`;
+                document.getElementById('last-bidder').textContent = auctionData.lastBidderName || 'N/A';
+
+                // Set the minimum bid required
+                currentMinBid = auctionData.currentBid + 1;
+                document.getElementById('bid-input').min = currentMinBid;
+                document.getElementById('bid-input').placeholder = `Min bid: ${currentMinBid} SVC`;
+
+                // Start or reset the countdown timer
+                if (auctionData.endTime && auctionData.endTime.toDate) {
+                    if (countdownInterval) {
+                        clearInterval(countdownInterval);
+                    }
+                    // Run immediately and then every second
+                    updateCountdown(auctionData.endTime);
+                    countdownInterval = setInterval(() => updateCountdown(auctionData.endTime), 1000);
+                }
+
+            } else {
+                document.getElementById('racer-name').textContent = 'No active auction.';
+                document.getElementById('current-bid').textContent = '0 SVC';
+                document.getElementById('last-bidder').textContent = 'N/A';
+                document.getElementById('auction-timer').textContent = '--:--';
+                document.getElementById('place-bid-btn').disabled = true;
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+            }
+        }, err => {
+            console.error("Error getting auction document:", err);
+            displayMessage('bid-message', 'Failed to load auction data.', true);
+        });
+    }
+
+    // --- INTERACTION LOGIC ---
+
+    // Handle Place Bid button click using a transaction for atomicity
+    document.getElementById('place-bid-btn').addEventListener('click', async () => {
+        const bidInputEl = document.getElementById('bid-input');
+        const newBidAmount = parseFloat(bidInputEl.value);
+
+        if (!userId) {
+            displayMessage('bid-message', 'Please log in to place a bid.', true);
+            return;
+        }
+
+        if (isNaN(newBidAmount) || newBidAmount < currentMinBid) {
+            displayMessage('bid-message', `Bid must be at least ${currentMinBid} SVC.`, true);
+            return;
+        }
+
+        if (newBidAmount > teamBalance) {
+            displayMessage('bid-message', `Bid ${newBidAmount} SVC exceeds your balance of ${teamBalance} SVC.`, true);
+            return;
+        }
+
+        const auctionRef = db.collection('auction').doc('live');
+        const teamRef = db.collection('teams').doc(userId);
+
+        try {
+            await db.runTransaction(async (transaction) => {
+                const auctionDoc = await transaction.get(auctionRef);
+                const teamDoc = await transaction.get(teamRef);
+
+                if (!auctionDoc.exists || !teamDoc.exists) {
+                    throw "Auction or Team data missing.";
+                }
+
+                const auctionData = auctionDoc.data();
+                const teamData = teamDoc.data();
+                const currentBid = auctionData.currentBid || 0;
+
+                // 1. Re-check bid amount against current highest bid inside the transaction
+                if (newBidAmount <= currentBid) {
+                    throw "Bid failed: Another bidder was faster. Please bid higher.";
+                }
+
+                // 2. Re-check balance inside the transaction
+                if (newBidAmount > teamData.balance) {
+                    throw "Bid failed: Insufficient balance.";
+                }
+
+                // Get owner name (assuming you store it somewhere, here we use email)
+                const lastBidderName = teamData.ownerName || auth.currentUser.email;
+
+                // 3. Update the Auction document
+                transaction.update(auctionRef, {
+                    currentBid: newBidAmount,
+                    lastBidderId: userId,
+                    lastBidderName: lastBidderName,
+                    bidTimestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                });
+
+                // NOTE: No change to team balance is done here. The balance is only reduced
+                // IF the team wins the auction (handled by a cloud function or admin process).
+            });
+
+            displayMessage('bid-message', `Bid of ${newBidAmount} SVC placed successfully!`, false);
+            bidInputEl.value = ''; // Clear input
+
+        } catch (e) {
+            console.error("Transaction failed: ", e);
+            const errorMessage = (typeof e === 'string' && e.startsWith('Bid failed:')) ? e : "Error processing bid. Try again.";
+            displayMessage('bid-message', errorMessage, true);
+        }
+    });
+
+    // --- MODAL LOGIC (Recharge) ---
+
+    const modal = document.getElementById('recharge-modal');
+    const rechargeBtn = document.getElementById('recharge-btn');
+    const closeBtn = document.querySelector('.close-btn');
+    const svcInput = document.getElementById('svc-input');
+    const usdEstimate = document.getElementById('usd-estimate');
+    const submitRechargeBtn = document.getElementById('submit-recharge-btn');
+
+    // Exchange Rate
+    const SVC_TO_USD = 200;
+
+    // Show modal
+    rechargeBtn.onclick = () => {
+        modal.style.display = "block";
+        svcInput.value = '';
+        usdEstimate.textContent = '$0.00 USD';
+        document.getElementById('payment-note').value = '';
+        submitRechargeBtn.disabled = false;
+        submitRechargeBtn.textContent = 'Submit Request';
+    }
+
+    // Hide modal
+    closeBtn.onclick = () => {
+        modal.style.display = "none";
+    }
+
+    window.onclick = (event) => {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Update USD estimate
+    svcInput.addEventListener('input', () => {
+        const svcAmount = parseFloat(svcInput.value);
+        if (isNaN(svcAmount) || svcAmount <= 0) {
+            usdEstimate.textContent = '$0.00 USD';
+        } else {
+            const usdAmount = svcAmount * SVC_TO_USD;
+            usdEstimate.textContent = `$${usdAmount.toFixed(2)} USD`;
+        }
+    });
+
+    // Submit Recharge Request (writes to a separate collection for admin review)
+    submitRechargeBtn.addEventListener('click', async () => {
+        const svcAmount = parseFloat(svcInput.value);
+        const paymentNote = document.getElementById('payment-note').value.trim();
+
+        if (isNaN(svcAmount) || svcAmount <= 0) {
+            displayMessage('bid-message', 'Please enter a valid SVC amount.', true);
+            return;
+        }
+
+        if (paymentNote.length < 10) {
+            displayMessage('bid-message', 'Please provide payment details/proof.', true);
+            return;
+        }
+
+        submitRechargeBtn.disabled = true;
+        submitRechargeBtn.textContent = 'Submitting...';
+
+        try {
+            await db.collection('rechargeRequests').add({
+                userId: userId,
+                userEmail: auth.currentUser.email,
+                svcAmount: svcAmount,
+                usdCost: svcAmount * SVC_TO_USD,
+                paymentNote: paymentNote,
+                status: 'Pending',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            displayMessage('bid-message', 'Recharge request submitted successfully! An admin will review it.', false);
+            modal.style.display = "none";
+
+        } catch (error) {
+            console.error("Error submitting recharge request:", error);
+            displayMessage('bid-message', 'Recharge request failed. Try again.', true);
+            submitRechargeBtn.disabled = false;
+            submitRechargeBtn.textContent = 'Submit Request';
+        }
+    });
+
+
+    // --- INITIALIZATION AND AUTH ---
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Log out button action
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                // Redirect to login page (assuming index.html is the login page)
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error("Logout error:", error);
+            }
+        });
+
+        // Auth State Listener: This is the main entry point after login
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                userId = user.uid;
+                console.log("User authenticated:", userId);
+                startTeamListener(userId);
+                startAuctionListener();
+            } else {
+                console.log("No user is signed in. Redirecting to login.");
+                // Redirect back to login if not authenticated (assuming it's index.html)
+                window.location.href = 'index.html';
+            }
+        });
+    });
+</script>
+</body>
+</html>

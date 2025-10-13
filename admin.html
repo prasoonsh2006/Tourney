@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Control Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0a101d; color: #e3e8ef; padding: 20px; }
+        .dashboard-container { max-width: 1400px; margin: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #2c69d8; padding-bottom: 15px; }
+        .card { background: #1c2438; padding: 20px; border-radius: 0.75rem; border: 1px solid #2d3748; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); }
+        .card h2 { color: #2c69d8; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px; }
+        input[type="text"], input[type="number"], select, textarea {
+            padding: 10px; border-radius: 0.5rem; border: 1px solid #4a5568; background: #2d3748; color: #e3e8ef; width: 100%; margin-bottom: 10px; box-sizing: border-box;
+        }
+        .btn { padding: 10px 20px; border-radius: 0.5rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
+        .btn-primary { background-color: #2c69d8; color: white; }
+        .btn-primary:hover { background-color: #1f458c; }
+        .btn-danger { background-color: #e53e3e; color: white; }
+        .btn-danger:hover { background-color: #c53030; }
+        .btn-success { background-color: #38a169; color: white; }
+        .btn-success:hover { background-color: #2f855a; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .team-list > div, .racer-item { padding: 10px; border-bottom: 1px solid #2d3748; display: flex; justify-content: space-between; align-items: center; }
+        .team-list > div:last-child, .racer-item:last-child { border-bottom: none; }
+        #live-auction-status { font-size: 1.25rem; font-weight: 700; color: #03d9ce; }
+        .status-sold { color: #e53e3e; font-weight: bold; }
+        .status-auctioning { color: #2c69d8; font-weight: bold; }
+        .status-available { color: #38a169; font-weight: bold; }
+        .admin-note { color: #f7a83c; font-size: 0.8rem; margin-top: 5px; }
+        .loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a101d; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999;
+        }
+        .warning-text {
+            color: #f7a83c;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 1px solid #f7a83c;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loading-overlay" class="loading-screen">
+    <div class="text-xl text-admin-accent">Authenticating and Loading Dashboard...</div>
+    <div id="uid-warning" class="warning-text hidden">
+        <p class="font-bold">SECURITY CHECK FAILED:</p>
+        <p>The system is redirecting you. Check the browser console (F12) for diagnostic information.</p>
+    </div>
+</div>
+
+<div class="dashboard-container hidden" id="main-content">
+    <header class="header">
+        <h1 class="text-3xl font-extrabold text-white">Auction Admin Control Panel</h1>
+        <div class="flex items-center space-x-4">
+            <span class="text-sm">Admin ID: <strong id="admin-uid-display">...</strong></span>
+            <button id="logout-btn" class="btn btn-danger">Logout</button>
+        </div>
+    </header>
+
+    <div class="grid-3">
+        <!-- Live Auction Control Card -->
+        <div class="card">
+            <h2>Live Auction Control</h2>
+            <div class="mb-4">
+                <p>Current Racer:</p>
+                <p id="live-auction-racer" class="text-white text-2xl font-bold">Awaiting Setup...</p>
+                <p>Current Bid: <span id="live-auction-bid" class="text-green-400">0 SVC</span></p>
+                <p>Last Bidder: <span id="live-auction-bidder">N/A</span></p>
+                <p>Time Left: <span id="auction-timer-display" class="text-red-400">--:--</span></p>
+            </div>
+            <p class="admin-note">Use this to finalize the auction once the timer expires.</p>
+            <button id="end-auction-btn" class="btn btn-primary" disabled>End Auction & Sell</button>
+        </div>
+
+        <!-- Recharge Requests Card -->
+        <div class="card">
+            <h2>SVC Recharge Requests</h2>
+            <div id="recharge-requests-list" style="max-height: 250px; overflow-y: auto;">
+                <p class="text-gray-400">No pending requests.</p>
+            </div>
+            <p class="admin-note">Click Approve to finalize payment and update the team's balance.</p>
+        </div>
+
+        <!-- Racer Management Card -->
+        <div class="card">
+            <h2>Racer Management</h2>
+            <form id="add-racer-form" class="space-y-2">
+                <input type="text" id="racer-name" placeholder="Racer Name" required>
+                <input type="number" id="racer-price" placeholder="Starting Price (SVC)" min="1" required>
+                <button type="submit" class="btn btn-primary">Add New Racer</button>
+            </form>
+            <p class="admin-note mt-4">Adds racer to the 'Available' pool.</p>
+        </div>
+    </div>
+
+    <!-- Racer Status & Auction Launch -->
+    <div class="card">
+        <h2>Racer Inventory & Auction Launch</h2>
+        <div class="team-list" id="racer-inventory-list">
+            <p class="text-gray-400">Loading racers...</p>
+        </div>
+    </div>
+
+    <!-- Team Management Card -->
+    <div class="card">
+        <h2>Team Management</h2>
+
+        <div class="grid-2">
+            <!-- Team Registration Form -->
+            <form id="register-team-form" class="space-y-2 mb-4 p-4 border border-gray-700 rounded-lg">
+                <h3 class="text-lg font-semibold text-white">Register New Team</h3>
+                <input type="text" id="new-team-id" placeholder="Unique Team ID (e.g., TEAM-001)" required>
+                <input type="text" id="new-team-name" placeholder="Team Name" required>
+                <input type="text" id="new-owner-name" placeholder="Owner Name" required>
+                <input type="number" id="new-balance" placeholder="Starting Balance (SVC)" value="5000" min="0" required>
+                <button type="submit" class="btn btn-success">Register Team</button>
+            </form>
+
+            <!-- Team List -->
+            <div class="p-4 border border-gray-700 rounded-lg">
+                <h3 class="text-lg font-semibold text-white mb-2">Registered Teams (Balance)</h3>
+                <div id="team-list-display" style="max-height: 200px; overflow-y: auto;">
+                    <p class="text-gray-400">Loading teams...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Firebase SDKs (Switching to modular v9 for better compatibility) -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, updateDoc, onSnapshot, collection, query, where, runTransaction, FieldValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+    // --- START SECURITY AND INITIALIZATION ---
+
+    // CRITICAL: PASTE YOUR ADMIN USER IDS (UIDs) HERE
+    // Your actual UID: 8boxpeVzXUg299rHWXdZseORad92
+    const AUTHORIZED_ADMIN_UIDS = [
+        "8boxpeVzXUg299rHWXdZseORad92", // <-- THIS IS CORRECT
+        // "ANOTHER_ADMIN_UID_HERE",
+    ];
+
+    // Global Firebase Config and Auth Token (injected by Canvas environment)
+    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    // Global variables for Firebase services
+    let app = null;
+    let auth = null;
+    let db = null;
+    let currentAdminUid = null;
+    let auctionTimerInterval = null;
+
+    // Elements
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const mainContent = document.getElementById('main-content');
+    const logoutBtn = document.getElementById('logout-btn');
+    const adminUidDisplay = document.getElementById('admin-uid-display');
+    const uidWarning = document.getElementById('uid-warning');
+
+    // Initialize Firebase services
+    try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        // Use custom token or sign in anonymously to ensure we have a user object
+        if (initialAuthToken) {
+            signInWithCustomToken(auth, initialAuthToken).catch(e => {
+                console.error("Custom token sign-in failed, attempting anonymous:", e);
+                signInAnonymously(auth); // Fallback
+            });
+        } else {
+            signInAnonymously(auth);
+        }
+
+    } catch (error) {
+        console.error("Firebase Initialization Error:", error);
+        loadingOverlay.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+        document.getElementById('admin-uid-display').textContent = 'INIT ERROR';
+    }
+
+
+    // Security Check and Core Initialization
+    function adminCheckAndInitialize(user) {
+        // --- PROMINENT DEBUG LOGGING ---
+        console.log("--- AUTH CHECK START ---");
+
+        const currentUid = user ? user.uid : "No user object found after auth attempt";
+        const isAuthorized = user && AUTHORIZED_ADMIN_UIDS.includes(user.uid);
+
+        console.log("1. Current User UID (from Firebase):", currentUid);
+        console.log("2. Authorized UIDs (from Code):", AUTHORIZED_ADMIN_UIDS);
+        console.log("3. Is Authorization Successful:", isAuthorized);
+        // --------------------------------
+
+        if (!isAuthorized) {
+            console.warn("ADMIN CHECK FAILED. Redirecting to login page.");
+
+            // Show the warning and redirect immediately using the root path for safety
+            uidWarning.classList.remove('hidden');
+            setTimeout(() => {
+                // We don't sign out here, as the anonymous user is needed for other parts of the app
+                window.location.href = '/';
+            }, 1500); // Wait a moment so the user can read the console logs
+            return;
+        }
+
+        // --- AUTHORIZED ADMIN: PROCEED WITH INITIALIZATION ---
+        console.log("ADMIN CHECK SUCCESS. Loading dashboard.");
+        // Hide loading screen and show content
+        loadingOverlay.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+
+        // Set admin details
+        currentAdminUid = user.uid;
+        adminUidDisplay.textContent = currentAdminUid.substring(0, 8) + '...';
+
+        // Start all dashboard listeners
+        startTeamListener();
+        startRacersListener();
+        startRechargeListener();
+        startAuctionListener();
+    }
+
+    // Listener to check authentication status on page load (waits for sign-in to complete)
+    if (auth) {
+        onAuthStateChanged(auth, user => {
+            adminCheckAndInitialize(user);
+        });
+    }
+
+
+    // Handle Logout
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            await signOut(auth);
+            // Redirection handled by onAuthStateChanged listener when user becomes null
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    });
+
+    // --- END SECURITY AND INITIALIZATION ---
+
+
+    // --- TEAM MANAGEMENT FUNCTIONS ---
+
+    // Registers a new team document in the 'teams' collection
+    document.getElementById('register-team-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const teamId = document.getElementById('new-team-id').value.trim();
+        const teamName = document.getElementById('new-team-name').value;
+        const ownerName = document.getElementById('new-owner-name').value;
+        const balance = parseFloat(document.getElementById('new-balance').value);
+
+        if (!teamId || !teamName || isNaN(balance)) return;
+
+        try {
+            // Using setDoc (v9 equivalent of .doc(id).set(data))
+            await setDoc(doc(db, 'teams', teamId), {
+                teamName: teamName,
+                ownerName: ownerName,
+                balance: balance,
+                roster: [],
+            });
+            console.log('Team Registered Successfully!');
+            e.target.reset();
+        } catch (e) {
+            console.error("Error registering team:", e);
+            console.error("Error registering team: " + e.message);
+        }
+    });
+
+    // Listens for real-time updates to the teams collection
+    function startTeamListener() {
+        if (!db) return; // Guard against uninitialized DB
+        // Using collection(db, 'teams') (v9 equivalent of .collection('teams'))
+        onSnapshot(collection(db, 'teams'), snapshot => {
+            const teamListDisplay = document.getElementById('team-list-display');
+            teamListDisplay.innerHTML = '';
+
+            if (snapshot.empty) {
+                teamListDisplay.innerHTML = '<p class="text-gray-400">No teams registered yet.</p>';
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const team = doc.data();
+                const teamElement = document.createElement('div');
+                teamElement.innerHTML = `
+                    <span class="text-sm text-gray-400">${doc.id.substring(0, 6)}...</span>
+                    <span class="font-bold">${team.teamName}</span>
+                    <span class="text-lg text-green-400">${team.balance.toFixed(2)} SVC</span>
+                `;
+                teamListDisplay.appendChild(teamElement);
+            });
+        }, error => {
+            console.error("Error listening to teams:", error);
+        });
+    }
+
+
+    // --- RACER MANAGEMENT FUNCTIONS ---
+
+    // Adds a new racer to the 'racers' collection with status 'Available'
+    document.getElementById('add-racer-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('racer-name').value;
+        const price = parseFloat(document.getElementById('racer-price').value);
+
+        if (!name || isNaN(price) || price < 1) return;
+
+        try {
+            // Using setDoc (v9 equivalent of .doc(id).set(data))
+            await setDoc(doc(db, 'racers', name), {
+                name: name,
+                startingPrice: price,
+                status: 'Available', // CRITICAL: Initial status
+            });
+            console.log(`Racer ${name} added!`);
+            e.target.reset();
+        } catch (e) {
+            console.error("Error adding racer:", e);
+            console.error("Error adding racer: " + e.message);
+        }
+    });
+
+    // Handles the "Start Auction" button click
+    async function startAuction(racerName, startingPrice) {
+        // NOTE: Replace confirm() with a custom UI modal in a finished application.
+        if (!confirm(`Are you sure you want to start the auction for ${racerName}?`)) return;
+
+        const auctionRef = doc(db, 'auction', 'live');
+        const racerRef = doc(db, 'racers', racerName);
+
+        try {
+            // 1. Update the Racer's status to 'Auctioning'
+            await updateDoc(racerRef, { status: 'Auctioning' });
+
+            // 2. Set the Live Auction Document
+            const auctionEndTime = new Date(Date.now() + (30 * 1000)); // 30 seconds timer for demo
+
+            await setDoc(auctionRef, {
+                racerName: racerName,
+                currentBid: startingPrice,
+                lastBidderId: 'Admin', // Placeholder for the start
+                lastBidderName: 'Admin', // Placeholder for the start
+                endTime: auctionEndTime,
+            });
+
+            console.log(`Auction for ${racerName} started! (30 seconds)`);
+        } catch (e) {
+            console.error("Error starting auction:", e);
+            console.error("Failed to start auction: " + e.message);
+        }
+    }
+
+    // Listens for real-time updates to the racers collection and creates Launch buttons
+    function startRacersListener() {
+        if (!db) return; // Guard against uninitialized DB
+        // Using collection(db, 'racers') (v9 equivalent of .collection('racers'))
+        onSnapshot(collection(db, 'racers'), snapshot => {
+            const inventoryList = document.getElementById('racer-inventory-list');
+            inventoryList.innerHTML = '';
+
+            snapshot.forEach(doc => {
+                const racer = doc.data();
+                const item = document.createElement('div');
+                item.className = 'racer-item';
+
+                let statusClass = '';
+                let buttonHtml = '';
+
+                switch (racer.status) {
+                    case 'Available':
+                        statusClass = 'status-available';
+                        buttonHtml = `<button class="btn btn-primary btn-sm" onclick="startAuction('${racer.name}', ${racer.startingPrice})">Start Auction (${racer.startingPrice} SVC)</button>`;
+                        break;
+                    case 'Auctioning':
+                        statusClass = 'status-auctioning';
+                        buttonHtml = `<span class="text-sm">LIVE - Bidding is active!</span>`;
+                        break;
+                    case 'Sold':
+                        statusClass = 'status-sold';
+                        buttonHtml = `<span class="text-sm">Sold to: ${racer.winningTeamName || 'N/A'}</span>`;
+                        break;
+                }
+
+                item.innerHTML = `
+                    <div class="flex-grow">
+                        <span class="font-bold text-lg">${racer.name}</span>
+                        <span class="${statusClass} ml-4">[${racer.status}]</span>
+                    </div>
+                    <div>${buttonHtml}</div>
+                `;
+                inventoryList.appendChild(item);
+            });
+        }, error => {
+            console.error("Error listening to racers:", error);
+        });
+    }
+
+    // --- AUCTION AND ENDING FUNCTIONS ---
+
+    // Handles the "End Auction & Sell" button click
+    document.getElementById('end-auction-btn').addEventListener('click', async () => {
+        // NOTE: Replace confirm() with a custom UI modal in a finished application.
+        if (!confirm("WARNING: Are you sure you want to finalize this auction? This is irreversible.")) return;
+
+        const auctionRef = doc(db, 'auction', 'live');
+        document.getElementById('end-auction-btn').disabled = true;
+
+        try {
+            // Use a Transaction to ensure balance deduction and roster update are atomic
+            await runTransaction(db, async (transaction) => {
+                const auctionDoc = await transaction.get(auctionRef);
+                if (!auctionDoc.exists()) throw "Auction document not found.";
+
+                const data = auctionDoc.data();
+                const { racerName, currentBid, lastBidderId, lastBidderName } = data;
+
+                if (lastBidderId === 'Admin') {
+                    // No bids were placed (only the starting price exists)
+                    console.log(`Auction for ${racerName} ended without bids. Racer status reset to Available.`);
+                    await transaction.update(doc(db, 'racers', racerName), { status: 'Available' });
+                } else {
+                    // There is a winner!
+                    const winnerTeamRef = doc(db, 'teams', lastBidderId);
+                    const winnerDoc = await transaction.get(winnerTeamRef);
+
+                    if (!winnerDoc.exists()) throw "Winner's team document not found.";
+
+                    const winnerData = winnerDoc.data();
+                    const newBalance = winnerData.balance - currentBid;
+
+                    if (newBalance < 0) throw "Winner's balance is insufficient (Race condition error). Cannot finalize.";
+
+                    // 1. Update Winner's Team (Deduct balance, update roster)
+                    transaction.update(winnerTeamRef, {
+                        balance: newBalance,
+                        roster: FieldValue.arrayUnion(racerName)
+                    });
+
+                    // 2. Update Racer Status (Mark as sold)
+                    transaction.update(doc(db, 'racers', racerName), {
+                        status: 'Sold',
+                        winningTeamId: lastBidderId,
+                        winningTeamName: lastBidderName,
+                    });
+
+                    console.log(`Auction Finalized! ${racerName} sold to ${lastBidderName} for ${currentBid} SVC.`);
+                }
+
+                // 3. Reset Live Auction Document
+                transaction.set(auctionRef, {
+                    racerName: 'Awaiting Setup...',
+                    currentBid: 0,
+                    lastBidderId: 'N/A',
+                    lastBidderName: 'N/A',
+                    endTime: null,
+                });
+            });
+
+        } catch (e) {
+            console.error("Auction Finalization Failed:", e);
+            console.error("Failed to finalize auction: " + e);
+        } finally {
+            document.getElementById('end-auction-btn').disabled = false;
+        }
+    });
+
+
+    // Listens for real-time updates to the live auction document
+    function startAuctionListener() {
+        if (!db) return; // Guard against uninitialized DB
+        const auctionRef = doc(db, 'auction', 'live');
+        onSnapshot(auctionRef, docSnapshot => {
+            const data = docSnapshot.data();
+            const endAuctionBtn = document.getElementById('end-auction-btn');
+
+            if (data && data.racerName && data.racerName !== 'Awaiting Setup...') {
+                document.getElementById('live-auction-racer').textContent = data.racerName;
+                document.getElementById('live-auction-bid').textContent = data.currentBid.toFixed(2) + ' SVC';
+                document.getElementById('live-auction-bidder').textContent = data.lastBidderName;
+            } else {
+                // Reset display if auction is not running
+                document.getElementById('live-auction-racer').textContent = 'Awaiting Setup...';
+                document.getElementById('live-auction-bid').textContent = '0.00 SVC';
+                document.getElementById('live-auction-bidder').textContent = 'N/A';
+            }
+
+            // Timer management
+            if (auctionTimerInterval) {
+                clearInterval(auctionTimerInterval);
+            }
+
+            if (data && data.endTime) {
+                endAuctionBtn.disabled = false; // Enable finalization button when auction is live
+                // Firestore Timestamps are automatically converted to Date objects in v9 data()
+                const endTime = data.endTime instanceof Date ? data.endTime.getTime() : data.endTime.toDate().getTime();
+
+                auctionTimerInterval = setInterval(() => {
+                    const now = Date.now();
+                    const distance = endTime - now;
+                    const timerDisplay = document.getElementById('auction-timer-display');
+
+                    if (distance < 0) {
+                        clearInterval(auctionTimerInterval);
+                        timerDisplay.textContent = 'AUCTION ENDED';
+                        timerDisplay.classList.remove('text-red-400');
+                        timerDisplay.classList.add('text-green-400');
+                    } else {
+                        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        timerDisplay.textContent = `${seconds}s`;
+                        timerDisplay.classList.add('text-red-400');
+                        timerDisplay.classList.remove('text-green-400');
+                    }
+                }, 1000);
+            } else {
+                document.getElementById('auction-timer-display').textContent = '--:--';
+                endAuctionBtn.disabled = true; // Disable if no auction is active
+            }
+        }, error => {
+            console.error("Error listening to auction:", error);
+        });
+    }
+
+    // --- RECHARGE MANAGEMENT FUNCTIONS ---
+
+    // Handles approval of a recharge request
+    async function approveRecharge(docId, userId, svcAmount) {
+        // NOTE: Replace confirm() with a custom UI modal in a finished application.
+        if (!confirm(`Confirm approval: Add ${svcAmount} SVC to Team ID: ${userId}?`)) return;
+
+        const requestRef = doc(db, 'rechargeRequests', docId);
+        const teamRef = doc(db, 'teams', userId);
+
+        try {
+            await runTransaction(db, async (transaction) => {
+                // 1. Get the current team data
+                const teamDoc = await transaction.get(teamRef);
+                if (!teamDoc.exists()) throw "Team document not found.";
+
+                // 2. Update the team's balance
+                const newBalance = teamDoc.data().balance + svcAmount;
+                transaction.update(teamRef, { balance: newBalance });
+
+                // 3. Update the request status
+                transaction.update(requestRef, { status: 'Fulfilled', approvedBy: currentAdminUid, approvedAt: new Date() });
+            });
+            console.log(`Recharge for ${userId} fulfilled!`);
+        } catch (e) {
+            console.error("Recharge transaction failed:", e);
+            console.error("Failed to approve recharge: " + e);
+        }
+    }
+
+    // Listens for real-time pending recharge requests
+    function startRechargeListener() {
+        if (!db) return; // Guard against uninitialized DB
+        // Query only for 'Pending' requests
+        const q = query(collection(db, 'rechargeRequests'), where('status', '==', 'Pending'));
+
+        onSnapshot(q, snapshot => {
+            const list = document.getElementById('recharge-requests-list');
+            list.innerHTML = '';
+
+            if (snapshot.empty) {
+                list.innerHTML = '<p class="text-gray-400">No pending requests.</p>';
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const request = doc.data();
+                const item = document.createElement('div');
+                item.className = 'p-2 border-b border-gray-700 space-y-1';
+                item.innerHTML = `
+                    <p class="font-bold text-lg text-white">${request.svcAmount.toFixed(2)} SVC Request</p>
+                    <p class="text-sm text-gray-400">Team ID: ${request.userId.substring(0, 8)}...</p>
+                    <p class="text-sm text-gray-400">Note: ${request.paymentNote.substring(0, 30)}...</p>
+                    <button class="btn btn-success text-sm w-full"
+                        onclick="approveRecharge('${doc.id}', '${request.userId}', ${request.svcAmount})">
+                        Approve
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }, error => {
+            console.error("Error listening to recharges:", error);
+        });
+    }
+
+</script>
+</body>
+</html>

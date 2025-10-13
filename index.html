@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Souls Of Soulcity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- LOGO -->
+    <a href="#swiper">
+        <div class="logo">Souls Of Soulcity</div>
+    </a>
+
+    <!-- 🔥 HAMBURGER NAVBAR -->
+    <nav>
+        <ul class='nav-bar'>
+            <input type='checkbox' id='check' />
+            <span class="menu">
+                <li><a href="#swiper" >Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="crews.html">Crews</a></li>
+                <li><a href="rankings.html">Rankings</a></li>
+                <li><a href="Watch.html">Watch</a></li>
+                <li><a href="login.html">Login</a></li>
+            </span>
+            <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
+        </ul>
+    </nav>
+
+    <!-- SOCIAL ICONS -->
+    <div class="social">
+        <div class="bar"></div>
+        <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
+        <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+
+    </div>
+<main>
+    <!-- SWIPER -->
+    <div class="swiper" id="swiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide first">
+                <div class="yellow"></div>
+                <div class="black"></div>
+                <div class="content">
+                    <div class="title">
+                        <div class="small">Let's</div>
+                        <div class="big"><span>R</span><span>A</span><span>C</span><span>E</span></div>
+                    </div>
+                    <div class="image">
+                        <img src="images/car.png"
+                             alt="Car">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+
+
+
+
+
+
+</main>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper + GSAP -->
+<script>
+    var swiper = new Swiper(".swiper", {
+        direction: "vertical",
+        slidesPerView: 1,
+        spaceBetween: 30,
+        mousewheel: true,
+        effect: "coverflow",
+        speed: 2000,
+        coverflowEffect: {
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+            renderBullet: function (index, className) {
+                return '<span class="' + className + '"> <span>' + String(index + 1).padStart(2, '0') + '</span></span>';
+            },
+        },
+    });
+
+    gsap.from(".first .yellow", { y: -1000, duration: 2 })
+    gsap.from(".first .black", { y: 1000, duration: 2 })
+    gsap.from(".first img", { x: 1000, duration: 2 })
+    gsap.from(".first .small", { y: 100, opacity: 0, delay: 2.1 })
+    gsap.from(".first .big span", { y: 100, opacity: 0, stagger: 0.2, delay: 2.1 })
+</script>
+</body>
+
+</html>
