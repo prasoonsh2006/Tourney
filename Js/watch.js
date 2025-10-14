@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadWatch() {
         try {
-            const url = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/export?format=csv&gid=0`;
+            const url = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/export?format=csv&gid=0&cb=${Date.now()}`;
             const res = await fetch(url);
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             const raw = await res.text();
@@ -60,14 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="video-card-content">
                     <h3>${row.Title || "Untitled"}</h3>
                     <div class="driver">Driver: ${row.Driver || "Unknown"}</div>
-                    <div class="date">${row.Date || ""}</div>
+                    <div class="Date">${row.Date || ""}</div>
 
                     <div class="video-player" style="margin: 1rem 0;">
                         <div class="youtube-lite" data-id="${videoId || ''}" data-start="${timestamp || ''}" style="position:relative;width:100%;padding-top:56.25%;background:#000;cursor:pointer;border-radius:6px;overflow:hidden;">
                             ${
                 videoId
                     ? `<img src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="Video Thumbnail" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">`
-                    : `<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:url('./assets/Red_car_background.png') center/cover no-repeat; display:flex;align-items:center;justify-content:center;">
+                    : `<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:url('../images/About-Bg.jpg') center/cover no-repeat; display:flex;align-items:center;justify-content:center;">
                                         <span style="color:white; font-size:0.8rem; text-shadow: 1px 1px 4px rgba(0,0,0,0.7);">
                                             No Video Available
                                         </span>
@@ -87,32 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
         }).join('');
 
-
-        // --- Hover to autoplay YouTube iframe ---
+        // 🔄 Attach click-to-load YouTube iframe
         document.querySelectorAll(".youtube-lite").forEach(el => {
             const videoId = el.dataset.id;
             const start = el.dataset.start;
             if (!videoId) return;
-
-            el.addEventListener("mouseenter", () => {
-                if (!el.querySelector("iframe")) {
-                    el.innerHTML = `<iframe 
-                    src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1${start ? `&start=${parseInt(start)}` : ''}&rel=0" 
+            el.addEventListener("click", () => {
+                el.innerHTML = `<iframe 
+                    src="https://www.youtube.com/embed/${videoId}?autoplay=1${start ? `&start=${parseInt(start)}` : ''}&rel=0" 
                     style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" 
                     frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen></iframe>`;
-                }
-            });
-
-            el.addEventListener("mouseleave", () => {
-                // Replace iframe back to thumbnail
-                el.innerHTML = `
-            <img src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="Video Thumbnail" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 67 60" fill="red" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;opacity:0.95;pointer-events:none;">
-                <path d="M26.6 39.43L42.93 30 26.6 20.57z" fill="#fff"/>
-            </svg>
-        `;
-            });
+            }, { once: true });
         });
     }
 
@@ -131,4 +117,5 @@ document.addEventListener("DOMContentLoaded", () => {
     window.loadWatch = loadWatch;
     loadWatch();
 });
+
 
