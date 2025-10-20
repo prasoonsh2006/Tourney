@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <title>Souls Of Soulcity - About</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Updated Font Imports -->
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -380,16 +379,137 @@
                 padding: 120px 20px 50px;
             }
         }
+
+        /* -------------------- NEW FOOTER STYLES -------------------- */
+        .site-footer {
+            background-color: var(--color-dark-grey);
+            color: var(--color-light-grey);
+            padding: 40px 20px;
+            border-top: 1px solid rgba(187, 187, 187, 0.1);
+            position: relative;
+            z-index: 5;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+        }
+
+        .footer-logo, .footer-links, .footer-contact {
+            padding: 0 10px;
+            flex: 1 1 30%; /* Allows sections to grow/shrink, minimum 30% width */
+            min-width: 150px; /* Minimum width for smaller screens */
+            text-align: left;
+        }
+
+        .footer-logo h3 {
+            font-family: "Kaushan Script", sans-serif;
+            font-size: 1.8rem;
+            color: var(--color-metallic-silver);
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+
+        .footer-logo p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .footer-links h4, .footer-contact h4 {
+            color: var(--color-white);
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--color-metallic-silver);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links a {
+            color: var(--color-light-grey);
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-subdued-blue);
+            padding-left: 5px;
+        }
+
+        .footer-contact p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-contact a {
+            color: var(--color-metallic-silver);
+        }
+
+        .footer-contact a:hover {
+            color: var(--color-subdued-blue);
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(187, 187, 187, 0.1);
+            font-size: 0.85rem;
+            opacity: 0.7;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Mobile adjustments for footer */
+        @media (max-width: 600px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-logo, .footer-links, .footer-contact {
+                flex: 1 1 100%; /* Full width on small screens */
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .footer-links ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            .footer-links li {
+                margin: 0;
+            }
+            .footer-links a {
+                margin-bottom: 0;
+                display: inline;
+            }
+            .footer-links a:hover {
+                padding-left: 0; /* Remove hover shift on mobile links */
+            }
+            .footer-links h4, .footer-contact h4 {
+                text-align: center;
+            }
+        }
+
     </style>
 </head>
 
 <body>
-<!-- LOGO -->
 <a href="#swiper">
     <div class="logo">Souls Of Soulcity</div>
 </a>
 
-<!-- HAMBURGER NAVBAR -->
 <nav>
     <ul class='nav-bar'>
         <input type='checkbox' id='check' />
@@ -406,7 +526,6 @@
     </ul>
 </nav>
 
-<!-- SOCIAL ICONS -->
 <div class="social">
     <div class="bar"></div>
     <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
@@ -415,7 +534,6 @@
 </div>
 
 <main>
-    <!-- About Page -->
     <section id="about" class="page">
         <div class="container about-tournament">
             <h1 class="animate-header"> Draft. Race. Survive. Conquer.</h1>
@@ -423,12 +541,10 @@
                 Through the neon nights of SoulCity, every street is a battlefield and only the bold rise.
             </p>
             <div class="cards">
-                <!-- Tournament Format -->
                 <div class="card card-1">
                     <h2>Tournament Format</h2>
                     <p>Souls of SoulCity isn’t just a race — it’s a battle of speed, skill, and survival. From auction to finals, every turn decides destiny.</p>
                     <ul class="tournament-format">
-                        <!-- Icons now use the metallic silver color -->
                         <li><span class="icon">🎯</span><div><strong>Auction Draft:</strong> Each team builds a squad of 6 racers.</div></li>
                         <li><span class="icon">🚦</span><div><strong>Phase 1 – Qualifiers:</strong> All racers run 2 races each. Top teams advance, bottom eliminated, middle teams move to Knockouts.</div></li>
                         <li><span class="icon">🔥</span><div><strong>Phase 2 – Knockouts:</strong> Surviving teams cut to 4 racers. Each runs 2 races. Top teams move forward, lowest eliminated.</div></li>
@@ -436,17 +552,14 @@
                     </ul>
                 </div>
 
-                <!-- Rules & Regulations -->
                 <div class="card card-2">
                     <h2>Rules & Regulations</h2>
                     <p>Souls of SoulCity runs on fairness and skill. Every team and racer must follow these rules:</p>
                     <ul>
-                        <!-- Auction Rules - Use silver dot -->
                         <li><span class="silver-dot"></span><strong>Squad Limit:</strong> Max 6 racers per team.</li>
                         <li><span class="silver-dot"></span><strong>Recharge:</strong> Buy extra SVC; leftover refunded.</li>
                         <li><span class="silver-dot"></span><strong>Roster Lock:</strong> Teams are locked after auction.</li>
 
-                        <!-- Racing Rules - Use subdued blue dot -->
                         <li><span class="silver-dot"></span>Dashcam POV: 60 FPS or lower.</li>
                         <li><span class="silver-dot"></span>Vehicles: Only approved classes/modifications.</li>
                         <li><span class="silver-dot"></span>Conduct: No exploits or unfair play.</li>
@@ -455,7 +568,6 @@
                 </div>
 
 
-                <!-- Prize Pool (UPDATED) -->
                 <div class="card card-3">
                     <h2>Prize Pool</h2>
                     <p>Here, champions earn more than glory — they claim rewards forged by the streets.</p>
@@ -463,7 +575,6 @@
                     <p style="margin-bottom: 15px;">The final SVC prize pool is calculated based on the league's financial activity:</p>
 
                     <ul>
-                        <!-- Silver Dots for money/pool related items -->
                         <li><span class="silver-dot"></span> Prize Pool Contribution:60% of all SVC bidded on racers during the Auction is allocated directly to the final Prize Pool.</li>
                         <li><span class="silver-dot"></span> Fund Boost: Any additional SVC recharge amounts are also fully added to the Prize Pool, maximizing total winnings.</li>
                         <li><span class="silver-dot"></span> Racer Earnings: The remaining 40% of the bidded SVC is paid directly to the respective racer.</li>
@@ -475,6 +586,41 @@
             </div>
         </div>
     </section>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h3>Souls Of Soulcity</h3>
+                <p>The premier underground racing league. <br>Draft. Race. Survive. Conquer.</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Lanes</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">Tournament Info</a></li>
+                    <li><a href="crews.html">Crews & Teams</a></li>
+                    <li><a href="rankings.html">Leaderboards</a></li>
+                    <li><a href="Watch.html">Live Broadcast</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Connect</h4>
+                <p>For inquiries and support, contact our pit crew:</p>
+                <p>Email: <a href="mailto:contact@soulsofsc.com">contact@soulsofsc.com</a></p>
+                <div style="margin-top: 15px; font-size: 1.5rem;">
+                    <a href="https://www.youtube.com/headflicker" target="_blank" style="margin-right: 15px;"><i class="fab fa-youtube"></i></a>
+                    <a href="https://discord.gg/phmcfrQ4" target="_blank" style="margin-right: 15px;"><i class="fab fa-discord"></i></a>
+                    <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2025 Souls Of Soulcity. All rights reserved. | Unauthorized Racing Prohibited.
+        </div>
+    </footer>
 </main>
 
 <script>

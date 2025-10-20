@@ -4,51 +4,58 @@
     <meta charset="utf-8" />
     <title>Auction Team Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Using Poppins and Kaushan Script fonts from the provided style -->
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Note: Tailwind is removed as the custom CSS handles all styling -->
     <style>
         /* General Setup - Enhanced Grey Theme */
         :root {
-            --color-background: #0d1117; /* Deepest black-blue */
-            --color-card-bg: #1e242d; /* Slightly lighter card background for contrast */
+            /* Keep login colors for the card/form */
+            --color-background: #0d1117;
+            --color-card-bg: #1e242d;
             --color-border: #404a56;
             --color-text-main: #e3e8ef;
             --color-text-secondary: #a0a8b3;
-            --color-brand: #c0c0c0; /* Bright silver for title and logo */
-            --color-accent: #697a8a; /* Subtle accent for focus/hover */
+            --color-brand: #c0c0c0;
+            --color-accent: #697a8a;
             --color-success-base: #4e5a6b;
             --color-success-hover: #607080;
             --color-error: #e74c3c;
             --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.7);
+
+            /* --- NEW: About Page Colors for Nav/Theme Consistency --- */
+            --color-dark-grey: #121212;
+            --color-metallic-silver: #bbbbbb;
+            --color-subdued-blue: #a30000; /* Maroon/Red accent */
         }
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            /* Use the linear gradient fallback AND the image path */
             background: linear-gradient(135deg, #0d1117 0%, #151a21 100%);
             color: var(--color-text-main);
             font-family: 'Poppins', sans-serif;
             margin: 0;
             transition: background-color 0.5s ease;
-            /* Increased padding-top to ensure login box is below the fixed navbar */
             padding-top: 100px;
             box-sizing: border-box;
-            /* Placeholder for background image */
-            /* background-image: url('images/Test.jpg'); */
+
+            /* ABOUT PAGE BACKGROUND STYLES */
+            background-image: url('images/Test.jpg');
+            background-color: var(--color-dark-grey); /* Fallback color */
             background-size: cover;
-            background-position: center;
             background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: center center;
         }
 
-        /* --- Logo and Nav Colors --- */
+        /* --- LOGO STYLES (MATCHING ABOUT PAGE) --- */
         .logo {
             position: absolute;
-            left: 70px;
-            top: -1px;
+            top: 20px; /* Adjusted to match About page */
+            left: 40px; /* Adjusted to match About page */
             z-index: 10;
             font-family: "Kaushan Script", sans-serif;
             font-weight: bolder;
@@ -57,15 +64,16 @@
             text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
         }
 
-        /* -------------------- HAMBURGER NAV -------------------- */
+        /* -------------------- HAMBURGER NAV (MATCHING ABOUT PAGE) -------------------- */
         nav {
-            position: fixed; /* Changed from absolute to fixed for permanent visibility */
-            top: 0px;
-            left: 0;
+            position: absolute; /* Changed to absolute to match About page */
+            top: 12px;
+            right: -70px;
             width: 100%;
             z-index: 20;
-            background-color: rgba(13, 17, 23, 0.9); /* Semi-transparent background for navbar */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            /* Remove background to make it transparent over the background image */
+            background-color: transparent;
+            box-shadow: none;
         }
 
         .nav-bar {
@@ -92,9 +100,15 @@
             text-decoration: none;
             color: #fff;
             text-align: center;
-            transition: 0.15s ease-in-out;
+            /* Updated transition/padding to match About page */
+            transition: color 0.3s ease-in-out, 0.15s ease-in-out;
             position: relative;
             text-transform: uppercase;
+            padding: 0;
+        }
+
+        .menu li a:hover {
+            color: var(--color-metallic-silver); /* Metallic silver hover text */
         }
 
         .menu li a::after {
@@ -104,12 +118,14 @@
             left: 0;
             width: 0;
             height: 1px;
-            background-color: #fff;
+            background-color: var(--color-metallic-silver);
             transition: 0.15s ease-in-out;
         }
 
         .menu li a:hover:after {
             width: 100%;
+            background-color: var(--color-subdued-blue); /* Maroon/Red underline glow */
+            box-shadow: 0 0 5px var(--color-subdued-blue);
         }
 
         .open-menu,
@@ -135,48 +151,15 @@
             display: none;
         }
 
-        @media(max-width: 950px) {
-            .logo { left: 20px; }
-            .menu {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 100vh;
-                position: fixed;
-                top: 0;
-                right: -100%;
-                z-index: 100;
-                background-color: #181818;
-                transition: all 0.2s ease-in-out;
-            }
-
-            .menu li {
-                margin-top: 40px;
-            }
-
-            .menu li a {
-                padding: 10px;
-            }
-
-            .open-menu,
-            .close-menu {
-                display: block;
-            }
-
-            #check:checked~.menu {
-                right: 0;
-            }
-        }
-
-        /* -------------------- SOCIAL ICONS (Sidebar) -------------------- */
+        /* -------------------- SOCIAL ICONS (Sidebar - MATCHING ABOUT PAGE) -------------------- */
         .social {
-            position: fixed;
+            position: absolute; /* Changed to absolute to match About page */
             bottom: 70px;
             left: 40px;
             z-index: 10;
             font-size: 25px;
             color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -194,14 +177,56 @@
         .social a {
             color: #fff;
             transform: rotate(-90deg);
-            transition: color 0.3s ease, transform 0.3s ease;
+            padding: 0;
+            transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
         }
         .social a:hover {
-            color: var(--color-brand);
+            color: var(--color-subdued-blue); /* Maroon/Red hover color */
             transform: rotate(-90deg) scale(1.1);
         }
 
-        @media(max-width: 768px) {
+
+        @media(max-width: 950px) {
+            .logo { left: 20px; }
+            .menu {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 80%; /* Adjusted width to match About page */
+                height: 100vh;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                z-index: 100;
+                background-color: #181818;
+                transition: all 0.2s ease-in-out;
+            }
+
+            .menu li {
+                margin-top: 40px;
+                padding-left: 0; /* Added to match About page */
+            }
+
+            .menu li a {
+                padding: 10px;
+                font-size: 1.5rem; /* Added to match About page */
+            }
+
+            .open-menu,
+            .close-menu {
+                display: block;
+            }
+
+            .close-menu {
+                position: absolute;
+                top: 20px;
+                right: 30px; /* Adjusted to match About page */
+            }
+
+
+            #check:checked~.menu {
+                right: 0;
+            }
             .social {
                 display: none; /* Hide sidebar on small screens */
             }
@@ -220,6 +245,7 @@
             border: 1px solid var(--color-border);
             transition: transform 0.4s ease-in-out, box-shadow 0.4s ease;
             position: relative;
+            z-index: 5; /* Ensure login box sits above background but below nav */
         }
         .login-container:hover {
             transform: translateY(-8px);
@@ -300,28 +326,26 @@
     </style>
 </head>
 <body>
-<!-- Navbar -->
+<a href="index.html">
+    <div class="logo">Souls Of Soulcity</div>
+</a>
+
 <nav>
     <ul class='nav-bar'>
-        <a href="index.html">
-            <div class="logo">Souls Of Soulcity</div>
-        </a>
-
         <input type='checkbox' id='check' />
         <span class="menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="crews.html">Crews</a></li>
-                <li><a href="rankings.html">Rankings</a></li>
-                <li><a href="Watch.html">Watch</a></li>
-                <li><a href="index.html">Login</a></li> <!-- Link changed to index.html -->
-                <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
-            </span>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="crews.html">Crews</a></li>
+            <li><a href="rankings.html">Rankings</a></li>
+            <li><a href="Watch.html">Watch</a></li>
+            <li><a href="index.html">Login</a></li>
+            <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
+        </span>
         <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
     </ul>
 </nav>
 
-<!-- SOCIAL ICONS (Acts as a subtle left sidebar) -->
 <div class="social">
     <div class="bar"></div>
     <a href="https://www.youtube.com/headflicker" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
@@ -346,9 +370,8 @@
     // --- Firebase v11 Imports ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    // NOTE: Firestore imports removed as per user request.
 
-    // --- FIREBASE CONFIGURATION (Retained from previous version) ---
+    // --- FIREBASE CONFIGURATION ---
     const firebaseConfig = {
         apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0",
         authDomain: "souls-of-soulcity.firebaseapp.com",
@@ -365,14 +388,11 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    // const db = getFirestore(app); // Firestore initialization removed
 
     // --- HARDCODED ADMIN UID LIST ---
-    // !!! IMPORTANT: You MUST replace these placeholder strings with the actual UIDs
-    // of your Firebase Admin user accounts after they register.
     const ADMIN_UID_LIST = [
-        "8boxpeVzXUg299rHWXdZseORad92", // Example: "nK8v6p3xQ9rS1t2uM4wJ"
-        "ANOTHER_ADMIN_UID_2",     // Add more admin UIDs here if necessary
+        "8boxpeVzXUg299rHWXdZseORad92",
+        "ANOTHER_ADMIN_UID_2",
     ];
     // ----------------------------------
 
@@ -411,7 +431,6 @@
             } else if (error.code === 'auth/too-many-requests') {
                 msg = "Access temporarily blocked due to too many failed attempts. Try again later.";
             } else {
-                // Only log unexpected errors
                 console.error("Login Error:", error);
             }
             errorMessageEl.textContent = msg;
@@ -429,6 +448,16 @@
         if (event.key === 'Enter') {
             handleLogin();
         }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.menu a').forEach(item => {
+        item.addEventListener('click', () => {
+            const checkbox = document.getElementById('check');
+            if (checkbox.checked) {
+                checkbox.checked = false;
+            }
+        });
     });
 
 </script>

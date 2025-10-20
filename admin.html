@@ -64,7 +64,6 @@
     </header>
 
     <div class="grid-3">
-        <!-- Live Auction Control Card -->
         <div class="card">
             <h2>Live Auction Control</h2>
             <div class="mb-4">
@@ -78,7 +77,6 @@
             <button id="end-auction-btn" class="btn btn-primary" disabled>End Auction & Sell</button>
         </div>
 
-        <!-- Recharge Requests Card -->
         <div class="card">
             <h2>SVC Recharge Requests</h2>
             <div id="recharge-requests-list" style="max-height: 250px; overflow-y: auto;">
@@ -87,7 +85,6 @@
             <p class="admin-note">Click Approve to finalize payment and update the team's balance.</p>
         </div>
 
-        <!-- Racer Management Card -->
         <div class="card">
             <h2>Racer Management</h2>
             <form id="add-racer-form" class="space-y-2">
@@ -99,7 +96,6 @@
         </div>
     </div>
 
-    <!-- Racer Status & Auction Launch -->
     <div class="card">
         <h2>Racer Inventory & Auction Launch</h2>
         <div class="team-list" id="racer-inventory-list">
@@ -107,12 +103,10 @@
         </div>
     </div>
 
-    <!-- Team Management Card -->
     <div class="card">
         <h2>Team Management</h2>
 
         <div class="grid-2">
-            <!-- Team Registration Form -->
             <form id="register-team-form" class="space-y-2 mb-4 p-4 border border-gray-700 rounded-lg">
                 <h3 class="text-lg font-semibold text-white">Register New Team</h3>
                 <input type="text" id="new-team-id" placeholder="Unique Team ID (e.g., TEAM-001)" required>
@@ -122,7 +116,6 @@
                 <button type="submit" class="btn btn-success">Register Team</button>
             </form>
 
-            <!-- Team List -->
             <div class="p-4 border border-gray-700 rounded-lg">
                 <h3 class="text-lg font-semibold text-white mb-2">Registered Teams (Balance)</h3>
                 <div id="team-list-display" style="max-height: 200px; overflow-y: auto;">
@@ -134,24 +127,30 @@
 
 </div>
 
-<!-- Firebase SDKs (Switching to modular v9 for better compatibility) -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, updateDoc, onSnapshot, collection, query, where, runTransaction, FieldValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    // FIX: Included 'getDoc' for the team registration check
+    import { getFirestore, doc, setDoc, updateDoc, onSnapshot, collection, query, where, runTransaction, FieldValue, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-    // --- START SECURITY AND INITIALIZATION ---
+    // --- START SECURITY AND INITIALIZATION (FIXED) ---
 
     // CRITICAL: PASTE YOUR ADMIN USER IDS (UIDs) HERE
-    // Your actual UID: 8boxpeVzXUg299rHWXdZseORad92
     const AUTHORIZED_ADMIN_UIDS = [
         "8boxpeVzXUg299rHWXdZseORad92", // <-- THIS IS CORRECT
         // "ANOTHER_ADMIN_UID_HERE",
     ];
 
-    // Global Firebase Config and Auth Token (injected by Canvas environment)
-    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+    // FIX: Hardcoded Firebase Configuration to resolve (auth/invalid-api-key) and Firestore initialization issues.
+    const firebaseConfig = {
+        apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0",
+        authDomain: "souls-of-soulcity.firebaseapp.com",
+        projectId: "souls-of-soulcity",
+        storageBucket: "souls-of-soulcity.firebasestorage.app",
+        messagingSenderId: "402427120355",
+        appId: "1:402427120355:web:f0fa030a0a9034198213d6"
+    };
+    const initialAuthToken = null; // Assuming custom token isn't being used in this environment
 
     // Global variables for Firebase services
     let app = null;
@@ -171,13 +170,13 @@
     try {
         app = initializeApp(firebaseConfig);
         auth = getAuth(app);
+        // db is now correctly initialized as a V9 Firestore instance
         db = getFirestore(app);
 
-        // Use custom token or sign in anonymously to ensure we have a user object
         if (initialAuthToken) {
             signInWithCustomToken(auth, initialAuthToken).catch(e => {
                 console.error("Custom token sign-in failed, attempting anonymous:", e);
-                signInAnonymously(auth); // Fallback
+                signInAnonymously(auth);
             });
         } else {
             signInAnonymously(auth);
@@ -267,8 +266,16 @@
         if (!teamId || !teamName || isNaN(balance)) return;
 
         try {
+            // Check if teamId already exists to prevent overwrite/error
+            const teamDocRef = doc(db, 'teams', teamId);
+            const checkDoc = await getDoc(teamDocRef);
+            if (checkDoc.exists()) {
+                alert(`Team ID "${teamId}" already exists. Please choose a unique ID.`);
+                return;
+            }
+
             // Using setDoc (v9 equivalent of .doc(id).set(data))
-            await setDoc(doc(db, 'teams', teamId), {
+            await setDoc(teamDocRef, {
                 teamName: teamName,
                 ownerName: ownerName,
                 balance: balance,
@@ -336,7 +343,7 @@
         }
     });
 
-    // Handles the "Start Auction" button click
+    // Handles the "Start Auction" button click (This function is now called from an event listener)
     async function startAuction(racerName, startingPrice) {
         // NOTE: Replace confirm() with a custom UI modal in a finished application.
         if (!confirm(`Are you sure you want to start the auction for ${racerName}?`)) return;
@@ -368,8 +375,8 @@
 
     // Listens for real-time updates to the racers collection and creates Launch buttons
     function startRacersListener() {
-        if (!db) return; // Guard against uninitialized DB
-        // Using collection(db, 'racers') (v9 equivalent of .collection('racers'))
+        if (!db) return;
+
         onSnapshot(collection(db, 'racers'), snapshot => {
             const inventoryList = document.getElementById('racer-inventory-list');
             inventoryList.innerHTML = '';
@@ -381,19 +388,27 @@
 
                 let statusClass = '';
                 let buttonHtml = '';
+                let buttonDisabled = false;
 
                 switch (racer.status) {
                     case 'Available':
                         statusClass = 'status-available';
-                        buttonHtml = `<button class="btn btn-primary btn-sm" onclick="startAuction('${racer.name}', ${racer.startingPrice})">Start Auction (${racer.startingPrice} SVC)</button>`;
+                        // Added class 'js-start-auction-btn' and data attributes
+                        buttonHtml = `<button class="btn btn-primary btn-sm js-start-auction-btn"
+                                            data-racer-name="${racer.name}"
+                                            data-start-price="${racer.startingPrice}">
+                                            Start Auction (${racer.startingPrice} SVC)
+                                        </button>`;
                         break;
                     case 'Auctioning':
                         statusClass = 'status-auctioning';
                         buttonHtml = `<span class="text-sm">LIVE - Bidding is active!</span>`;
+                        buttonDisabled = true;
                         break;
                     case 'Sold':
                         statusClass = 'status-sold';
                         buttonHtml = `<span class="text-sm">Sold to: ${racer.winningTeamName || 'N/A'}</span>`;
+                        buttonDisabled = true;
                         break;
                 }
 
@@ -406,6 +421,16 @@
                 `;
                 inventoryList.appendChild(item);
             });
+
+            // *** CRITICAL FIX: ATTACH LISTENERS AFTER ELEMENTS ARE ADDED ***
+            inventoryList.querySelectorAll('.js-start-auction-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const racerName = button.getAttribute('data-racer-name');
+                    const startingPrice = parseFloat(button.getAttribute('data-start-price'));
+                    startAuction(racerName, startingPrice); // Call the module-scoped function
+                });
+            });
+
         }, error => {
             console.error("Error listening to racers:", error);
         });
@@ -474,7 +499,8 @@
 
         } catch (e) {
             console.error("Auction Finalization Failed:", e);
-            console.error("Failed to finalize auction: " + e);
+            // Check if the error is due to transaction failure (like balance check)
+            alert(`Auction Finalization Failed: ${typeof e === 'string' ? e : e.message}`);
         } finally {
             document.getElementById('end-auction-btn').disabled = false;
         }
@@ -538,7 +564,7 @@
 
     // --- RECHARGE MANAGEMENT FUNCTIONS ---
 
-    // Handles approval of a recharge request
+    // Handles approval of a recharge request (This function is now called from an event listener)
     async function approveRecharge(docId, userId, svcAmount) {
         // NOTE: Replace confirm() with a custom UI modal in a finished application.
         if (!confirm(`Confirm approval: Add ${svcAmount} SVC to Team ID: ${userId}?`)) return;
@@ -562,7 +588,7 @@
             console.log(`Recharge for ${userId} fulfilled!`);
         } catch (e) {
             console.error("Recharge transaction failed:", e);
-            console.error("Failed to approve recharge: " + e);
+            alert(`Recharge approval failed: ${typeof e === 'string' ? e : e.message}`);
         }
     }
 
@@ -581,21 +607,39 @@
                 return;
             }
 
+            // Array to hold elements and their required data
+            const items = [];
+
             snapshot.forEach(doc => {
                 const request = doc.data();
                 const item = document.createElement('div');
                 item.className = 'p-2 border-b border-gray-700 space-y-1';
+                // Added class 'js-approve-recharge-btn' and data attributes
                 item.innerHTML = `
                     <p class="font-bold text-lg text-white">${request.svcAmount.toFixed(2)} SVC Request</p>
                     <p class="text-sm text-gray-400">Team ID: ${request.userId.substring(0, 8)}...</p>
                     <p class="text-sm text-gray-400">Note: ${request.paymentNote.substring(0, 30)}...</p>
-                    <button class="btn btn-success text-sm w-full"
-                        onclick="approveRecharge('${doc.id}', '${request.userId}', ${request.svcAmount})">
+                    <button class="btn btn-success text-sm w-full js-approve-recharge-btn"
+                        data-doc-id="${doc.id}"
+                        data-user-id="${request.userId}"
+                        data-svc-amount="${request.svcAmount}">
                         Approve
                     </button>
                 `;
                 list.appendChild(item);
+                items.push(item);
             });
+
+            // *** CRITICAL FIX: ATTACH LISTENERS AFTER ELEMENTS ARE ADDED ***
+            list.querySelectorAll('.js-approve-recharge-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const docId = button.getAttribute('data-doc-id');
+                    const userId = button.getAttribute('data-user-id');
+                    const svcAmount = parseFloat(button.getAttribute('data-svc-amount'));
+                    approveRecharge(docId, userId, svcAmount); // Call the module-scoped function
+                });
+            });
+
         }, error => {
             console.error("Error listening to recharges:", error);
         });

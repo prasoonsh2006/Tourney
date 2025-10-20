@@ -17,33 +17,52 @@
             box-sizing: border-box;
         }
 
-        body {
-            width: 100vw;
-            min-height: 100vh;
-            font-family: "Poppins", sans-serif;
-            /* === Background Image Styles === */
-            background-image: url('images/Test.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-color: #000000; /* Deep Black Fallback */
-            /* ==================================== */
-            color: #fff;
-            overflow-x: hidden;
+        :root {
+            --color-black: #1A1A15;
+            --color-dark-grey: #121212;
+            --color-mid-grey: #2a2a2a;
+            --color-light-grey: #e0e0e0;
+            --color-white: #ffffff;
+            /* --- UPDATED ACCENT COLORS: Subdued Metallic Silver --- */
+            --color-metallic-silver: #bbbbbb;
+            --color-subdued-blue: #a30000; /* Keeping a subtle blue/cyan for secondary highlight */
+            /* ----------------------------- */
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
+        body {
+            width: 100vw;
+            font-family: "Poppins", sans-serif;
+            color: var(--color-light-grey);
+            min-height: 100vh;
+
+            /* Background Image with Dark Overlay */
+            background-image: url('images/Test.jpg'); /* Futuristic cityscape placeholder */
+            background-color: var(--color-dark-grey); /* Fallback color */
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: center center;
         }
 
         main {
             width: 100%;
-            padding-top: 0;
             position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* --- Logo and Nav Colors --- */
+        h1, h2, h3 {
+            color: var(--color-white);
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-light-grey);
+            transition: color 0.3s;
+        }
+
+        /* -------------------- LOGO -------------------- */
         .logo {
             position: absolute;
             top: 20px;
@@ -73,6 +92,7 @@
             list-style: none;
             position: relative;
             padding: 12px 20px;
+            margin: 0;
         }
 
         .menu {
@@ -88,9 +108,15 @@
             text-decoration: none;
             color: #fff;
             text-align: center;
-            transition: 0.15s ease-in-out;
+            transition: color 0.3s ease-in-out, 0.15s ease-in-out;
             position: relative;
             text-transform: uppercase;
+            padding: 0;
+        }
+
+        /* Hover effect updated to metallic silver */
+        .menu li a:hover {
+            color: var(--color-metallic-silver);
         }
 
         .menu li a::after {
@@ -100,12 +126,15 @@
             left: 0;
             width: 0;
             height: 1px;
-            background-color: #fff;
+            background-color: var(--color-metallic-silver);
             transition: 0.15s ease-in-out;
         }
 
         .menu li a:hover:after {
             width: 100%;
+            /* Subdued blue/cyan for hover underline spread */
+            background-color: var(--color-subdued-blue);
+            box-shadow: 0 0 5px var(--color-subdued-blue);
         }
 
         .open-menu,
@@ -131,6 +160,47 @@
             display: none;
         }
 
+        /* -------------------- SOCIAL ICONS -------------------- */
+        .social {
+            position: absolute;
+            bottom: 70px;
+            left: 40px;
+            z-index: 10;
+            font-size: 25px;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .social .bar {
+            width: 1px;
+            height: 350px;
+            background: #fff;
+            margin-bottom: 60px;
+        }
+
+        .social .fa-discord a:hover {
+            color: var(--color-subdued-blue);
+            transform: rotate(-90deg) scale(1.2);
+        }
+
+        .social .fa-youtube a:hover {
+            color: var(--color-subdued-blue);
+            transform: rotate(-90deg) scale(1.2);
+        }
+
+        .social a {
+            color: #fff;
+            transform: rotate(-90deg);
+            padding: 0;
+            transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+        }
+
+        /* -------------------- MOBILE MEDIA QUERY (NAV) -------------------- */
         @media(max-width: 950px) {
             .menu {
                 flex-direction: column;
@@ -148,10 +218,12 @@
 
             .menu li {
                 margin-top: 40px;
+                padding-left: 0;
             }
 
             .menu li a {
                 padding: 10px;
+                font-size: 1.5rem;
             }
 
             .open-menu,
@@ -159,45 +231,23 @@
                 display: block;
             }
 
+            .close-menu {
+                position: absolute;
+                top: 20px;
+                right: 30px;
+            }
+
             #check:checked~.menu {
                 right: 0;
             }
-        }
-
-        /* -------------------- SOCIAL ICONS -------------------- */
-        .social {
-            position: fixed;
-            bottom: 70px;
-            left: 40px;
-            z-index: 10;
-            font-size: 25px;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .social .bar {
-            width: 1px;
-            height: 350px;
-            background: #fff;
-            margin-bottom: 60px;
-        }
-
-        .social a {
-            color: #fff;
-            transform: rotate(-90deg);
-            transition: color 0.3s ease;
-        }
-        .social a:hover {
-            color: #ffffff; /* Silver/Steel Blue Accent */
+            .social {
+                display: none;
+            }
         }
 
         /* -------------------- CREWS SECTION -------------------- */
         #crews {
-            padding: 80px 20px;
+            padding: 120px 20px 80px; /* Increased top padding to clear nav */
             min-height: calc(100vh);
             background-color: rgba(13, 13, 13, 0.1);
         }
@@ -260,7 +310,6 @@
         /* Added lift and scale on hover for the card container */
         .crew-card:hover {
             transform: translateY(-8px) scale(1.02);
-            /* Note: The 'in-view' transform of translateY(0) is overridden by this hover state. */
         }
 
         .card-inner {
@@ -275,11 +324,12 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Card Flip on Hover - Enhanced Glow */
+        /* Card Flip on Hover - Enhanced Glow (Default Silver/Steel) */
         .crew-card:hover .card-inner {
             transform: rotateY(180deg);
             box-shadow: 0 0 35px 8px rgba(176, 196, 222, 0.6), 0 10px 40px rgba(0, 0, 0, 0.8);
         }
+
 
         /* Card Front and Back Styles */
         .card-front,
@@ -397,61 +447,103 @@
         .crew-card:hover .card-back li:nth-child(5) { transition-delay: 0.6s; }
         .crew-card:hover .card-back li:nth-child(6) { transition-delay: 0.65s; }
 
-        /* -------------------- RESPONSIVENESS -------------------- */
-        @media(max-width: 950px) {
-            nav {
-                background: #0d0d0d;
-            }
-
-            .logo {
-                position: relative;
-                left: 0;
-            }
-
-            .menu {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                width: 80%;
-                height: 100vh;
-                position: fixed;
-                top: 0;
-                right: -100%;
-                z-index: 100;
-                background-color: #0d0d0d;
-                transition: all 0.2s ease-in-out;
-            }
-
-            .menu li {
-                margin-top: 40px;
-                padding-left: 0;
-            }
-
-            .menu li a {
-                padding: 10px;
-                font-size: 1.5rem;
-            }
-
-            .open-menu,
-            .close-menu {
-                display: block;
-                position: absolute;
-            }
-
-            .open-menu {
-                top: 15px;
-                right: 20px;
-            }
-
-            #check:checked~.menu {
-                right: 0;
-            }
-
-            .social {
-                display: none;
-            }
+        /* -------------------- FOOTER STYLES (NEW) -------------------- */
+        .site-footer {
+            background-color: var(--color-dark-grey);
+            color: var(--color-light-grey);
+            padding: 40px 20px;
+            border-top: 1px solid rgba(187, 187, 187, 0.1);
+            position: relative;
+            z-index: 5;
+            text-align: center;
         }
 
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+        }
+
+        .footer-logo, .footer-links, .footer-contact {
+            padding: 0 10px;
+            flex: 1 1 30%;
+            min-width: 150px;
+            text-align: left;
+        }
+
+        .footer-logo h3 {
+            font-family: "Kaushan Script", sans-serif;
+            font-size: 1.8rem;
+            color: var(--color-metallic-silver);
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+
+        .footer-links h4, .footer-contact h4 {
+            color: var(--color-white);
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--color-metallic-silver);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links a {
+            color: var(--color-light-grey);
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-subdued-blue);
+            padding-left: 5px;
+        }
+
+        .footer-contact a {
+            color: var(--color-metallic-silver);
+        }
+
+        .footer-contact a:hover {
+            color: var(--color-subdued-blue);
+        }
+
+        .footer-bottom {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(187, 187, 187, 0.1);
+            font-size: 0.85rem;
+            opacity: 0.7;
+            text-align: center;
+            width: 100%;
+            position: relative;
+        }
+
+        /* 🏁 ANIMATED EMOJI STYLES 🏁 */
+        .animated-flag {
+            position: absolute;
+            font-size: 1.5rem;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            animation: flagMove 8s infinite alternate ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes flagMove {
+            0% { left: 5%; }
+            100% { left: 90%; }
+        }
+
+        /* -------------------- RESPONSIVENESS (FOOTER) -------------------- */
         @media(max-width: 480px) {
             .crews-container h1 {
                 font-size: 2.5rem;
@@ -459,22 +551,34 @@
             .crew-grid {
                 grid-template-columns: 1fr;
             }
+            /* Mobile Footer Adjustments */
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-logo, .footer-links, .footer-contact {
+                flex: 1 1 100%;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .animated-flag {
+                font-size: 1.2rem;
+                left: 2%;
+            }
         }
     </style>
 </head>
 
 <body>
-<!-- 🔥 STANDARD NAVBAR - Logo is now inside the nav-bar list item and scrolls -->
 <nav>
     <ul class='nav-bar'>
-        <!-- Logo moved into the nav structure -->
         <a href="index.html">
             <div class="logo">Souls Of Soulcity</div>
         </a>
 
         <input type='checkbox' id='check' />
         <span class="menu">
-                <!-- Updated links for multi-page structure -->
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="crews.html">Crews</a></li>
@@ -487,7 +591,6 @@
     </ul>
 </nav>
 
-<!-- SOCIAL ICONS -->
 <div class="social">
     <div class="bar"></div>
     <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
@@ -498,13 +601,9 @@
 <main>
     <section id="crews">
         <div class="crews-container">
-            <!-- TAGLINE CHANGE -->
             <h1>Soulcity's Elite Drivers</h1>
             <p class="subtitle">The dark heart of the city's racing scene. Hover over a crew to reveal their true soul.</p>
-            <!-- END TAGLINE CHANGE -->
-
             <div class="crew-grid">
-                <!-- Crew Card 1: Midnight Runners -->
                 <div class="crew-card">
                     <div class="card-inner">
                         <div class="card-front">
@@ -525,7 +624,6 @@
                     </div>
                 </div>
 
-                <!-- Crew Card 2: The Silver Pact -->
                 <div class="crew-card">
                     <div class="card-inner">
                         <div class="card-front">
@@ -545,7 +643,6 @@
                     </div>
                 </div>
 
-                <!-- Crew Card 3: Neon Drifters -->
                 <div class="crew-card">
                     <div class="card-inner">
                         <div class="card-front">
@@ -567,7 +664,6 @@
                     </div>
                 </div>
 
-                <!-- Crew Card 4: Black Market Speed -->
                 <div class="crew-card">
                     <div class="card-inner">
                         <div class="card-front">
@@ -587,7 +683,6 @@
                     </div>
                 </div>
 
-                <!-- Crew Card 5: The Regulators -->
                 <div class="crew-card">
                     <div class="card-inner">
                         <div class="card-front">
@@ -606,13 +701,56 @@
                     </div>
                 </div>
 
-
-
+                <div class="crew-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <h2>Open Slot</h2>
+                            <p class="owner">Owner: TBD</p>
+                            <p>Specialty: Waiting for the next challenger to rise from the depths of the city.</p>
+                        </div>
+                        <div class="card-back">
+                            <h3>Racer Roster</h3>
+                            <ul>
+                                <li>Recruiting...</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 </main>
 
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <h3>Souls Of Soulcity</h3>
+            <p>The premier underground racing league. <br>Draft. Race. Survive. Conquer.</p>
+        </div>
+
+        <div class="footer-links">
+            <h4>Quick Lanes</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">Tournament Info</a></li>
+                <li><a href="crews.html">Crews & Teams</a></li>
+                <li><a href="rankings.html">Leaderboards</a></li>
+                <li><a href="Watch.html">Live Broadcast</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Connect</h4>
+            <p>For inquiries and support, contact our pit crew:</p>
+            <p>Email: <a href="mailto:contact@soulsofsc.com">contact@soulsofsc.com</a></p>
+            <div style="margin-top: 15px; font-size: 1.5rem;">
+                <a href="https://www.youtube.com/headflicker" target="_blank" style="margin-right: 15px;"><i class="fab fa-youtube"></i></a>
+                <a href="https://discord.gg/phmcfrQ4" target="_blank" style="margin-right: 15px;"><i class="fab fa-discord"></i></a>
+                <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
 <script>
     // Simple JS to close the mobile menu if needed
     document.querySelectorAll('.menu a').forEach(item => {

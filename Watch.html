@@ -13,12 +13,10 @@
 </head>
 
 <body style="background: url('images/Test.jpg') no-repeat center/cover;">')>
-<!-- LOGO -->
 <a href="#swiper">
     <div class="logo">Souls Of Soulcity</div>
 </a>
 
-<!-- 🔥 HAMBURGER NAVBAR -->
 <nav>
     <ul class='nav-bar'>
         <input type='checkbox' id='check' />
@@ -35,7 +33,6 @@
     </ul>
 </nav>
 
-<!-- SOCIAL ICONS -->
 <div class="social">
     <div class="bar"></div>
     <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
@@ -48,6 +45,14 @@
     <section id="watch" class="page">
         <div class="container">
             <h1>Watch</h1>
+
+            <div id="live-broadcasts-section" style="display:none;">
+                <h2>Live Races Now! <i class="fa-solid fa-signal live-icon"></i></h2>
+                <div id="live-content" class="video-grid">
+                    <div class="loading">Checking for live racers...</div>
+                </div>
+                <hr style="margin-top: 2rem; border-color: rgba(255, 255, 255, 0.2);">
+            </div>
             <div class="search-container">
                 <input type="text" id="watch-search" placeholder="Search by title or driver..." class="search-input">
             </div>
@@ -59,7 +64,7 @@
 </main>
 
 <script src="Js/watch.js"></script>
-<script src="cdn.jsdelivr.net/npm/papaparse%405.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 </body>
 </html>
