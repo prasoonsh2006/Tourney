@@ -1,230 +1,230 @@
-                                        <!DOCTYPE html>
-                                        <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-                                        <head>
-                                            <meta charset="utf-8" />
-                                            <title>Souls Of Soulcity - Tournament Standings</title>
-                                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                            <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-                                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-                                                  crossorigin="anonymous" referrerpolicy="no-referrer" />
-                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+<head>
+    <meta charset="utf-8" />
+    <title>Souls Of Soulcity - Tournament Standings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
 
-                                            <style>
-                                                * { margin: 0; padding: 0; box-sizing: border-box; }
-                                                :root {
-                                                    --color-dark-grey: #121212; --color-mid-grey: #2a2a2a; --color-light-grey: #e0e0e0;
-                                                    --color-white: #ffffff; --color-metallic-silver: #bbbbbb; --color-subdued-blue: #a30000;
-                                                    --match-height: 62px; --match-width: 240px; --match-margin: 12px;
-                                                    --line-offset: 24px; --border-color: #232c36; --winner-score-color: #03d9ce;
-                                                    --champion-color: gold; --champion-box-height: 100px;
-                                                }
-                                                body { width: 100vw; font-family: "Poppins", sans-serif; color: var(--color-light-grey); min-height: 100vh; background-image:url('images/Test.jpg'); background-color: var(--color-dark-grey); background-size: cover; background-attachment: fixed; background-repeat: no-repeat; background-position: center center; }
-                                                main { width: 100%; position: relative; overflow-x: hidden; min-height: 100vh; }
-                                                .logo { position: absolute; top: 20px; left: 40px; z-index: 10; font-family: "Kaushan Script", sans-serif; font-weight: bolder; font-size: 24px; color: #e4e3d3; text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5); }
-                                                #rankings-page { padding: 100px 20px 50px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-                                                .container { max-width: 1300px; width: 100%; padding: 0 20px; background-color: rgba(18, 18, 18, 0.85); border-radius: 15px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.5); }
-                                                .rankings-header { text-align: center; padding: 30px 0 20px; }
-                                                .rankings-header h1 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 5px; text-shadow: 0 0 5px rgba(187, 187, 187, 0.4); }
-                                                .tab-nav { display: flex; justify-content: center; gap: 15px; border-bottom: 2px solid var(--color-mid-grey); margin-bottom: 30px; padding-top: 10px; }
-                                                .tab-btn { background: none; border: none; color: var(--color-light-grey); padding: 10px 20px; font-size: 1.1rem; font-weight: 500; cursor: pointer; transition: color 0.3s, border-bottom 0.3s; border-bottom: 3px solid transparent; }
-                                                .tab-btn.active { color: var(--color-metallic-silver); border-bottom: 3px solid var(--color-metallic-silver); font-weight: 700; box-shadow: 0 2px 5px rgba(187, 187, 187, 0.2); }
-                                                .tab-content { padding: 10px 0 40px; }
-                                                .bracket-wrapper { padding: 40px 5px; overflow-x: auto; }
-                                                .bracket { display: flex; flex-direction: row; position: relative; background: var(--color-dark-grey); }
-                                                .column { display: flex; flex-direction: column; justify-content: space-around; align-content: center; }
-                                                .round-title { color: var(--color-subdued-blue); text-align: center; margin-bottom: 10px; position: absolute; top: 10px; width: var(--match-width); left: 0; }
-                                                .match { position: relative; display: flex; flex-direction: column; min-width: var(--match-width); max-width: var(--match-width); height: var(--match-height); margin: var(--match-margin) var(--line-offset) var(--match-margin) 0; }
-                                                .match-champion { margin-top: var(--champion-top-margin); height: var(--champion-box-height); }
-                                                .match:last-child { margin-bottom: var(--match-margin); }
-                                                .match .team { display: flex; align-items: center; width: 100%; height: 50%; border: 1px solid var(--border-color); position: relative; background: #182026; color: #6b798c; font-size: 0.95rem; }
-                                                .match-top { border-radius: 2px 2px 0 0; }
-                                                .match-bottom { border-radius: 0 0 2px 2px; }
-                                                .match .team span { padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-                                                .match .team span:last-child { padding-right: 8px; }
-                                                .match .team .score { margin-left: auto; font-size: 14px; font-weight: 600; }
-                                                .match .team .seed { font-size: 12px; min-width: 10px; font-weight: 700; }
-                                                .match .team:first-child { margin-bottom: -1px; }
-                                                .winner-top .match-top, .winner-bottom .match-bottom { background: #232c36; color: var(--color-white); border-color: #36404e; z-index: 1; font-weight: 600; }
-                                                .winner-top .match-top .score, .winner-bottom .match-bottom .score { color: var(--winner-score-color); }
-                                                .column-champion { min-width: 200px; }
-                                                .champion-box { background: var(--color-dark-grey); border: 2px solid var(--champion-color); color: var(--color-white); font-size: 1.5rem; text-align: center; height: 100%; display: flex; justify-content: center; align-items: center; font-weight: 700; padding: 0 10px; border-radius: 4px; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
-                                                .champion-box .fa-trophy { margin-left: 10px; color: var(--champion-color); }
-                                                .match-lines, .match-lines-next { display: none !important; }
-                                                .rankings-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; margin-top: 20px; font-size: 0.95rem; }
-                                                .rankings-table th { color: var(--color-metallic-silver); padding: 10px 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--color-mid-grey); position: sticky; top: 0; background: rgba(18, 18, 18, 0.95); }
-                                                .rankings-table td { padding: 12px 8px; text-align: left; vertical-align: middle; background: #2a2a2a; }
-                                                .main-crew-row td { cursor: pointer; border-bottom: 2px solid #121212; transition: background 0.3s; }
-                                                .main-crew-row:hover td { background: #363636; }
-                                                .detail-row { display: none; }
-                                                .detail-cell { padding: 0 !important; }
-                                                .detail-cell > div { padding: 10px 15px; background: #1f1f1f; border: 1px solid #121212; border-top: none; }
-                                                .racer-detail-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 5px 0; }
-                                                .racer-detail-table th { color: #b0b0b0; background: #121212; padding: 5px 8px; font-weight: 500; border: 1px solid #2a2a2a; }
-                                                .racer-detail-table td { padding: 5px 8px; background: #181818; border: 1px solid #2a2a2a; }
-                                                .racer-name { font-weight: 500; }
-                                                .total-points { font-weight: 700; color: var(--winner-score-color); }
-                                                .rank-number { font-weight: 700; color: var(--champion-color); }
-                                                .expand-toggle { margin-left: 10px; transition: transform 0.3s; }
-                                                .main-crew-row.expanded .expand-toggle { transform: rotate(180deg); }
-                                                @media (max-width: 992px) {
-                                                    .bracket-wrapper { padding: 40px 10px; display: flex; justify-content: flex-start; }
-                                                    .bracket { width: max-content; }
-                                                }
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-dark-grey: #121212; --color-mid-grey: #2a2a2a; --color-light-grey: #e0e0e0;
+            --color-white: #ffffff; --color-metallic-silver: #bbbbbb; --color-subdued-blue: rgba(255, 255, 255, 0.09);
+            --match-height: 62px; --match-width: 240px; --match-margin: 12px;
+            --line-offset: 24px; --border-color: #232c36; --winner-score-color: #03d9ce;
+            --champion-color: gold; --champion-box-height: 100px;
+        }
+        body { width: 100vw; font-family: "Poppins", sans-serif; color: var(--color-light-grey); min-height: 100vh; background-image:url('images/Test.jpg'); background-color: var(--color-dark-grey); background-size: cover; background-attachment: fixed; background-repeat: no-repeat; background-position: center center; }
+        main { width: 100%; position: relative; overflow-x: hidden; min-height: 100vh; }
+        .logo { position: absolute; top: 20px; left: 40px; z-index: 10; font-family: "Kaushan Script", sans-serif; font-weight: bolder; font-size: 24px; color: #e4e3d3; text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5); }
+        #rankings-page { padding: 100px 20px 50px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 1300px; width: 100%; padding: 0 20px; background-color: rgba(18, 18, 18, 0.85); border-radius: 15px; box-shadow: 0 0 40px rgba(0, 0, 0, 0.5); }
+        .rankings-header { text-align: center; padding: 30px 0 20px; }
+        .rankings-header h1 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 5px; text-shadow: 0 0 5px rgba(187, 187, 187, 0.4); }
+        .tab-nav { display: flex; justify-content: center; gap: 15px; border-bottom: 2px solid var(--color-mid-grey); margin-bottom: 30px; padding-top: 10px; }
+        .tab-btn { background: none; border: none; color: var(--color-light-grey); padding: 10px 20px; font-size: 1.1rem; font-weight: 500; cursor: pointer; transition: color 0.3s, border-bottom 0.3s; border-bottom: 3px solid transparent; }
+        .tab-btn.active { color: var(--color-metallic-silver); border-bottom: 3px solid var(--color-metallic-silver); font-weight: 700; box-shadow: 0 2px 5px rgba(187, 187, 187, 0.2); }
+        .tab-content { padding: 10px 0 40px; }
+        .bracket-wrapper { padding: 40px 5px; overflow-x: auto; }
+        .bracket { display: flex; flex-direction: row; position: relative; background: var(--color-dark-grey); }
+        .column { display: flex; flex-direction: column; justify-content: space-around; align-content: center; }
+        .round-title { color: var(--color-subdued-blue); text-align: center; margin-bottom: 10px; position: absolute; top: 10px; width: var(--match-width); left: 0; }
+        .match { position: relative; display: flex; flex-direction: column; min-width: var(--match-width); max-width: var(--match-width); height: var(--match-height); margin: var(--match-margin) var(--line-offset) var(--match-margin) 0; }
+        .match-champion { margin-top: var(--champion-top-margin); height: var(--champion-box-height); }
+        .match:last-child { margin-bottom: var(--match-margin); }
+        .match .team { display: flex; align-items: center; width: 100%; height: 50%; border: 1px solid var(--border-color); position: relative; background: #182026; color: #6b798c; font-size: 0.95rem; }
+        .match-top { border-radius: 2px 2px 0 0; }
+        .match-bottom { border-radius: 0 0 2px 2px; }
+        .match .team span { padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .match .team span:last-child { padding-right: 8px; }
+        .match .team .score { margin-left: auto; font-size: 14px; font-weight: 600; }
+        .match .team .seed { font-size: 12px; min-width: 10px; font-weight: 700; }
+        .match .team:first-child { margin-bottom: -1px; }
+        .winner-top .match-top, .winner-bottom .match-bottom { background: #232c36; color: var(--color-white); border-color: #36404e; z-index: 1; font-weight: 600; }
+        .winner-top .match-top .score, .winner-bottom .match-bottom .score { color: var(--winner-score-color); }
+        .column-champion { min-width: 200px; }
+        .champion-box { background: var(--color-dark-grey); border: 2px solid var(--champion-color); color: var(--color-white); font-size: 1.5rem; text-align: center; height: 100%; display: flex; justify-content: center; align-items: center; font-weight: 700; padding: 0 10px; border-radius: 4px; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
+        .champion-box .fa-trophy { margin-left: 10px; color: var(--champion-color); }
+        .match-lines, .match-lines-next { display: none !important; }
+        .rankings-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; margin-top: 20px; font-size: 0.95rem; }
+        .rankings-table th { color: var(--color-metallic-silver); padding: 10px 8px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--color-mid-grey); position: sticky; top: 0; background: rgba(18, 18, 18, 0.95); }
+        .rankings-table td { padding: 12px 8px; text-align: left; vertical-align: middle; background: #2a2a2a; }
+        .main-crew-row td { cursor: pointer; border-bottom: 2px solid #121212; transition: background 0.3s; }
+        .main-crew-row:hover td { background: #363636; }
+        .detail-row { display: none; }
+        .detail-cell { padding: 0 !important; }
+        .detail-cell > div { padding: 10px 15px; background: #1f1f1f; border: 1px solid #121212; border-top: none; }
+        .racer-detail-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 5px 0; }
+        .racer-detail-table th { color: #b0b0b0; background: #121212; padding: 5px 8px; font-weight: 500; border: 1px solid #2a2a2a; }
+        .racer-detail-table td { padding: 5px 8px; background: #181818; border: 1px solid #2a2a2a; }
+        .racer-name { font-weight: 500; }
+        .total-points { font-weight: 700; color: var(--winner-score-color); }
+        .rank-number { font-weight: 700; color: var(--champion-color); }
+        .expand-toggle { margin-left: 10px; transition: transform 0.3s; }
+        .main-crew-row.expanded .expand-toggle { transform: rotate(180deg); }
+        @media (max-width: 992px) {
+            .bracket-wrapper { padding: 40px 10px; display: flex; justify-content: flex-start; }
+            .bracket { width: max-content; }
+        }
 
 
-                                                /* -------------------- HAMBURGER NAV -------------------- */
-                                                nav {
-                                                    position: absolute;
-                                                    top: 12px;
-                                                    right: 10px;
-                                                    width: 100%;
-                                                    z-index: 20;
-                                                }
+        /* -------------------- HAMBURGER NAV -------------------- */
+        nav {
+            position: absolute;
+            top: 12px;
+            right: 10px;
+            width: 100%;
+            z-index: 20;
+        }
 
-                                                .nav-bar {
-                                                    width: 100%;
-                                                    display: flex;
-                                                    justify-content: flex-end;
-                                                    align-items: center;
-                                                    list-style: none;
-                                                    position: relative;
-                                                    padding: 12px 20px;
-                                                }
+        .nav-bar {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            list-style: none;
+            position: relative;
+            padding: 12px 20px;
+        }
 
-                                                .menu {
-                                                    display: flex;
-                                                }
+        .menu {
+            display: flex;
+        }
 
-                                                .menu li {
-                                                    padding-left: 30px;
-                                                }
+        .menu li {
+            padding-left: 30px;
+        }
 
-                                                .menu li a {
-                                                    display: inline-block;
-                                                    text-decoration: none;
-                                                    color: #fff;
-                                                    text-align: center;
-                                                    transition: 0.15s ease-in-out;
-                                                    position: relative;
-                                                    text-transform: uppercase;
-                                                }
+        .menu li a {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            text-align: center;
+            transition: 0.15s ease-in-out;
+            position: relative;
+            text-transform: uppercase;
+        }
 
-                                                .menu li a::after {
-                                                    content: "";
-                                                    position: absolute;
-                                                    bottom: 0;
-                                                    left: 0;
-                                                    width: 0;
-                                                    height: 1px;
-                                                    background-color: #fff;
-                                                    transition: 0.15s ease-in-out;
-                                                }
+        .menu li a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #fff;
+            transition: 0.15s ease-in-out;
+        }
 
-                                                .menu li a:hover:after {
-                                                    width: 100%;
-                                                }
+        .menu li a:hover:after {
+            width: 100%;
+        }
 
-                                                .open-menu,
-                                                .close-menu {
-                                                    position: absolute;
-                                                    color: #fff;
-                                                    cursor: pointer;
-                                                    font-size: 1.5rem;
-                                                    display: none;
-                                                }
+        .open-menu,
+        .close-menu {
+            position: absolute;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: none;
+        }
 
-                                                .open-menu {
-                                                    top: 20px;
-                                                    right: 20px;
-                                                }
+        .open-menu {
+            top: 20px;
+            right: 20px;
+        }
 
-                                                .close-menu {
-                                                    top: 20px;
-                                                    right: 20px;
-                                                }
+        .close-menu {
+            top: 20px;
+            right: 20px;
+        }
 
-                                                #check {
-                                                    display: none;
-                                                }
+        #check {
+            display: none;
+        }
 
-                                                @media(max-width: 950px) {
-                                                    .menu {
-                                                        flex-direction: column;
-                                                        align-items: center;
-                                                        justify-content: center;
-                                                        width: 80%;
-                                                        height: 100vh;
-                                                        position: fixed;
-                                                        top: 0;
-                                                        right: -100%;
-                                                        z-index: 100;
-                                                        background-color: #181818;
-                                                        transition: all 0.2s ease-in-out;
-                                                    }
+        @media(max-width: 950px) {
+            .menu {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 80%;
+                height: 100vh;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                z-index: 100;
+                background-color: #181818;
+                transition: all 0.2s ease-in-out;
+            }
 
-                                                    .menu li {
-                                                        margin-top: 40px;
-                                                    }
+            .menu li {
+                margin-top: 40px;
+            }
 
-                                                    .menu li a {
-                                                        padding: 10px;
-                                                    }
+            .menu li a {
+                padding: 10px;
+            }
 
-                                                    .open-menu,
-                                                    .close-menu {
-                                                        display: block;
-                                                    }
+            .open-menu,
+            .close-menu {
+                display: block;
+            }
 
-                                                    #check:checked~.menu {
-                                                        right: 0;
-                                                    }
-                                                }
+            #check:checked~.menu {
+                right: 0;
+            }
+        }
 
-                                                /* -------------------- SOCIAL ICONS -------------------- */
-                                                .social {
-                                                    position: fixed;
-                                                    bottom: 70px;
-                                                    left: 40px;
-                                                    z-index: 10;
-                                                    font-size: 25px;
-                                                    color: #fff;
-                                                    display: flex;
-                                                    flex-direction: column;
-                                                    justify-content: center;
-                                                    align-items: center;
-                                                    gap: 15px;
-                                                }
+        /* -------------------- SOCIAL ICONS -------------------- */
+        .social {
+            position: fixed;
+            bottom: 70px;
+            left: 40px;
+            z-index: 10;
+            font-size: 25px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
 
-                                                .social .bar {
-                                                    width: 1px;
-                                                    height: 350px;
-                                                    background: #fff;
-                                                    margin-bottom: 60px;
-                                                }
+        .social .bar {
+            width: 1px;
+            height: 350px;
+            background: #fff;
+            margin-bottom: 60px;
+        }
 
-                                                .social a {
-                                                    color: #fff;
-                                                    transform: rotate(-90deg);
-                                                    transition: color 0.3s ease;
-                                                }
-                                                .social a:hover {
-                                                    color: #ffffff; /* Silver/Steel Blue Accent */
-                                                }
+        .social a {
+            color: #fff;
+            transform: rotate(-90deg);
+            transition: color 0.3s ease;
+        }
+        .social a:hover {
+            color: #ffffff; /* Silver/Steel Blue Accent */
+        }
 
-                                            </style>
-                                        </head>
+    </style>
+</head>
 
-                                        <body>
-                                        <nav>
-                                            <ul class='nav-bar'>
-                                                <!-- Logo moved into the nav structure -->
-                                                <a href="index.html">
-                                                    <div class="logo">Souls Of Soulcity</div>
-                                                </a>
+<body>
+<nav>
+    <ul class='nav-bar'>
+        <!-- Logo moved into the nav structure -->
+        <a href="index.html">
+            <div class="logo">Souls Of Soulcity</div>
+        </a>
 
-                                                <input type='checkbox' id='check' />
-                                                <span class="menu">
+        <input type='checkbox' id='check' />
+        <span class="menu">
                                                         <!-- Updated links for multi-page structure -->
                                                         <li><a href="index.html">Home</a></li>
                                                         <li><a href="about.html">About</a></li>
@@ -233,499 +233,495 @@
                                                         <li><a href="Watch.html">Watch</a></li>
                                                         <li><a href="login.html">Login</a></li>
                                                     </span>
-                                                <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
-                                            </ul>
-                                        </nav>
-
-                                        <!-- SOCIAL ICONS -->
-                                        <div class="social">
-                                            <div class="bar"></div>
-                                            <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
-                                            <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
-                                            <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
-                                        </div>
-
-
-
-                                        <main>
-                                            <section id="rankings-page">
-                                                <div class="container">
-                                                    <header class="rankings-header">
-                                                        <h1>League Standings</h1>
-                                                        <p>Track the progress of crews and racers throughout the Souls of SoulCity tournament.</p>
-                                                    </header>
-
-                                                    <div class="tab-nav">
-                                                        <button class="tab-btn active" data-tab="phase1">Phase 1: Qualifiers</button>
-                                                        <button class="tab-btn" data-tab="phase2">Phase 2: Knockouts</button>
-                                                        <button class="tab-btn" data-tab="finals">Grand Finals</button>
-                                                    </div>
-
-                                                    <!-- Phase 1 Content -->
-                                                    <div class="tab-content" id="tab-phase1" style="display: block;">
-                                                        <h2 style="text-align: center;">Phase 1: Crew Rankings</h2>
-                                                        <div style="overflow-x: auto;">
-                                                            <table class="rankings-table">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th>Rank</th>
-                                                                    <th>Crew Name</th>
-                                                                    <th>Points</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody id="phase1-table-body">
-                                                                <tr><td colspan="3" style="text-align: center;">Loading Phase 1 data...</td></tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Phase 2 Content (NEW TABLE) -->
-                                                    <div class="tab-content" id="tab-phase2" style="display: none;">
-                                                        <h2 style="text-align: center;">Phase 2: Knockout Stage - Race Results</h2>
-                                                        <p style="text-align: center;">Scores for all races (Quarter, Semi, Final) that determined the bracket winners.</p>
-                                                        <div style="overflow-x: auto;">
-                                                            <table class="rankings-table">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th>Rank</th>
-                                                                    <th>Crew Name</th>
-                                                                    <th>Points</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody id="phase2-table-body">
-                                                                <tr><td colspan="3" style="text-align: center;">Loading Phase 2 data...</td></tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Grand Finals Bracket -->
-                                                    <div class="tab-content" id="tab-finals" style="display: none;">
-                                                        <h2 style="text-align: center;">Grand Finals Bracket</h2>
-                                                        <div class="bracket-wrapper">
-                                                            <div class="bracket">
-                                                                <!-- Round 1: Quarter Finals -->
-                                                                <div class="column one" id="round-quarterfinals">
-                                                                    <div class="round-title">Quarter Finals</div>
-                                                                    <!-- Match 1: Seed 1 vs Seed 8 -->
-                                                                    <div class="match" data-match="QF1">
-                                                                        <div class="match-top team">
-                                                                            <span class="seed">1</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                        <div class="match-bottom team">
-                                                                            <span class="seed">8</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Match 2: Seed 4 vs Seed 5 -->
-                                                                    <div class="match" data-match="QF2">
-                                                                        <div class="match-top team">
-                                                                            <span class="seed">4</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                        <div class="match-bottom team">
-                                                                            <span class="seed">5</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Match 3: Seed 2 vs Seed 7 -->
-                                                                    <div class="match" data-match="QF3">
-                                                                        <div class="match-top team">
-                                                                            <span class="seed">2</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                        <div class="match-bottom team">
-                                                                            <span class="seed">7</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Match 4: Seed 3 vs Seed 6 -->
-                                                                    <div class="match" data-match="QF4">
-                                                                        <div class="match-top team">
-                                                                            <span class="seed">3</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                        <div class="match-bottom team">
-                                                                            <span class="seed">6</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- Round 2: Semi Finals -->
-                                                                <div class="column two" id="round-semifinals">
-                                                                    <div class="round-title">Semi Finals</div>
-                                                                    <!-- Match 5: Winner QF1 vs Winner QF2 -->
-                                                                    <div class="match" data-match="SF1">
-                                                                        <div class="match-top team">
-                                                                            <span class="seed">Q1</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                        <div class="match-bottom team">
-                                                                            <span class="seed">Q2</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Match 6: Winner QF3 vs Winner QF4 -->
-                                                                    <div class="match" data-match="SF2">
-                                                                        <div class="match-top team">
-                                                                            <span class="seed">Q3</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                        <div class="match-bottom team">
-                                                                            <span class="seed">Q4</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- Round 3: Grand Final -->
-                                                                <div class="column three" id="round-finals">
-                                                                    <div class="round-title">Grand Final</div>
-                                                                    <!-- Match 7: Winner SF1 vs Winner SF2 -->
-                                                                    <div class="match" data-match="GF1">
-                                                                        <div class="match-top team">
-                                                                            <span class="seed">S1</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                        <div class="match-bottom team">
-                                                                            <span class="seed">S2</span>
-                                                                            <span class="name">N/A</span>
-                                                                            <span class="score">-</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- Champion -->
-                                                                <div class="column column-champion">
-                                                                    <div class="round-title">Champion</div>
-                                                                    <div class="match match-champion">
-                                                                        <div class="champion-box" id="champion-name">
-                                                                            Champion Awaits
-                                                                            <i class="fas fa-trophy"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                        </main>
-
-                                        <script>
-                                            // 1. URLs - ⭐⭐ REPLACE BOTH OF THESE WITH YOUR PUBLISHED CSV LINKS ⭐⭐
-                                            const PHASE_1_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-4K7CF0Xdi3VK3Snca_xV9huBCAg--xoRyhPVuCxfI6yzuD3ZSsuVngiRJQ_KfXXZRBfJzG5Kq/pub?gid=933387074&single=true&output=csv';
-                                            const PHASE_2_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-4K7CF0Xdi3VK3Snca_xV9huBCAg--xoRyhPVuCxfI6yzuD3ZSsuVngiRJQ_KfXXZRBfJzG5Kq/pub?gid=882333842&single=true&output=csv';
-                                            // Example format: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-.../pub?gid=...&single=true&output=csv';
-
-                                            let PHASE_1_DATA = [];
-                                            let PHASE_2_DATA = {};
-                                            let PHASE_1_RACE_HEADERS = [];
-                                            let PHASE_2_RACE_HEADERS = []; // ⭐ NEW: Store the exact race headers from the Phase 2 sheet
-
-                                            // Match definitions based on Phase 1 seeds
-                                            const MATCH_MAP = {
-                                                'QF1': { teamASeed: 1, teamBSeed: 8 },
-                                                'QF2': { teamASeed: 4, teamBSeed: 5 },
-                                                'QF3': { teamASeed: 2, teamBSeed: 7 },
-                                                'QF4': { teamASeed: 3, teamBSeed: 6 },
-                                                'SF1': { teamAPrevious: 'QF1', teamBPrevious: 'QF2' },
-                                                'SF2': { teamAPrevious: 'QF3', teamBPrevious: 'QF4' },
-                                                'GF1': { teamAPrevious: 'SF1', teamBPrevious: 'SF2' }
-                                            };
-
-                                            // Helper function to parse CSV text into an array of objects
-                                            function parseCSV(csvText) {
-                                                const [headerLine, ...dataLines] = csvText.trim().split('\n');
-                                                const headers = headerLine.split(',').map(h => h.trim().replace(/"/g, ''));
-
-                                                return dataLines.map(line => {
-                                                    const values = line.split(',');
-                                                    const rowObject = {};
-                                                    headers.forEach((header, i) => {
-                                                        const value = values[i] ? values[i].trim().replace(/^"|"$/g, '') : '';
-                                                        // Check if the header suggests a numeric score field
-                                                        const isScoreField = header.includes('Race') || header.includes('Total Points');
-                                                        const isNumeric = isScoreField && !isNaN(value) && value !== '';
-                                                        rowObject[header] = isNumeric ? Number(value) : value;
-                                                    });
-                                                    return rowObject;
-                                                });
-                                            }
-
-                                            // Helper function to process data, returning structured crew data (points calculated)
-                                            function processData(flatData) {
-                                                if (flatData.length === 0) return {};
-
-                                                // 1. Dynamically find all 'Race X' columns from the first row
-                                                const raceHeaders = Object.keys(flatData[0]).filter(header => header.includes('Race') && !header.includes('Racer Name'));
-                                                const numRaces = raceHeaders.length;
-
-                                                const structuredData = {};
-                                                let currentCrew = null;
-
-                                                flatData.forEach(row => {
-                                                    const crewName = row['Crew Name'];
-
-                                                    if (crewName !== '') {
-                                                        if (currentCrew) { structuredData[currentCrew.name] = currentCrew; }
-                                                        currentCrew = { rank: 0, name: crewName, id: row.ID, points: 0, racers: [], numRaces: numRaces, raceHeaders: raceHeaders };
-                                                    }
-                                                    else if (row['Racer Name'] !== '' && currentCrew) {
-                                                        const raceData = [];
-                                                        // Collect race scores based on the dynamically found headers
-                                                        currentCrew.raceHeaders.forEach(header => {
-                                                            const score = row[header];
-                                                            raceData.push(score !== undefined && typeof score === 'number' ? score : 0);
-                                                        });
-
-                                                        currentCrew.racers.push({
-                                                            name: row['Racer Name'],
-                                                            totalPoints: row['Total Points'] || 0,
-                                                            raceData: raceData
-                                                        });
-                                                    }
-                                                });
-
-                                                if (currentCrew) { structuredData[currentCrew.name] = currentCrew; }
-
-                                                // Calculate total crew points (sum of all racer's Total Points)
-                                                Object.values(structuredData).forEach(crew => {
-                                                    crew.points = crew.racers.reduce((sum, racer) => sum + racer.totalPoints, 0);
-                                                });
-
-                                                return structuredData;
-                                            }
-
-                                            // Function to find a crew name by its rank
-                                            function getCrewNameByRank(rank) {
-                                                const crew = PHASE_1_DATA.find(c => c.rank === rank);
-                                                return crew ? crew.name : 'TBD';
-                                            }
-
-                                            // Function to fetch and structure Phase 2 racer data
-                                            async function fetchPhase2Data() {
-                                                try {
-                                                    const response = await fetch(PHASE_2_URL);
-                                                    if (!response.ok) {
-                                                        console.warn("Could not fetch Phase 2 data. Bracket will use Phase 1 seeds and TBD scores.");
-                                                        PHASE_2_DATA = {};
-                                                        return;
-                                                    }
-                                                    const csvText = await response.text();
-
-                                                    const flatData = parseCSV(csvText);
-                                                    const structuredDataMap = processData(flatData);
-
-                                                    PHASE_2_DATA = structuredDataMap;
-
-                                                    // ⭐ Store Phase 2 headers for its detail table
-                                                    if (Object.keys(PHASE_2_DATA).length > 0) {
-                                                        const firstCrewName = Object.keys(PHASE_2_DATA)[0];
-                                                        PHASE_2_RACE_HEADERS = structuredDataMap[firstCrewName].raceHeaders;
-                                                    }
-
-                                                } catch (error) {
-                                                    console.error("Could not process Phase 2 spreadsheet data:", error);
-                                                    PHASE_2_DATA = {};
-                                                }
-                                            }
-
-
-                                            // Function to populate the Knockout Bracket
-                                            function initBrackets() {
-                                                if (PHASE_1_DATA.length === 0) return;
-
-                                                const matchResults = {};
-
-                                                // Helper to get score from Phase 2 data
-                                                const getScore = (crewName) => PHASE_2_DATA[crewName] ? PHASE_2_DATA[crewName].points : 0;
-
-                                                // 1. Process Quarter Finals (QF)
-                                                for (let i = 1; i <= 4; i++) {
-                                                    const matchId = `QF${i}`;
-                                                    const matchDef = MATCH_MAP[matchId];
-
-                                                    const teamA = getCrewNameByRank(matchDef.teamASeed);
-                                                    const teamB = getCrewNameByRank(matchDef.teamBSeed);
-
-                                                    const scoreA = getScore(teamA);
-                                                    const scoreB = getScore(teamB);
-
-                                                    const winner = (scoreA > scoreB) ? teamA : (scoreB > scoreA ? teamB : null);
-
-                                                    matchResults[matchId] = { teamA, scoreA, teamB, scoreB, winner };
-                                                }
-
-                                                // 2. Process Semi Finals (SF)
-                                                for (let i = 1; i <= 2; i++) {
-                                                    const matchId = `SF${i}`;
-                                                    const matchDef = MATCH_MAP[matchId];
-
-                                                    const prevA = matchResults[matchDef.teamAPrevious];
-                                                    const prevB = matchResults[matchDef.teamBPrevious];
-
-                                                    const teamA = prevA && prevA.winner ? prevA.winner : 'TBD';
-                                                    const teamB = prevB && prevB.winner ? prevB.winner : 'TBD';
-
-                                                    const scoreA = getScore(teamA);
-                                                    const scoreB = getScore(teamB);
-
-                                                    const winner = (scoreA > scoreB) ? teamA : (scoreB > scoreA ? teamB : null);
-
-                                                    matchResults[matchId] = { teamA, scoreA, teamB, scoreB, winner };
-                                                }
-
-                                                // 3. Process Grand Final (GF)
-                                                const gfMatchDef = MATCH_MAP['GF1'];
-                                                const prevA = matchResults[gfMatchDef.teamAPrevious];
-                                                const prevB = matchResults[gfMatchDef.teamBPrevious];
-
-                                                const teamA = prevA && prevA.winner ? prevA.winner : 'TBD';
-                                                const teamB = prevB && prevB.winner ? prevB.winner : 'TBD';
-
-                                                const scoreA = getScore(teamA);
-                                                const scoreB = getScore(teamB);
-
-                                                const champion = (scoreA > scoreB) ? teamA : (scoreB > scoreA ? teamB : null);
-                                                matchResults['GF1'] = { teamA, scoreA, teamB, scoreB, winner: champion };
-
-                                                // --- Render the Bracket ---
-                                                Object.entries(matchResults).forEach(([matchId, result]) => {
-                                                    const matchEl = document.querySelector(`.match[data-match="${matchId}"]`);
-                                                    if (!matchEl) return;
-
-                                                    // Populate Names and Scores
-                                                    matchEl.querySelector('.match-top .name').textContent = result.teamA || 'TBD';
-                                                    matchEl.querySelector('.match-top .score').textContent = result.scoreA > 0 ? result.scoreA : '-';
-                                                    matchEl.querySelector('.match-bottom .name').textContent = result.teamB || 'TBD';
-                                                    matchEl.querySelector('.match-bottom .score').textContent = result.scoreB > 0 ? result.scoreB : '-';
-
-                                                    // Apply Winner Class
-                                                    matchEl.classList.remove('winner-top', 'winner-bottom');
-                                                    if (result.winner === result.teamA && result.scoreA > result.scoreB) {
-                                                        matchEl.classList.add('winner-top');
-                                                    } else if (result.winner === result.teamB && result.scoreB > result.scoreA) {
-                                                        matchEl.classList.add('winner-bottom');
-                                                    }
-                                                });
-
-                                                // --- Champion ---
-                                                const finalResult = matchResults['GF1'];
-                                                const championName = finalResult && finalResult.winner ? finalResult.winner : 'Champion Awaits';
-                                                document.getElementById('champion-name').innerHTML = `${championName}<i class="fas fa-trophy"></i>`;
-                                            }
-
-
-                                            // CORE LOGIC: Fetch, Structure, Calculate Points, and Rank
-                                            async function fetchAndRankData() {
-                                                try {
-                                                    // 1. Fetch Phase 1 Qualifiers
-                                                    let response = await fetch(PHASE_1_URL);
-                                                    if (!response.ok) { throw new Error(`HTTP error fetching Phase 1! status: ${response.status}`); }
-                                                    const phase1FlatData = parseCSV(await response.text());
-
-                                                    const phase1StructuredDataMap = processData(phase1FlatData);
-                                                    const phase1StructuredData = Object.values(phase1StructuredDataMap);
-
-                                                    // 2. SORT & ASSIGN RANK
-                                                    phase1StructuredData.sort((a, b) => b.points - a.points);
-                                                    phase1StructuredData.forEach((crew, index) => { crew.rank = index + 1; });
-
-                                                    PHASE_1_DATA = phase1StructuredData;
-
-                                                    // ⭐ Store the headers from Phase 1 for its table
-                                                    if (PHASE_1_DATA.length > 0) {
-                                                        PHASE_1_RACE_HEADERS = PHASE_1_DATA[0].raceHeaders;
-                                                    }
-
-                                                    // 3. Fetch Phase 2/Finals Bracket Results
-                                                    await fetchPhase2Data();
-
-                                                    // 4. Render the page
-                                                    renderPhase1Table();
-                                                    renderPhase2Table(); // ⭐ NEW: Render Phase 2 table
-                                                    initBrackets();
-                                                    switchTab('phase1');
-
-                                                } catch (error) {
-                                                    console.error("Could not fetch or process spreadsheet data:", error);
-                                                    const defaultErrorHtml = `<tr><td colspan="3" style="text-align: center; color: var(--color-subdued-blue);">Error loading data: ${error.message}. Ensure BOTH sheets are published as CSV and URLs are correct.</td></tr>`;
-                                                    document.getElementById('phase1-table-body').innerHTML = defaultErrorHtml;
-                                                    document.getElementById('phase2-table-body').innerHTML = defaultErrorHtml;
-                                                }
-                                            }
-
-
-                                            // --- Rendering Functions ---
-
-                                            /**
-                                             * Generates the detailed table for racers within a crew.
-                                             * @param {Object} crewData - The structured data for the crew.
-                                             * @param {string[]} raceHeaders - The specific race header strings to display (e.g., ['Race 1', 'Race 2']).
-                                             * @returns {string} The HTML for the detail table.
-                                             */
-                                            function generateDetailTableHTML(crewData, raceHeaders) {
-                                                const numRaces = raceHeaders.length;
-
-                                                let headerHTML = '';
-                                                raceHeaders.forEach(header => {
-                                                    // Display only the number if it's "Race X", otherwise use the full header
-                                                    const display = header.startsWith('Race ') ? header.replace('Race ', 'R') : header;
-                                                    headerHTML += `<th>${display}</th>`;
-                                                });
-
-                                                let racerRows = '';
-                                                const colspanCount = numRaces + 2;
-
-                                                if (Array.isArray(crewData.racers) && crewData.racers.length > 0) {
-                                                    crewData.racers.forEach(racer => {
-                                                        let raceCells = '';
-                                                        const raceDataArray = Array.isArray(racer.raceData) ? racer.raceData : [];
-
-                                                        for (let i = 0; i < numRaces; i++) {
-                                                            const points = raceDataArray[i] || 0;
-                                                            raceCells += `<td>${points > 0 ? points : '-'}</td>`;
-                                                        }
-
-                                                        racerRows += `<tr><td class="racer-name">${racer.name}</td>${raceCells}<td class="total-points">${racer.totalPoints}</td></tr>`;
-                                                    });
-                                                } else {
-                                                    racerRows = `<tr><td colspan="${colspanCount}" style="text-align: center;">Racer details unavailable.</td></tr>`;
-                                                }
-
-                                                return `<div style="overflow-x: auto;"><table class="racer-detail-table"><thead><tr><th>Racer</th>${headerHTML}<th>Total</th></tr></thead><tbody>${racerRows}</tbody></table></div>`;
-                                            }
-
-                                            // Renders the Phase 1 qualifier table
-                                            function renderPhase1Table() {
-                                                const tableBodyId = 'phase1-table-body';
-                                                const tableBody = document.getElementById(tableBodyId);
-                                                let html = '';
-
-                                                if (PHASE_1_DATA.length === 0) {
-                                                    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center;">No Phase 1 crew data loaded.</td></tr>`;
-                                                    return;
-                                                }
-
-                                                PHASE_1_DATA.forEach(crew => {
-                                                    html += `<tr class="main-crew-row" data-crew-id="${crew.id}">
+        <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
+    </ul>
+</nav>
+
+<!-- SOCIAL ICONS -->
+<div class="social">
+    <div class="bar"></div>
+    <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
+    <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+</div>
+
+
+
+<main>
+    <section id="rankings-page">
+        <div class="container">
+            <header class="rankings-header">
+                <h1>League Standings</h1>
+                <p>Track the progress of crews and racers throughout the Souls of SoulCity tournament.</p>
+            </header>
+
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="phase1">Phase 1: Qualifiers</button>
+                <button class="tab-btn" data-tab="phase2">Phase 2: Knockouts</button>
+                <button class="tab-btn" data-tab="finals">Grand Finals</button>
+            </div>
+
+            <!-- Phase 1 Content -->
+            <div class="tab-content" id="tab-phase1" style="display: block;">
+                <h2 style="text-align: center;">Phase 1: Crew Rankings</h2>
+                <div style="overflow-x: auto;">
+                    <table class="rankings-table">
+                        <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Crew Name</th>
+                            <th>Points</th>
+                        </tr>
+                        </thead>
+                        <tbody id="phase1-table-body">
+                        <tr><td colspan="3" style="text-align: center;">Loading Phase 1 data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Phase 2 Content (NEW TABLE) -->
+            <div class="tab-content" id="tab-phase2" style="display: none;">
+                <h2 style="text-align: center;">Phase 2: Knockout Stage - Race Results</h2>
+                <p style="text-align: center;">Scores for all races (Quarter, Semi, Final) that determined the bracket winners.</p>
+                <div style="overflow-x: auto;">
+                    <table class="rankings-table">
+                        <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Crew Name</th>
+                            <th>Points</th>
+                        </tr>
+                        </thead>
+                        <tbody id="phase2-table-body">
+                        <tr><td colspan="3" style="text-align: center;">Loading Phase 2 data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Grand Finals Bracket -->
+            <div class="tab-content" id="tab-finals" style="display: none;">
+                <h2 style="text-align: center;">Grand Finals Bracket</h2>
+                <div class="bracket-wrapper">
+                    <div class="bracket">
+                        <!-- Round 1: Quarter Finals -->
+                        <div class="column one" id="round-quarterfinals">
+                            <!-- Match 1: Seed 1 vs Seed 8 -->
+                            <div class="match" data-match="QF1">
+                                <div class="match-top team">
+                                    <span class="seed">1</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                                <div class="match-bottom team">
+                                    <span class="seed">8</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                            </div>
+                            <!-- Match 2: Seed 4 vs Seed 5 -->
+                            <div class="match" data-match="QF2">
+                                <div class="match-top team">
+                                    <span class="seed">4</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                                <div class="match-bottom team">
+                                    <span class="seed">5</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                            </div>
+                            <!-- Match 3: Seed 2 vs Seed 7 -->
+                            <div class="match" data-match="QF3">
+                                <div class="match-top team">
+                                    <span class="seed">2</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                                <div class="match-bottom team">
+                                    <span class="seed">7</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                            </div>
+                            <!-- Match 4: Seed 3 vs Seed 6 -->
+                            <div class="match" data-match="QF4">
+                                <div class="match-top team">
+                                    <span class="seed">3</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                                <div class="match-bottom team">
+                                    <span class="seed">6</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Round 2: Semi Finals -->
+                        <div class="column two" id="round-semifinals">
+                            <!-- Match 5: Winner QF1 vs Winner QF2 -->
+                            <div class="match" data-match="SF1">
+                                <div class="match-top team">
+                                    <span class="seed">Q1</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                                <div class="match-bottom team">
+                                    <span class="seed">Q2</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                            </div>
+                            <!-- Match 6: Winner QF3 vs Winner QF4 -->
+                            <div class="match" data-match="SF2">
+                                <div class="match-top team">
+                                    <span class="seed">Q3</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                                <div class="match-bottom team">
+                                    <span class="seed">Q4</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Round 3: Grand Final -->
+                        <div class="column three" id="round-finals">
+                            <!-- Match 7: Winner SF1 vs Winner SF2 -->
+                            <div class="match" data-match="GF1">
+                                <div class="match-top team">
+                                    <span class="seed">S1</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                                <div class="match-bottom team">
+                                    <span class="seed">S2</span>
+                                    <span class="name">N/A</span>
+                                    <span class="score">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Champion -->
+                        <div class="column column-champion">
+                            <div class="match match-champion">
+                                <div class="champion-box" id="champion-name">
+                                    Champion Awaits
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    // 1. URLs - ⭐⭐ REPLACE BOTH OF THESE WITH YOUR PUBLISHED CSV LINKS ⭐⭐
+    const PHASE_1_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-4K7CF0Xdi3VK3Snca_xV9huBCAg--xoRyhPVuCxfI6yzuD3ZSsuVngiRJQ_KfXXZRBfJzG5Kq/pub?gid=933387074&single=true&output=csv';
+    const PHASE_2_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-4K7CF0Xdi3VK3Snca_xV9huBCAg--xoRyhPVuCxfI6yzuD3ZSsuVngiRJQ_KfXXZRBfJzG5Kq/pub?gid=882333842&single=true&output=csv';
+    // Example format: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-.../pub?gid=...&single=true&output=csv';
+
+    let PHASE_1_DATA = [];
+    let PHASE_2_DATA = {};
+    let PHASE_1_RACE_HEADERS = [];
+    let PHASE_2_RACE_HEADERS = []; // ⭐ NEW: Store the exact race headers from the Phase 2 sheet
+
+    // Match definitions based on Phase 1 seeds
+    const MATCH_MAP = {
+        'QF1': { teamASeed: 1, teamBSeed: 8 },
+        'QF2': { teamASeed: 4, teamBSeed: 5 },
+        'QF3': { teamASeed: 2, teamBSeed: 7 },
+        'QF4': { teamASeed: 3, teamBSeed: 6 },
+        'SF1': { teamAPrevious: 'QF1', teamBPrevious: 'QF2' },
+        'SF2': { teamAPrevious: 'QF3', teamBPrevious: 'QF4' },
+        'GF1': { teamAPrevious: 'SF1', teamBPrevious: 'SF2' }
+    };
+
+    // Helper function to parse CSV text into an array of objects
+    function parseCSV(csvText) {
+        const [headerLine, ...dataLines] = csvText.trim().split('\n');
+        const headers = headerLine.split(',').map(h => h.trim().replace(/"/g, ''));
+
+        return dataLines.map(line => {
+            const values = line.split(',');
+            const rowObject = {};
+            headers.forEach((header, i) => {
+                const value = values[i] ? values[i].trim().replace(/^"|"$/g, '') : '';
+                // Check if the header suggests a numeric score field
+                const isScoreField = header.includes('Race') || header.includes('Total Points');
+                const isNumeric = isScoreField && !isNaN(value) && value !== '';
+                rowObject[header] = isNumeric ? Number(value) : value;
+            });
+            return rowObject;
+        });
+    }
+
+    // Helper function to process data, returning structured crew data (points calculated)
+    function processData(flatData) {
+        if (flatData.length === 0) return {};
+
+        // 1. Dynamically find all 'Race X' columns from the first row
+        const raceHeaders = Object.keys(flatData[0]).filter(header => header.includes('Race') && !header.includes('Racer Name'));
+        const numRaces = raceHeaders.length;
+
+        const structuredData = {};
+        let currentCrew = null;
+
+        flatData.forEach(row => {
+            const crewName = row['Crew Name'];
+
+            if (crewName !== '') {
+                if (currentCrew) { structuredData[currentCrew.name] = currentCrew; }
+                currentCrew = { rank: 0, name: crewName, id: row.ID, points: 0, racers: [], numRaces: numRaces, raceHeaders: raceHeaders };
+            }
+            else if (row['Racer Name'] !== '' && currentCrew) {
+                const raceData = [];
+                // Collect race scores based on the dynamically found headers
+                currentCrew.raceHeaders.forEach(header => {
+                    const score = row[header];
+                    raceData.push(score !== undefined && typeof score === 'number' ? score : 0);
+                });
+
+                currentCrew.racers.push({
+                    name: row['Racer Name'],
+                    totalPoints: row['Total Points'] || 0,
+                    raceData: raceData
+                });
+            }
+        });
+
+        if (currentCrew) { structuredData[currentCrew.name] = currentCrew; }
+
+        // Calculate total crew points (sum of all racer's Total Points)
+        Object.values(structuredData).forEach(crew => {
+            crew.points = crew.racers.reduce((sum, racer) => sum + racer.totalPoints, 0);
+        });
+
+        return structuredData;
+    }
+
+    // Function to find a crew name by its rank
+    function getCrewNameByRank(rank) {
+        const crew = PHASE_1_DATA.find(c => c.rank === rank);
+        return crew ? crew.name : 'TBD';
+    }
+
+    // Function to fetch and structure Phase 2 racer data
+    async function fetchPhase2Data() {
+        try {
+            const response = await fetch(PHASE_2_URL);
+            if (!response.ok) {
+                console.warn("Could not fetch Phase 2 data. Bracket will use Phase 1 seeds and TBD scores.");
+                PHASE_2_DATA = {};
+                return;
+            }
+            const csvText = await response.text();
+
+            const flatData = parseCSV(csvText);
+            const structuredDataMap = processData(flatData);
+
+            PHASE_2_DATA = structuredDataMap;
+
+            // ⭐ Store Phase 2 headers for its detail table
+            if (Object.keys(PHASE_2_DATA).length > 0) {
+                const firstCrewName = Object.keys(PHASE_2_DATA)[0];
+                PHASE_2_RACE_HEADERS = structuredDataMap[firstCrewName].raceHeaders;
+            }
+
+        } catch (error) {
+            console.error("Could not process Phase 2 spreadsheet data:", error);
+            PHASE_2_DATA = {};
+        }
+    }
+
+
+    // Function to populate the Knockout Bracket
+    function initBrackets() {
+        if (PHASE_1_DATA.length === 0) return;
+
+        const matchResults = {};
+
+        // Helper to get score from Phase 2 data
+        const getScore = (crewName) => PHASE_2_DATA[crewName] ? PHASE_2_DATA[crewName].points : 0;
+
+        // 1. Process Quarter Finals (QF)
+        for (let i = 1; i <= 4; i++) {
+            const matchId = `QF${i}`;
+            const matchDef = MATCH_MAP[matchId];
+
+            const teamA = getCrewNameByRank(matchDef.teamASeed);
+            const teamB = getCrewNameByRank(matchDef.teamBSeed);
+
+            const scoreA = getScore(teamA);
+            const scoreB = getScore(teamB);
+
+            const winner = (scoreA > scoreB) ? teamA : (scoreB > scoreA ? teamB : null);
+
+            matchResults[matchId] = { teamA, scoreA, teamB, scoreB, winner };
+        }
+
+        // 2. Process Semi Finals (SF)
+        for (let i = 1; i <= 2; i++) {
+            const matchId = `SF${i}`;
+            const matchDef = MATCH_MAP[matchId];
+
+            const prevA = matchResults[matchDef.teamAPrevious];
+            const prevB = matchResults[matchDef.teamBPrevious];
+
+            const teamA = prevA && prevA.winner ? prevA.winner : 'TBD';
+            const teamB = prevB && prevB.winner ? prevB.winner : 'TBD';
+
+            const scoreA = getScore(teamA);
+            const scoreB = getScore(teamB);
+
+            const winner = (scoreA > scoreB) ? teamA : (scoreB > scoreA ? teamB : null);
+
+            matchResults[matchId] = { teamA, scoreA, teamB, scoreB, winner };
+        }
+
+        // 3. Process Grand Final (GF)
+        const gfMatchDef = MATCH_MAP['GF1'];
+        const prevA = matchResults[gfMatchDef.teamAPrevious];
+        const prevB = matchResults[gfMatchDef.teamBPrevious];
+
+        const teamA = prevA && prevA.winner ? prevA.winner : 'TBD';
+        const teamB = prevB && prevB.winner ? prevB.winner : 'TBD';
+
+        const scoreA = getScore(teamA);
+        const scoreB = getScore(teamB);
+
+        const champion = (scoreA > scoreB) ? teamA : (scoreB > scoreA ? teamB : null);
+        matchResults['GF1'] = { teamA, scoreA, teamB, scoreB, winner: champion };
+
+        // --- Render the Bracket ---
+        Object.entries(matchResults).forEach(([matchId, result]) => {
+            const matchEl = document.querySelector(`.match[data-match="${matchId}"]`);
+            if (!matchEl) return;
+
+            // Populate Names and Scores
+            matchEl.querySelector('.match-top .name').textContent = result.teamA || 'TBD';
+            matchEl.querySelector('.match-top .score').textContent = result.scoreA > 0 ? result.scoreA : '-';
+            matchEl.querySelector('.match-bottom .name').textContent = result.teamB || 'TBD';
+            matchEl.querySelector('.match-bottom .score').textContent = result.scoreB > 0 ? result.scoreB : '-';
+
+            // Apply Winner Class
+            matchEl.classList.remove('winner-top', 'winner-bottom');
+            if (result.winner === result.teamA && result.scoreA > result.scoreB) {
+                matchEl.classList.add('winner-top');
+            } else if (result.winner === result.teamB && result.scoreB > result.scoreA) {
+                matchEl.classList.add('winner-bottom');
+            }
+        });
+
+        // --- Champion ---
+        const finalResult = matchResults['GF1'];
+        const championName = finalResult && finalResult.winner ? finalResult.winner : 'Champion Awaits';
+        document.getElementById('champion-name').innerHTML = `${championName}<i class="fas fa-trophy"></i>`;
+    }
+
+
+    // CORE LOGIC: Fetch, Structure, Calculate Points, and Rank
+    async function fetchAndRankData() {
+        try {
+            // 1. Fetch Phase 1 Qualifiers
+            let response = await fetch(PHASE_1_URL);
+            if (!response.ok) { throw new Error(`HTTP error fetching Phase 1! status: ${response.status}`); }
+            const phase1FlatData = parseCSV(await response.text());
+
+            const phase1StructuredDataMap = processData(phase1FlatData);
+            const phase1StructuredData = Object.values(phase1StructuredDataMap);
+
+            // 2. SORT & ASSIGN RANK
+            phase1StructuredData.sort((a, b) => b.points - a.points);
+            phase1StructuredData.forEach((crew, index) => { crew.rank = index + 1; });
+
+            PHASE_1_DATA = phase1StructuredData;
+
+            // ⭐ Store the headers from Phase 1 for its table
+            if (PHASE_1_DATA.length > 0) {
+                PHASE_1_RACE_HEADERS = PHASE_1_DATA[0].raceHeaders;
+            }
+
+            // 3. Fetch Phase 2/Finals Bracket Results
+            await fetchPhase2Data();
+
+            // 4. Render the page
+            renderPhase1Table();
+            renderPhase2Table(); // ⭐ NEW: Render Phase 2 table
+            initBrackets();
+            switchTab('phase1');
+
+        } catch (error) {
+            console.error("Could not fetch or process spreadsheet data:", error);
+            const defaultErrorHtml = `<tr><td colspan="3" style="text-align: center; color: var(--color-subdued-blue);">Error loading data: ${error.message}. Ensure BOTH sheets are published as CSV and URLs are correct.</td></tr>`;
+            document.getElementById('phase1-table-body').innerHTML = defaultErrorHtml;
+            document.getElementById('phase2-table-body').innerHTML = defaultErrorHtml;
+        }
+    }
+
+
+    // --- Rendering Functions ---
+
+    /**
+     * Generates the detailed table for racers within a crew.
+     * @param {Object} crewData - The structured data for the crew.
+     * @param {string[]} raceHeaders - The specific race header strings to display (e.g., ['Race 1', 'Race 2']).
+     * @returns {string} The HTML for the detail table.
+     */
+    function generateDetailTableHTML(crewData, raceHeaders) {
+        const numRaces = raceHeaders.length;
+
+        let headerHTML = '';
+        raceHeaders.forEach(header => {
+            // Display only the number if it's "Race X", otherwise use the full header
+            const display = header.startsWith('Race ') ? header.replace('Race ', 'R') : header;
+            headerHTML += `<th>${display}</th>`;
+        });
+
+        let racerRows = '';
+        const colspanCount = numRaces + 2;
+
+        if (Array.isArray(crewData.racers) && crewData.racers.length > 0) {
+            crewData.racers.forEach(racer => {
+                let raceCells = '';
+                const raceDataArray = Array.isArray(racer.raceData) ? racer.raceData : [];
+
+                for (let i = 0; i < numRaces; i++) {
+                    const points = raceDataArray[i] || 0;
+                    raceCells += `<td>${points > 0 ? points : '-'}</td>`;
+                }
+
+                racerRows += `<tr><td class="racer-name">${racer.name}</td>${raceCells}<td class="total-points">${racer.totalPoints}</td></tr>`;
+            });
+        } else {
+            racerRows = `<tr><td colspan="${colspanCount}" style="text-align: center;">Racer details unavailable.</td></tr>`;
+        }
+
+        return `<div style="overflow-x: auto;"><table class="racer-detail-table"><thead><tr><th>Racer</th>${headerHTML}<th>Total</th></tr></thead><tbody>${racerRows}</tbody></table></div>`;
+    }
+
+    // Renders the Phase 1 qualifier table
+    function renderPhase1Table() {
+        const tableBodyId = 'phase1-table-body';
+        const tableBody = document.getElementById(tableBodyId);
+        let html = '';
+
+        if (PHASE_1_DATA.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center;">No Phase 1 crew data loaded.</td></tr>`;
+            return;
+        }
+
+        PHASE_1_DATA.forEach(crew => {
+            html += `<tr class="main-crew-row" data-crew-id="${crew.id}">
                                                                 <td><span class="rank-number">${crew.rank}</span></td>
                                                                 <td>${crew.name}<i class="fas fa-chevron-down expand-toggle"></i></td>
                                                                 <td>${crew.points}</td>
@@ -733,27 +729,27 @@
                                                             <tr class="detail-row" data-crew-id="${crew.id}" data-parent-table="${tableBodyId}">
                                                                 <td colspan="3" class="detail-cell"><div>${generateDetailTableHTML(crew, PHASE_1_RACE_HEADERS)}</div></td>
                                                             </tr>`;
-                                                });
-                                                tableBody.innerHTML = html;
-                                                setupExpandToggleListeners(tableBodyId);
-                                            }
+        });
+        tableBody.innerHTML = html;
+        setupExpandToggleListeners(tableBodyId);
+    }
 
-                                            // ⭐ NEW: Renders the Phase 2 knockout table
-                                            function renderPhase2Table() {
-                                                const tableBodyId = 'phase2-table-body';
-                                                const tableBody = document.getElementById(tableBodyId);
-                                                let html = '';
+    // ⭐ NEW: Renders the Phase 2 knockout table
+    function renderPhase2Table() {
+        const tableBodyId = 'phase2-table-body';
+        const tableBody = document.getElementById(tableBodyId);
+        let html = '';
 
-                                                const phase2Crews = Object.values(PHASE_2_DATA).sort((a, b) => b.points - a.points);
+        const phase2Crews = Object.values(PHASE_2_DATA).sort((a, b) => b.points - a.points);
 
-                                                if (phase2Crews.length === 0 || PHASE_2_RACE_HEADERS.length === 0) {
-                                                    tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center;">No Phase 2 race data available yet.</td></tr>`;
-                                                    return;
-                                                }
+        if (phase2Crews.length === 0 || PHASE_2_RACE_HEADERS.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="3" style="text-align: center;">No Phase 2 race data available yet.</td></tr>`;
+            return;
+        }
 
-                                                phase2Crews.forEach((crew, index) => {
-                                                    // Rank here is based on Phase 2 total points, for display only
-                                                    html += `<tr class="main-crew-row" data-crew-id="${crew.id}">
+        phase2Crews.forEach((crew, index) => {
+            // Rank here is based on Phase 2 total points, for display only
+            html += `<tr class="main-crew-row" data-crew-id="${crew.id}">
                                                                 <td><span class="rank-number">${index + 1}</span></td>
                                                                 <td>${crew.name}<i class="fas fa-chevron-down expand-toggle"></i></td>
                                                                 <td>${crew.points}</td>
@@ -761,78 +757,78 @@
                                                             <tr class="detail-row" data-crew-id="${crew.id}" data-parent-table="${tableBodyId}">
                                                                 <td colspan="3" class="detail-cell"><div>${generateDetailTableHTML(crew, PHASE_2_RACE_HEADERS)}</div></td>
                                                             </tr>`;
-                                                });
-                                                tableBody.innerHTML = html;
-                                                setupExpandToggleListeners(tableBodyId);
-                                            }
+        });
+        tableBody.innerHTML = html;
+        setupExpandToggleListeners(tableBodyId);
+    }
 
-                                            // Sets up the click listeners, scoped to the specific table ID
-                                            function setupExpandToggleListeners(tableBodyId) {
-                                                const tableBody = document.getElementById(tableBodyId);
-                                                if (!tableBody) return;
+    // Sets up the click listeners, scoped to the specific table ID
+    function setupExpandToggleListeners(tableBodyId) {
+        const tableBody = document.getElementById(tableBodyId);
+        if (!tableBody) return;
 
-                                                const mainRows = tableBody.querySelectorAll('.main-crew-row');
+        const mainRows = tableBody.querySelectorAll('.main-crew-row');
 
-                                                mainRows.forEach(row => {
-                                                    // Remove previous listeners to prevent duplicates
-                                                    row.removeEventListener('click', handleRowClick);
-                                                    row.addEventListener('click', handleRowClick);
+        mainRows.forEach(row => {
+            // Remove previous listeners to prevent duplicates
+            row.removeEventListener('click', handleRowClick);
+            row.addEventListener('click', handleRowClick);
 
-                                                    function handleRowClick() {
-                                                        const crewId = row.getAttribute('data-crew-id');
-                                                        // Select the corresponding detail row within the same table body
-                                                        const detailRow = tableBody.querySelector(`.detail-row[data-crew-id="${crewId}"]`);
+            function handleRowClick() {
+                const crewId = row.getAttribute('data-crew-id');
+                // Select the corresponding detail row within the same table body
+                const detailRow = tableBody.querySelector(`.detail-row[data-crew-id="${crewId}"]`);
 
-                                                        if (detailRow) {
-                                                            if (detailRow.style.display === 'table-row') {
-                                                                detailRow.style.display = 'none';
-                                                                row.classList.remove('expanded');
-                                                            } else {
-                                                                // Collapse all other detail rows in the same table
-                                                                tableBody.querySelectorAll('.detail-row').forEach(dRow => {
-                                                                    if (dRow !== detailRow) {
-                                                                        dRow.style.display = 'none';
-                                                                        tableBody.querySelector(`.main-crew-row[data-crew-id="${dRow.getAttribute('data-crew-id')}"]`).classList.remove('expanded');
-                                                                    }
-                                                                });
+                if (detailRow) {
+                    if (detailRow.style.display === 'table-row') {
+                        detailRow.style.display = 'none';
+                        row.classList.remove('expanded');
+                    } else {
+                        // Collapse all other detail rows in the same table
+                        tableBody.querySelectorAll('.detail-row').forEach(dRow => {
+                            if (dRow !== detailRow) {
+                                dRow.style.display = 'none';
+                                tableBody.querySelector(`.main-crew-row[data-crew-id="${dRow.getAttribute('data-crew-id')}"]`).classList.remove('expanded');
+                            }
+                        });
 
-                                                                detailRow.style.display = 'table-row';
-                                                                row.classList.add('expanded');
-                                                            }
-                                                        }
-                                                    }
-                                                });
-                                            }
+                        detailRow.style.display = 'table-row';
+                        row.classList.add('expanded');
+                    }
+                }
+            }
+        });
+    }
 
-                                            function switchTab(targetTabId) {
-                                                const tabButtons = document.querySelectorAll('.tab-btn');
-                                                const tabContents = document.querySelectorAll('.tab-content');
+    function switchTab(targetTabId) {
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-                                                tabButtons.forEach(btn => btn.classList.remove('active'));
-                                                tabContents.forEach(content => content.style.display = 'none');
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.style.display = 'none');
 
-                                                const activeButton = document.querySelector(`.tab-btn[data-tab="${targetTabId}"]`);
-                                                const activeContent = document.getElementById(`tab-${targetTabId}`);
+        const activeButton = document.querySelector(`.tab-btn[data-tab="${targetTabId}"]`);
+        const activeContent = document.getElementById(`tab-${targetTabId}`);
 
-                                                if (activeButton && activeContent) {
-                                                    activeButton.classList.add('active');
-                                                    activeContent.style.display = 'block';
-                                                }
-                                            }
+        if (activeButton && activeContent) {
+            activeButton.classList.add('active');
+            activeContent.style.display = 'block';
+        }
+    }
 
 
-                                            document.addEventListener('DOMContentLoaded', () => {
-                                                // --- Initial Data Load ---
-                                                fetchAndRankData();
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Initial Data Load ---
+        fetchAndRankData();
 
-                                                // Add listeners to tabs
-                                                document.querySelectorAll('.tab-btn').forEach(button => {
-                                                    button.addEventListener('click', () => {
-                                                        const targetTab = button.getAttribute('data-tab');
-                                                        switchTab(targetTab);
-                                                    });
-                                                });
-                                            });
-                                        </script>
-                                        </body>
-                                        </html>
+        // Add listeners to tabs
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.getAttribute('data-tab');
+                switchTab(targetTab);
+            });
+        });
+    });
+</script>
+</body>
+</html>

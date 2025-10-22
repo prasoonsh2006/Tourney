@@ -18,14 +18,14 @@
         }
 
         :root {
-            --color-black: #1A1A15;
+            --color-black: #ffffff;
             --color-dark-grey: #121212;
             --color-mid-grey: #2a2a2a;
-            --color-light-grey: #e0e0e0;
+            --color-light-grey: #ffffff;
             --color-white: #ffffff;
             /* --- UPDATED ACCENT COLORS: Subdued Metallic Silver --- */
             --color-metallic-silver: #bbbbbb;
-            --color-subdued-blue: #a30000; /* Keeping a subtle blue/cyan for secondary highlight */
+            --color-subdued-blue: rgb(0, 0, 0); /* Keeping a subtle blue/cyan for secondary highlight */
             /* ----------------------------- */
         }
 
@@ -36,12 +36,27 @@
             min-height: 100vh;
 
             /* Background Image with Dark Overlay */
-            background-image: url('images/Test.jpg'); /* Futuristic cityscape placeholder */
-            background-color: var(--color-dark-grey); /* Fallback color */
+            background-image: url('images/carbg3.jpg');
+            background-color: var(--color-dark-grey);
             background-size: cover;
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-position: center center;
+
+            position: relative;
+        }
+
+        /* --- DARK OVERLAY --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+            pointer-events: none;
         }
 
         main {
@@ -64,34 +79,94 @@
 
         /* -------------------- LOGO -------------------- */
         .logo {
-            position: absolute;
-            top: 20px;
+            position: fixed;
+            /* Adjusted top for better visual alignment with broader nav */
+            top: 23px;
             left: 40px;
-            z-index: 10;
+            z-index: 100;
             font-family: "Kaushan Script", sans-serif;
             font-weight: bolder;
             font-size: 24px;
             color: #e4e3d3;
             text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        /* Logo color when scrolled: Remains light for dark navbar */
+        .logo.scrolled {
+            color: #e4e3d3;
+            text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
         }
 
-        /* -------------------- HAMBURGER NAV -------------------- */
+        /* -------------------- HAMBURGER NAV - Default Transparent State -------------------- */
         nav {
-            position: absolute;
-            top: 12px;
-            right: 10px;
+            position: fixed;
+            top: 0;
+            right: 0;
             width: 100%;
-            z-index: 20;
+            z-index: 99;
+
+            /* KEY ADDITIONS FOR VERTICAL CENTERING */
+            display: flex;
+            align-items: center;
+
+            /* INITIAL TRANSPARENT STATE */
+            background-color: transparent;
+            backdrop-filter: none;
+            /* Added padding to transition for smooth height change */
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
+
+        /* SCROLLED STATE: Dark, Smoky Translucent Effect, broader */
+        nav.scrolled {
+            background-color: rgba(18, 18, 18, 0.85); /* Dark-grey/Black with 85% opacity */
+            backdrop-filter: blur(4px);
+            border-bottom: none;
+
+            padding-top: 18px; /* Increased for broader effect */
+            padding-bottom: 18px; /* Increased for broader effect */
+        }
+
+        /* Menu Link Color (Default & Scrolled - Light) */
+        .menu li a {
+            color: #fff; /* Default link color */
+        }
+        nav.scrolled .menu li a { /* Ensure links stay white on dark scrolled background */
+            color: #fff !important;
+        }
+
+        /* Change hover effect for links on dark background */
+        .menu li a:hover,
+        nav.scrolled .menu li a:hover {
+            color: var(--color-metallic-silver) !important; /* Metallic silver hover */
+        }
+        .menu li a::after,
+        nav.scrolled .menu li a::after {
+            background-color: var(--color-metallic-silver) !important; /* Metallic silver underline */
+        }
+
+        /* Hamburger/close icon color (Default & Scrolled - Light) */
+        .open-menu,
+        .close-menu {
+            color: #fff; /* Default icon color */
+        }
+        nav.scrolled .open-menu,
+        nav.scrolled .close-menu {
+            color: #fff !important;
+        }
+
 
         .nav-bar {
             width: 100%;
+            height: 100%; /* Important for vertical centering with flex on nav */
             display: flex;
             justify-content: flex-end;
             align-items: center;
             list-style: none;
             position: relative;
-            padding: 12px 20px;
+            padding: 0 20px;
             margin: 0;
         }
 
@@ -106,7 +181,6 @@
         .menu li a {
             display: inline-block;
             text-decoration: none;
-            color: #fff;
             text-align: center;
             transition: color 0.3s ease-in-out, 0.15s ease-in-out;
             position: relative;
@@ -147,7 +221,7 @@
         }
 
         .open-menu {
-            top: 20px;
+            top: 8px;
             right: 20px;
         }
 
@@ -160,48 +234,29 @@
             display: none;
         }
 
-        /* -------------------- SOCIAL ICONS -------------------- */
-        .social {
-            position: absolute;
-            bottom: 70px;
-            left: 40px;
-            z-index: 10;
-            font-size: 25px;
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .social .bar {
-            width: 1px;
-            height: 350px;
-            background: #fff;
-            margin-bottom: 60px;
-        }
-
-        .social .fa-discord a:hover {
-            color: var(--color-subdued-blue);
-            transform: rotate(-90deg) scale(1.2);
-        }
-
-        .social .fa-youtube a:hover {
-            color: var(--color-subdued-blue);
-            transform: rotate(-90deg) scale(1.2);
-        }
-
-        .social a {
-            color: #fff;
-            transform: rotate(-90deg);
-            padding: 0;
-            transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
-        }
-
-        /* -------------------- MOBILE MEDIA QUERY (NAV) -------------------- */
+        /* -------------------- MOBILE MEDIA QUERY -------------------- */
         @media(max-width: 950px) {
+            /* Ensure logo is correctly positioned relative to the smaller nav */
+            .logo {
+                left: 20px; /* Adjust logo position for smaller screens */
+                top: 15px;
+                font-size: 20px;
+            }
+            /* Ensure the default nav padding for mobile is consistent/smaller than scrolled */
+            nav {
+                padding-top: 10px; /* Base smaller padding for mobile */
+                padding-bottom: 10px; /* Base smaller padding for mobile */
+            }
+            /* KEY MOBILE SCROLL CHANGE: Make the scrolled nav broader than default mobile nav */
+            nav.scrolled {
+                padding-top: 18px; /* Making it noticeably broader on scroll for mobile */
+                padding-bottom: 18px; /* Making it noticeably broader on scroll for mobile */
+                /* Ensure background/filter is applied */
+                height: 60px;
+                background-color: rgba(18, 18, 18, 0.85);
+                backdrop-filter: blur(4px);
+            }
+
             .menu {
                 flex-direction: column;
                 align-items: center;
@@ -231,6 +286,17 @@
                 display: block;
             }
 
+            /* FIX: Mobile menu icon position adjustment */
+            .open-menu {
+                top: 8px; /* Default position */
+                right: 20px;
+                transition: top 0.4s ease;
+            }
+
+            nav.scrolled .open-menu {
+                top: 0; /* Adjusted position when scrolled */
+            }
+
             .close-menu {
                 position: absolute;
                 top: 20px;
@@ -240,14 +306,11 @@
             #check:checked~.menu {
                 right: 0;
             }
-            .social {
-                display: none;
-            }
         }
 
         /* -------------------- CREWS SECTION -------------------- */
         #crews {
-            padding: 120px 20px 80px; /* Increased top padding to clear nav */
+            padding: 120px 20px 80px; /* Increased top padding to clear nav and logo/social bar */
             min-height: calc(100vh);
             background-color: rgba(13, 13, 13, 0.1);
         }
@@ -281,6 +344,15 @@
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
             padding: 20px 0;
+        }
+
+        /* Placeholder for loading state */
+        .crew-grid .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--color-metallic-silver);
+            padding: 50px;
         }
 
         /* 3D Flip Card Container */
@@ -371,6 +443,12 @@
             font-style: italic;
         }
 
+        .card-front .specialty {
+            /* New style for the specialty text from the sheet */
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
         /* Back specific styles */
         .card-back {
             background: linear-gradient(135deg, #111111 0%, #444444 100%);
@@ -447,7 +525,7 @@
         .crew-card:hover .card-back li:nth-child(5) { transition-delay: 0.6s; }
         .crew-card:hover .card-back li:nth-child(6) { transition-delay: 0.65s; }
 
-        /* -------------------- FOOTER STYLES (NEW) -------------------- */
+        /* -------------------- FOOTER STYLES -------------------- */
         .site-footer {
             background-color: var(--color-dark-grey);
             color: var(--color-light-grey);
@@ -527,31 +605,7 @@
             position: relative;
         }
 
-        /* 🏁 ANIMATED EMOJI STYLES 🏁 */
-        .animated-flag {
-            position: absolute;
-            font-size: 1.5rem;
-            top: 50%;
-            left: 5%;
-            transform: translateY(-50%);
-            animation: flagMove 8s infinite alternate ease-in-out;
-            display: inline-block;
-        }
-
-        @keyframes flagMove {
-            0% { left: 5%; }
-            100% { left: 90%; }
-        }
-
-        /* -------------------- RESPONSIVENESS (FOOTER) -------------------- */
-        @media(max-width: 480px) {
-            .crews-container h1 {
-                font-size: 2.5rem;
-            }
-            .crew-grid {
-                grid-template-columns: 1fr;
-            }
-            /* Mobile Footer Adjustments */
+        @media (max-width: 600px) {
             .footer-content {
                 flex-direction: column;
                 align-items: center;
@@ -562,19 +616,34 @@
                 margin-bottom: 20px;
                 text-align: center;
             }
-            .animated-flag {
-                font-size: 1.2rem;
-                left: 2%;
+            .footer-links ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            .footer-links li {
+                margin: 0;
+            }
+            .footer-links a {
+                margin-bottom: 0;
+                display: inline;
+            }
+            .footer-links a:hover {
+                padding-left: 0;
+            }
+            .footer-links h4, .footer-contact h4 {
+                text-align: center;
             }
         }
     </style>
 </head>
 
 <body>
-<nav>
+<nav id="main-nav">
     <ul class='nav-bar'>
         <a href="index.html">
-            <div class="logo">Souls Of Soulcity</div>
+            <div class="logo" id="main-logo">Souls Of Soulcity</div>
         </a>
 
         <input type='checkbox' id='check' />
@@ -591,131 +660,13 @@
     </ul>
 </nav>
 
-<div class="social">
-    <div class="bar"></div>
-    <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
-    <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
-    <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
-</div>
-
 <main>
     <section id="crews">
         <div class="crews-container">
             <h1>Soulcity's Elite Drivers</h1>
             <p class="subtitle">The dark heart of the city's racing scene. Hover over a crew to reveal their true soul.</p>
-            <div class="crew-grid">
-                <div class="crew-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h2>Midnight Runners</h2>
-                            <p class="owner">Owner: The Shadow</p>
-                            <p>Specialty: High-speed, long-distance highway sprints.</p>
-                        </div>
-                        <div class="card-back">
-                            <h3>Racer Roster</h3>
-                            <ul>
-                                <li>Viper</li>
-                                <li>Ghost</li>
-                                <li>Reaper</li>
-                                <li>Bullet</li>
-                                <li>Slick</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="crew-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h2>The Silver Pact</h2>
-                            <p class="owner">Owner: Jane "Jinx" Doe</p>
-                            <p>Specialty: Aggressive driving and tight circuit brawls.</p>
-                        </div>
-                        <div class="card-back">
-                            <h3>Racer Roster</h3>
-                            <ul>
-                                <li>Jinx (Leader)</li>
-                                <li>Axel</li>
-                                <li>Rico</li>
-                                <li>Blade</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="crew-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h2>Neon Drifters</h2>
-                            <p class="owner">Owner: Drift King</p>
-                            <p>Specialty: Precision drifting, mountain passes, and technical tracks.</p>
-                        </div>
-                        <div class="card-back">
-                            <h3>Racer Roster</h3>
-                            <ul>
-                                <li>Zero</li>
-                                <li>Apex</li>
-                                <li>Kira</li>
-                                <li>Zen</li>
-                                <li>Raze</li>
-                                <li>Slade</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="crew-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h2>Black Market Speed</h2>
-                            <p class="owner">Owner: Mr. Fixit</p>
-                            <p>Specialty: Custom-built hypercars and exotic imports.</p>
-                        </div>
-                        <div class="card-back">
-                            <h3>Racer Roster</h3>
-                            <ul>
-                                <li>Maverick</li>
-                                <li>Fuse</li>
-                                <li>Chrome</li>
-                                <li>Diesel</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="crew-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h2>The Regulators</h2>
-                            <p class="owner">Owner: Marcus "The Law" Cole</p>
-                            <p>Specialty: Calculated, clean racing with ruthless consistency.</p>
-                        </div>
-                        <div class="card-back">
-                            <h3>Racer Roster</h3>
-                            <ul>
-                                <li>The Law (Leader)</li>
-                                <li>Judge</li>
-                                <li>Executioner</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="crew-card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <h2>Open Slot</h2>
-                            <p class="owner">Owner: TBD</p>
-                            <p>Specialty: Waiting for the next challenger to rise from the depths of the city.</p>
-                        </div>
-                        <div class="card-back">
-                            <h3>Racer Roster</h3>
-                            <ul>
-                                <li>Recruiting...</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <div class="crew-grid" id="crew-grid">
+                <div class="loading">Loading crew data...</div>
             </div>
         </div>
     </section>
@@ -751,7 +702,10 @@
         </div>
     </div>
 </footer>
-<script>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<script id="crew-data-script">
     // Simple JS to close the mobile menu if needed
     document.querySelectorAll('.menu a').forEach(item => {
         item.addEventListener('click', () => {
@@ -761,6 +715,112 @@
             }
         });
     });
+
+    // ----------------------------------------------------
+    // DYNAMIC DATA LOADING FROM GOOGLE SHEET
+    // ----------------------------------------------------
+
+    // ⭐⭐ IMPORTANT: REPLACE THIS URL WITH YOUR PUBLISHED GOOGLE SHEET CSV LINK ⭐⭐
+    // The sheet must have columns: Crew Name, Owner, Specialty, Racer 1, Racer 2, Racer 3, ...
+    const CREW_DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSIuui-HVDxX_XP9KsR2Tp1tRD8GGXLKyReLCin1DQPLsalXjtZV_5Wa0_Sy3W6tGDYs8SeSPksvVHK/pub?gid=868866381&single=true&output=csv'; // Example URL
+
+    /**
+     * Parses the CSV data into a structured array of crew objects.
+     * @param {Array<Object>} data The raw array from PapaParse.
+     * @returns {Array<Object>} Structured data.
+     */
+    function structureCrewData(data) {
+        return data.map(row => {
+            const racers = [];
+
+            // DYNAMICALLY COLLECT RACERS: Loop through all headers.
+            // If a header starts with 'Racer' and the cell value is not empty, add it to the list.
+            Object.keys(row).forEach(key => {
+                if (key.startsWith('Racer') && row[key] && row[key].trim() !== '') {
+                    racers.push(row[key].trim());
+                }
+            });
+
+            return {
+                name: row['Crew Name'] || 'Open Slot',
+                owner: row['Owner'] || 'TBD',
+                specialty: row['Specialty'] || 'No defined strategy.',
+                racers: racers
+            };
+        }).filter(crew => crew.name !== 'Open Slot' || crew.racers.length > 0); // Filter out empty placeholder rows
+    }
+
+    /**
+     * Generates the HTML for a single crew card.
+     * @param {Object} crew The structured crew object.
+     * @returns {string} The HTML string for the crew card.
+     */
+    function createCrewCardHTML(crew) {
+        // Generate the roster list HTML based on the dynamic racers array
+        const rosterHTML = crew.racers.length > 0
+            ? crew.racers.map(racer => `<li>${racer}</li>`).join('')
+            : '<li>Recruiting...</li>';
+
+        return `
+            <div class="crew-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h2>${crew.name}</h2>
+                        <p class="owner">Owner: ${crew.owner}</p>
+                        <p class="specialty">Specialty: ${crew.specialty}</p>
+                    </div>
+                    <div class="card-back">
+                        <h3>Racer Roster</h3>
+                        <ul>
+                            ${rosterHTML}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Fetches, parses, and renders the crew data.
+     */
+    async function loadCrewData() {
+        const crewGrid = document.getElementById('crew-grid');
+        crewGrid.innerHTML = '<div class="loading">Loading crew data...</div>';
+
+        try {
+            const response = await fetch(CREW_DATA_URL);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const rawCSV = await response.text();
+
+            // PapaParse configuration for dynamic header matching
+            Papa.parse(rawCSV, {
+                header: true,
+                skipEmptyLines: true,
+                complete: (results) => {
+                    const structuredData = structureCrewData(results.data);
+
+                    if (structuredData.length === 0) {
+                        crewGrid.innerHTML = '<div class="loading">No crew data found in the sheet.</div>';
+                        return;
+                    }
+
+                    // Generate all card HTML and insert into the grid
+                    crewGrid.innerHTML = structuredData.map(createCrewCardHTML).join('');
+
+                    // Trigger the staggered animation after insertion
+                    staggerCards();
+                },
+                error: (error) => {
+                    throw new Error("CSV Parsing Error: " + error);
+                }
+            });
+
+        } catch (error) {
+            console.error("Failed to load crew data:", error);
+            crewGrid.innerHTML = `<div class="loading" style="color:red;">Error loading data: ${error.message}. Check your console and sheet URL.</div>`;
+        }
+    }
+
 
     /**
      * Staggers the card reveal animation on page load.
@@ -780,9 +840,31 @@
         });
     }
 
+    // ----------------------------------------------------
+    // JAVASCRIPT FOR SCROLL-ACTIVATED NAVBAR BACKGROUND
+    // ----------------------------------------------------
     document.addEventListener('DOMContentLoaded', () => {
-        // Start the staggered animation once the DOM is ready
-        staggerCards();
+        // 1. Load the crew data and render cards
+        loadCrewData();
+
+        // 2. Navbar Scroll Handler
+        const nav = document.getElementById('main-nav');
+        const logo = document.getElementById('main-logo');
+        const scrollThreshold = 50; // The number of pixels to scroll before changing the background
+
+        const changeNavBackground = () => {
+            if (window.scrollY >= scrollThreshold) {
+                nav.classList.add('scrolled');
+                logo.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+                logo.classList.remove('scrolled');
+            }
+        };
+
+        // Run on page load and add the scroll event listener
+        changeNavBackground();
+        window.addEventListener('scroll', changeNavBackground);
     });
 </script>
 </body>

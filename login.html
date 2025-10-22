@@ -1,61 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>Auction Team Login</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Speed Auction Login</title>
+
+    <!-- External Assets from Souls Of Soulcity Theme -->
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+
+    <!-- Tailwind CSS for utility classes in the login form -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        /* General Setup - Enhanced Grey Theme */
-        :root {
-            /* Keep login colors for the card/form */
-            --color-background: #0d1117;
-            --color-card-bg: #1e242d;
-            --color-border: #404a56;
-            --color-text-main: #e3e8ef;
-            --color-text-secondary: #a0a8b3;
-            --color-brand: #c0c0c0;
-            --color-accent: #697a8a;
-            --color-success-base: #4e5a6b;
-            --color-success-hover: #607080;
-            --color-error: #e74c3c;
-            --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.7);
-
-            /* --- NEW: About Page Colors for Nav/Theme Consistency --- */
-            --color-dark-grey: #121212;
-            --color-metallic-silver: #bbbbbb;
-            --color-subdued-blue: #a30000; /* Maroon/Red accent */
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            /* Use the linear gradient fallback AND the image path */
-            background: linear-gradient(135deg, #0d1117 0%, #151a21 100%);
-            color: var(--color-text-main);
-            font-family: 'Poppins', sans-serif;
+        /* -------------------- BASE STYLES (From About Page) -------------------- */
+        * {
             margin: 0;
-            transition: background-color 0.5s ease;
-            padding-top: 100px;
+            padding: 0;
             box-sizing: border-box;
+        }
 
-            /* ABOUT PAGE BACKGROUND STYLES */
-            background-image: url('images/Test.jpg');
-            background-color: var(--color-dark-grey); /* Fallback color */
+        :root {
+            --color-black: #ffffff;
+            --color-dark-grey: #121212;
+            --color-mid-grey: #2a2a2a;
+            --color-light-grey: #ffffff;
+            --color-white: #ffffff;
+            --color-metallic-silver: #bbbbbb;
+            --color-subdued-blue: rgb(0, 0, 0);
+        }
+
+        body {
+            width: 100vw;
+            font-family: "Poppins", sans-serif;
+            color: var(--color-light-grey);
+            min-height: 100vh;
+
+            /* Background Image with Dark Overlay (From Login Page) */
+            background-image: url('images/carbg3.jpg');
+            background-color: var(--color-dark-grey);
             background-size: cover;
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-position: center center;
+            overflow-x: hidden;
         }
 
-        /* --- LOGO STYLES (MATCHING ABOUT PAGE) --- */
+        /* --- DARK OVERLAY --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* The main wrapper is now just a container for fixed elements and the centered content */
+        main {
+            width: 100%;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            color: var(--color-white);
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--color-light-grey);
+            transition: color 0.3s;
+        }
+
+        /* -------------------- LOGO -------------------- */
         .logo {
             position: absolute;
-            top: 20px; /* Adjusted to match About page */
-            left: 40px; /* Adjusted to match About page */
+            top: 20px;
+            left: 40px;
             z-index: 10;
             font-family: "Kaushan Script", sans-serif;
             font-weight: bolder;
@@ -64,27 +92,24 @@
             text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
         }
 
-        /* -------------------- HAMBURGER NAV (MATCHING ABOUT PAGE) -------------------- */
+        /* -------------------- HAMBURGER NAV -------------------- */
         nav {
-            position: absolute; /* Changed to absolute to match About page */
+            position: absolute;
             top: 12px;
-            right: -70px;
+            right: 10px;
             width: 100%;
             z-index: 20;
-            /* Remove background to make it transparent over the background image */
-            background-color: transparent;
-            box-shadow: none;
         }
 
         .nav-bar {
-            max-width: 1400px;
-            margin: 0 auto;
+            width: 100%;
             display: flex;
             justify-content: flex-end;
             align-items: center;
             list-style: none;
             position: relative;
             padding: 12px 20px;
+            margin: 0;
         }
 
         .menu {
@@ -100,7 +125,6 @@
             text-decoration: none;
             color: #fff;
             text-align: center;
-            /* Updated transition/padding to match About page */
             transition: color 0.3s ease-in-out, 0.15s ease-in-out;
             position: relative;
             text-transform: uppercase;
@@ -108,7 +132,7 @@
         }
 
         .menu li a:hover {
-            color: var(--color-metallic-silver); /* Metallic silver hover text */
+            color: var(--color-metallic-silver);
         }
 
         .menu li a::after {
@@ -124,7 +148,7 @@
 
         .menu li a:hover:after {
             width: 100%;
-            background-color: var(--color-subdued-blue); /* Maroon/Red underline glow */
+            background-color: var(--color-subdued-blue);
             box-shadow: 0 0 5px var(--color-subdued-blue);
         }
 
@@ -151,9 +175,9 @@
             display: none;
         }
 
-        /* -------------------- SOCIAL ICONS (Sidebar - MATCHING ABOUT PAGE) -------------------- */
+        /* -------------------- SOCIAL ICONS -------------------- */
         .social {
-            position: absolute; /* Changed to absolute to match About page */
+            position: absolute;
             bottom: 70px;
             left: 40px;
             z-index: 10;
@@ -174,25 +198,37 @@
             margin-bottom: 60px;
         }
 
+        .social a:hover {
+            color: var(--color-subdued-blue);
+            transform: rotate(-90deg) scale(1.2);
+        }
+
         .social a {
             color: #fff;
             transform: rotate(-90deg);
             padding: 0;
             transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
         }
-        .social a:hover {
-            color: var(--color-subdued-blue); /* Maroon/Red hover color */
-            transform: rotate(-90deg) scale(1.1);
+
+        /* -------------------- LOGIN CONTENT CENTERING -------------------- */
+        .login-page-content {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            padding-top: 100px; /* Space for the fixed header */
+            padding-bottom: 100px; /* Space for the footer */
         }
 
-
+        /* -------------------- MOBILE MEDIA QUERY -------------------- */
         @media(max-width: 950px) {
-            .logo { left: 20px; }
             .menu {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                width: 80%; /* Adjusted width to match About page */
+                width: 80%;
                 height: 100vh;
                 position: fixed;
                 top: 0;
@@ -204,12 +240,12 @@
 
             .menu li {
                 margin-top: 40px;
-                padding-left: 0; /* Added to match About page */
+                padding-left: 0;
             }
 
             .menu li a {
                 padding: 10px;
-                font-size: 1.5rem; /* Added to match About page */
+                font-size: 1.5rem;
             }
 
             .open-menu,
@@ -220,158 +256,329 @@
             .close-menu {
                 position: absolute;
                 top: 20px;
-                right: 30px; /* Adjusted to match About page */
+                right: 30px;
             }
-
 
             #check:checked~.menu {
                 right: 0;
             }
             .social {
-                display: none; /* Hide sidebar on small screens */
+                display: none;
             }
         }
-        /* -------------------- END NAVBAR & SIDEBAR STYLING -------------------- */
+
+        /* -------------------- LOGIN BOX STYLES (Glassmorphism applied here) -------------------- */
+
+        .login-box {
+            /* Glassmorphism Background: Highly transparent light color (frosted glass) */
+            background: rgba(255, 255, 255, 0.08); /* <--- This is the white (255, 255, 255) with 8% opacity (translucent) */
+
+            /* Essential blur effect (the "frost") */
+            backdrop-filter: blur(12px) saturate(150%);
+            -webkit-backdrop-filter: blur(12px) saturate(150%);
+
+            padding: 40px;
+            border-radius: 1.5rem;
+
+            /* Subtle border to define the 'glass' edge */
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            /* New, softer shadow */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            /* ... other styles ... */
+        }
 
 
-        /* Login Container Styling */
-        .login-container {
-            background: var(--color-card-bg);
-            padding: 45px;
-            border-radius: 16px;
-            box-shadow: var(--shadow-dark);
-            width: 90%;
-            max-width: 400px;
-            border: 1px solid var(--color-border);
-            transition: transform 0.4s ease-in-out, box-shadow 0.4s ease;
+        /* IMPORTANT: Removing the solid black inner layer to let the glass effect show */
+        /* .login-box::after was removed/commented out to allow the backdrop-filter to be visible */
+
+
+        /* --- INPUT FIELD STYLES WITH ANIMATION --- */
+        .input-container {
             position: relative;
-            z-index: 5; /* Ensure login box sits above background but below nav */
-        }
-        .login-container:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-        }
-
-        h1 {
-            color: var(--color-brand);
-            text-align: center;
-            margin-bottom: 35px;
-            font-size: 2.2rem;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(187, 187, 187, 0.2);
+            margin-bottom: 20px;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 1px solid #4A5568;
         }
 
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 25px;
-        }
         input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 14px 15px;
-            border: 2px solid var(--color-border);
-            border-radius: 8px;
-            background: #2a3541;
-            color: var(--color-text-main);
-            box-sizing: border-box;
-            font-size: 1.05em;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        input::placeholder {
-            color: var(--color-text-secondary);
-        }
-        input[type="email"]:focus, input[type="password"]:focus {
-            border-color: var(--color-accent);
-            box-shadow: 0 0 0 3px rgba(105, 122, 138, 0.4);
-            outline: none;
-            background: #232c36;
-        }
-
-        /* Button Styling */
-        button {
-            width: 100%;
             padding: 16px;
+            border-radius: 0.75rem;
             border: none;
-            border-radius: 8px;
-            background: var(--color-success-base);
-            color: var(--color-text-main);
-            font-size: 1.1em;
-            font-weight: 600;
+            background: #1A202C;
+            color: #E2E8F0;
+            width: 100%;
+            box-sizing: border-box;
+            transition: box-shadow 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* The Animated Racing Data Tape */
+        .input-container::after {
+            content: '01101010100111010010101010101010101001110100101010101010';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.05);
+            font-family: monospace;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            animation: scrollData 20s linear infinite;
+            z-index: 1;
+        }
+
+        /* Input Focus Animation: White Glow */
+        input[type="email"]:focus, input[type="password"]:focus {
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+            outline: none;
+        }
+        .input-container:focus-within {
+            border-color: #FFFFFF;
+        }
+
+        /* Keyframe for the Data Tape Scroll */
+        @keyframes scrollData {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        /* --- END INPUT FIELD STYLES WITH ANIMATION --- */
+
+        /* Button and other styles remain the same */
+        .btn-primary {
+            background-color: #3e3d3d;
+            color: white;
+            padding: 14px;
+            border-radius: 0.75rem;
+            font-weight: 900;
             cursor: pointer;
-            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
-        button:hover {
-            background: var(--color-success-hover);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        .btn-primary:hover {
+            background-color: #E2E8F0;
+            color: #1A202C;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(58, 54, 54, 0.3);
         }
-        button:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        button:disabled {
-            background: #3a4049;
-            cursor: wait;
+        .btn-primary:active {
+            transform: scale(1);
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-        /* Message Display */
-        #error-message {
-            color: var(--color-error);
+        /* -------------------- FOOTER STYLES (From About Page) -------------------- */
+        .site-footer {
+            background-color: var(--color-dark-grey);
+            color: var(--color-light-grey);
+            padding: 40px 20px;
+            border-top: 1px solid rgba(187, 187, 187, 0.1);
+            position: relative;
+            z-index: 5;
             text-align: center;
-            margin-top: 25px;
-            font-size: 0.95em;
-            font-weight: 500;
         }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+        }
+
+        .footer-logo, .footer-links, .footer-contact {
+            padding: 0 10px;
+            flex: 1 1 30%;
+            min-width: 150px;
+            text-align: left;
+        }
+
+        .footer-logo h3 {
+            font-family: "Kaushan Script", sans-serif;
+            font-size: 1.8rem;
+            color: var(--color-metallic-silver);
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+
+        .footer-logo p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .footer-links h4, .footer-contact h4 {
+            color: var(--color-white);
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--color-metallic-silver);
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links a {
+            color: var(--color-light-grey);
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--color-subdued-blue);
+            padding-left: 5px;
+        }
+
+        .footer-contact p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-contact a {
+            color: var(--color-metallic-silver);
+        }
+
+        .footer-contact a:hover {
+            color: var(--color-subdued-blue);
+        }
+
+
+        /* Mobile adjustments for footer */
+        @media (max-width: 600px) {
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-logo, .footer-links, .footer-contact {
+                flex: 1 1 100%;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .footer-links ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            .footer-links a:hover {
+                padding-left: 0;
+            }
+            .footer-links h4, .footer-contact h4 {
+                text-align: center;
+            }
+        }
+
     </style>
 </head>
 <body>
+
+<!-- LOGO -->
 <a href="index.html">
     <div class="logo">Souls Of Soulcity</div>
 </a>
 
+<!-- NAVIGATION -->
 <nav>
     <ul class='nav-bar'>
         <input type='checkbox' id='check' />
         <span class="menu">
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html" >Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="crews.html">Crews</a></li>
             <li><a href="rankings.html">Rankings</a></li>
             <li><a href="Watch.html">Watch</a></li>
-            <li><a href="index.html">Login</a></li>
+            <li><a href="login.html">Login</a></li>
             <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
         </span>
         <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
     </ul>
 </nav>
 
+<!-- SOCIAL ICONS -->
 <div class="social">
     <div class="bar"></div>
-    <a href="https://www.youtube.com/headflicker" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-    <a href="https://discord.gg/phmcfrQ4" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
-    <a href="https://www.instagram.com/8bit_headflicker/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
+    <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
 </div>
 
+<!-- MAIN CONTENT WRAPPER: Used to center the login box -->
+<main class="login-page-content">
+    <div class="login-box">
+        <h1 class="text-4xl font-bold text-white mb-8 text-center tracking-widest text-shadow">
+            LOGIN
+        </h1>
+        <form id="login-form" class="space-y-4">
+            <div class="input-container">
+                <input type="email" id="user-email" placeholder="Email" required>
+            </div>
+            <div class="input-container">
+                <input type="password" id="user-password" placeholder="Password" required>
+            </div>
 
-<div class="login-container">
-    <h1>Team Login</h1>
-    <div class="form-group">
-        <input type="email" id="email" placeholder="Email" required aria-label="Email">
+            <button type="submit" class="btn-primary w-full">SIGN-IN</button>
+            <p id="login-error-message" class="text-red-400 text-sm text-center mt-4 hidden font-medium"></p>
+        </form>
     </div>
-    <div class="form-group">
-        <input type="password" id="password" placeholder="Password" required aria-label="Password">
-    </div>
-    <button id="login-btn">Login</button>
-    <p id="error-message"></p>
-</div>
+</main>
 
+<!-- FOOTER -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <h3>Souls Of Soulcity</h3>
+            <p>The premier underground racing league. <br>Draft. Race. Survive. Conquer.</p>
+        </div>
+
+        <div class="footer-links">
+            <h4>Quick Lanes</h4>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">Tournament Info</a></li>
+                <li><a href="crews.html">Crews & Teams</a></li>
+                <li><a href="rankings.html">Leaderboards</a></li>
+                <li><a href="Watch.html">Live Broadcast</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-contact">
+            <h4>Connect</h4>
+            <p>For inquiries and support, contact our pit crew:</p>
+            <p>Email: <a href="mailto:contact@soulsofsc.com">contact@soulsofsc.com</a></p>
+            <div style="margin-top: 15px; font-size: 1.5rem;">
+                <a href="https://www.youtube.com/headflicker" target="_blank" style="margin-right: 15px;"><i class="fab fa-youtube"></i></a>
+                <a href="https://discord.gg/phmcfrQ4" target="_blank" style="margin-right: 15px;"><i class="fab fa-discord"></i></a>
+                <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Firebase/Login Script -->
 <script type="module">
-    // --- Firebase v11 Imports ---
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-    // --- FIREBASE CONFIGURATION ---
+    // Note: In a real environment, __firebase_config and __initial_auth_token would be provided dynamically.
+    // We are keeping your original static config for Firebase imports here.
     const firebaseConfig = {
         apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0",
         authDomain: "souls-of-soulcity.firebaseapp.com",
@@ -380,86 +587,40 @@
         messagingSenderId: "402427120355",
         appId: "1:402427120355:web:f0fa030a0a9034198213d6"
     };
-
-    if (Object.keys(firebaseConfig).length === 0 || !firebaseConfig.apiKey) {
-        console.error("Firebase configuration is missing.");
-        document.getElementById('error-message').textContent = "System Error: Firebase configuration is incomplete.";
-    }
+    const AUTHORIZED_ADMIN_UIDS = ["8boxpeVzXUg299rHWXdZseORad92"];
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const loginForm = document.getElementById('login-form');
+    const loginErrorEl = document.getElementById('login-error-message');
 
-    // --- HARDCODED ADMIN UID LIST ---
-    const ADMIN_UID_LIST = [
-        "8boxpeVzXUg299rHWXdZseORad92",
-        "ANOTHER_ADMIN_UID_2",
-    ];
-    // ----------------------------------
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            const isAuthorizedAdmin = AUTHORIZED_ADMIN_UIDS.includes(user.uid);
+            // Changed from 'admin.html' to a generic 'dashboard.html' or similar
+            // for a better placeholder, but keeping the original logic flow.
+            window.location.href = isAuthorizedAdmin ? 'admin.html' : 'auction.html';
+        }
+    });
 
-    // --- DOM Elements ---
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const loginBtn = document.getElementById('login-btn');
-    const errorMessageEl = document.getElementById('error-message');
-
-    // --- Authentication Logic ---
-    const handleLogin = async () => {
-        const email = emailInput.value;
-        const password = passwordInput.value;
-        errorMessageEl.textContent = '';
-        loginBtn.disabled = true;
-        loginBtn.textContent = 'Authenticating...';
-
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        loginErrorEl.classList.add('hidden');
+        const email = document.getElementById('user-email').value;
+        const password = document.getElementById('user-password').value;
         try {
-            // 1. Sign In
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            // 2. Hardcoded Admin Check: Check if the user's UID is in the hardcoded list
-            if (ADMIN_UID_LIST.includes(user.uid)) {
-                // ADMIN: Redirect to secure dashboard
-                window.location.href = 'admin.html';
-            } else {
-                // STANDARD USER: Redirect to the standard auction page
-                window.location.href = 'auction.html';
-            }
-
+            await signInWithEmailAndPassword(auth, email, password);
         } catch (error) {
-            let msg = "Login failed. Check your credentials.";
-            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-                msg = "Invalid email or password.";
-            } else if (error.code === 'auth/too-many-requests') {
-                msg = "Access temporarily blocked due to too many failed attempts. Try again later.";
-            } else {
-                console.error("Login Error:", error);
+            let message = error.message;
+            if (message.includes('wrong-password') || message.includes('user-not-found')) {
+                message = "Invalid RACER ID or ACCESS KEY. Please try again.";
+            } else if (message.includes('too-many-requests')) {
+                message = "Access temporarily locked. Try again later.";
             }
-            errorMessageEl.textContent = msg;
-        } finally {
-            loginBtn.textContent = 'Login';
-            loginBtn.disabled = false;
-        }
-    };
-
-    // --- Event Listeners ---
-    loginBtn.addEventListener('click', handleLogin);
-
-    // Allow pressing Enter key to submit
-    passwordInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            handleLogin();
+            loginErrorEl.textContent = message;
+            loginErrorEl.classList.remove('hidden');
         }
     });
-
-    // Close mobile menu on link click
-    document.querySelectorAll('.menu a').forEach(item => {
-        item.addEventListener('click', () => {
-            const checkbox = document.getElementById('check');
-            if (checkbox.checked) {
-                checkbox.checked = false;
-            }
-        });
-    });
-
 </script>
 </body>
 </html>

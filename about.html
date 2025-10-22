@@ -19,14 +19,15 @@
         }
 
         :root {
-            --color-black: #1A1A15;
+            --color-black: #ffffff;
             --color-dark-grey: #121212;
             --color-mid-grey: #2a2a2a;
             --color-light-grey: #e0e0e0;
             --color-white: #ffffff;
             /* --- UPDATED ACCENT COLORS: Subdued Metallic Silver --- */
             --color-metallic-silver: #bbbbbb;
-            --color-subdued-blue: #a30000; /* Keeping a subtle blue/cyan for secondary highlight */
+            --color-subdued-blue: rgba(255, 255, 255, 0.07);
+            --color-dark-text: #1A1A1A;
             /* ----------------------------- */
         }
 
@@ -37,19 +38,36 @@
             min-height: 100vh;
 
             /* Background Image with Dark Overlay */
-            background-image: url('images/Test.jpg'); /* Futuristic cityscape placeholder */
-            background-color: var(--color-dark-grey); /* Fallback color */
+            background-image: url('images/carbg3.jpg');
+            background-color: var(--color-dark-grey);
             background-size: cover;
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-position: center center;
+
+            position: relative;
         }
+
+        /* --- DARK OVERLAY --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+            pointer-events: none;
+        }
+
 
         main {
             width: 100%;
             position: relative;
             overflow-x: hidden;
             min-height: 100vh;
+            z-index: 3;
         }
 
         h1, h2, h3 {
@@ -65,34 +83,94 @@
 
         /* -------------------- LOGO -------------------- */
         .logo {
-            position: absolute;
-            top: 20px;
+            position: fixed;
+            /* Adjusted top for better visual alignment with broader nav */
+            top: 23px;
             left: 40px;
-            z-index: 10;
+            z-index: 100;
             font-family: "Kaushan Script", sans-serif;
             font-weight: bolder;
             font-size: 24px;
             color: #e4e3d3;
             text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        /* Logo color when scrolled: Remains light for dark navbar */
+        .logo.scrolled {
+            color: #e4e3d3;
+            text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
         }
 
-        /* -------------------- HAMBURGER NAV -------------------- */
+        /* -------------------- HAMBURGER NAV - Default Transparent State -------------------- */
         nav {
-            position: absolute;
-            top: 12px;
-            right: 10px;
+            position: fixed;
+            top: 0;
+            right: 0;
             width: 100%;
-            z-index: 20;
+            z-index: 99;
+
+            /* KEY ADDITIONS FOR VERTICAL CENTERING */
+            display: flex;
+            align-items: center;
+
+            /* INITIAL TRANSPARENT STATE */
+            background-color: transparent;
+            backdrop-filter: none;
+            /* Added padding to transition for smooth height change */
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
+
+            padding-top: 15px;
+            padding-bottom: 15px;
         }
+
+        /* SCROLLED STATE: Dark, Smoky Translucent Effect, broader */
+        nav.scrolled {
+            background-color: rgba(18, 18, 18, 0.85); /* Dark-grey/Black with 85% opacity */
+            backdrop-filter: blur(4px);
+            border-bottom: none;
+
+            padding-top: 18px; /* Increased for broader effect */
+            padding-bottom: 18px; /* Increased for broader effect */
+        }
+
+        /* Menu Link Color (Default & Scrolled - Light) */
+        .menu li a {
+            color: #fff; /* Default link color */
+        }
+        nav.scrolled .menu li a { /* Ensure links stay white on dark scrolled background */
+            color: #fff !important;
+        }
+
+        /* Change hover effect for links on dark background */
+        .menu li a:hover,
+        nav.scrolled .menu li a:hover {
+            color: var(--color-metallic-silver) !important; /* Metallic silver hover */
+        }
+        .menu li a::after,
+        nav.scrolled .menu li a::after {
+            background-color: var(--color-metallic-silver) !important; /* Metallic silver underline */
+        }
+
+        /* Hamburger/close icon color (Default & Scrolled - Light) */
+        .open-menu,
+        .close-menu {
+            color: #fff; /* Default icon color */
+        }
+        nav.scrolled .open-menu,
+        nav.scrolled .close-menu {
+            color: #fff !important;
+        }
+
 
         .nav-bar {
             width: 100%;
+            height: 100%; /* Important for vertical centering with flex on nav */
             display: flex;
             justify-content: flex-end;
             align-items: center;
             list-style: none;
             position: relative;
-            padding: 12px 20px;
+            padding: 0 20px;
             margin: 0;
         }
 
@@ -107,7 +185,6 @@
         .menu li a {
             display: inline-block;
             text-decoration: none;
-            color: #fff;
             text-align: center;
             transition: color 0.3s ease-in-out, 0.15s ease-in-out;
             position: relative;
@@ -148,7 +225,7 @@
         }
 
         .open-menu {
-            top: 20px;
+            top: 8px;
             right: 20px;
         }
 
@@ -161,48 +238,29 @@
             display: none;
         }
 
-        /* -------------------- SOCIAL ICONS -------------------- */
-        .social {
-            position: absolute;
-            bottom: 70px;
-            left: 40px;
-            z-index: 10;
-            font-size: 25px;
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .social .bar {
-            width: 1px;
-            height: 350px;
-            background: #fff;
-            margin-bottom: 60px;
-        }
-
-        .social .fa-discord a:hover {
-            color: var(--color-subdued-blue);
-            transform: rotate(-90deg) scale(1.2);
-        }
-
-        .social .fa-youtube a:hover {
-            color: var(--color-subdued-blue);
-            transform: rotate(-90deg) scale(1.2);
-        }
-
-        .social a {
-            color: #fff;
-            transform: rotate(-90deg);
-            padding: 0;
-            transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
-        }
-
         /* -------------------- MOBILE MEDIA QUERY -------------------- */
         @media(max-width: 950px) {
+            /* Ensure logo is correctly positioned relative to the smaller nav */
+            .logo {
+                left: 20px; /* Adjust logo position for smaller screens */
+                top: 15px;
+                font-size: 20px;
+            }
+            /* Ensure the default nav padding for mobile is consistent/smaller than scrolled */
+            nav {
+                padding-top: 10px; /* Base smaller padding for mobile */
+                padding-bottom: 10px; /* Base smaller padding for mobile */
+            }
+            /* KEY MOBILE SCROLL CHANGE: Make the scrolled nav broader than default mobile nav */
+            nav.scrolled {
+                padding-top: 18px; /* Making it noticeably broader on scroll for mobile */
+                padding-bottom: 18px; /* Making it noticeably broader on scroll for mobile */
+                /* Ensure background/filter is applied */
+                height: 60px;
+                background-color: rgba(18, 18, 18, 0.85);
+                backdrop-filter: blur(4px);
+            }
+
             .menu {
                 flex-direction: column;
                 align-items: center;
@@ -232,6 +290,11 @@
                 display: block;
             }
 
+            .open-menu {
+                top: 0; /* Adjust position relative to new nav padding */
+                right: 20px;
+            }
+
             .close-menu {
                 position: absolute;
                 top: 20px;
@@ -241,18 +304,16 @@
             #check:checked~.menu {
                 right: 0;
             }
-            .social {
-                display: none;
-            }
         }
 
-        /* -------------------- ABOUT CONTENT STYLES -------------------- */
+        /* -------------------- ABOUT CONTENT STYLES - WITH CLEARANCE -------------------- */
         #about {
             padding: 80px 20px;
             min-height: calc(100vh - 60px);
             display: flex;
             flex-direction: column;
             align-items: center;
+            /* Added clearance for fixed header/nav */
             padding-top: 100px;
         }
 
@@ -266,8 +327,7 @@
             font-size: clamp(2.5rem, 5vw, 4rem);
             text-align: center;
             margin-bottom: 10px;
-            /* --- UPDATED: Subdued silver text shadow --- */
-            text-shadow: 0 0 5px rgba(187, 187, 187, 0.4);
+            text-shadow: 0 0 5px rgb(255, 255, 255);
         }
 
         .about-tournament .description {
@@ -286,35 +346,34 @@
         }
 
         .card {
-            background-color: rgba(42, 42, 42, 0.9);
+            background-color: rgba(255, 255, 255, 0.15); /* White translucent */
             backdrop-filter: blur(5px);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            /* Base border is subtle */
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            /* Transition for the spreading effect */
+            box-shadow: 0 10px 30px rgb(0, 0, 0);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: box-shadow 0.5s ease-out, border 0.5s ease-out, transform 0.3s;
             opacity: 0;
-            /* Removed 3D styles */
+            color: var(--color-black);
+        }
+
+        .card p, .card ul li {
+            color: var(--color-black);
         }
 
         .card:hover {
-            /* Spreading/Pulsing Effect: A soft, wider glow that spreads out */
             box-shadow:
-                    0 15px 40px rgba(0, 0, 0, 0.8), /* Stronger base shadow */
-                    0 0 25px rgba(187, 187, 187, 0.7); /* Spreading Silver Glow */
+                    0 15px 40px rgba(0, 0, 0, 0.5),
+                    0 0 25px rgba(255, 255, 255, 0.9);
 
-            /* Border transition */
-            border: 1px solid var(--color-metallic-silver);
-            /* Subtle lift for interaction */
+            border: 1px solid var(--color-white);
             transform: translateY(-5px);
         }
 
         .card h2 {
             font-size: 1.8rem;
             margin-top: 0;
-            /* --- UPDATED: Metallic Silver Border --- */
+            color: var(--color-black);
             border-bottom: 2px solid var(--color-metallic-silver);
             padding-bottom: 10px;
             margin-bottom: 20px;
@@ -337,13 +396,12 @@
             font-size: 1.5rem;
             line-height: 1.2;
             flex-shrink: 0;
-            /* --- UPDATED: Metallic Silver Icon --- */
-            color: var(--color-metallic-silver);
+            color: var(--color-black);
         }
 
         .tournament-format li strong {
             display: block;
-            color: var(--color-white);
+            color: var(--color-black);
             font-size: 1.1rem;
         }
 
@@ -358,6 +416,7 @@
             margin-bottom: 12px;
             font-size: 1rem;
             line-height: 1.4;
+            color: var(--color-black);
         }
 
         .silver-dot, .blue-dot {
@@ -368,9 +427,7 @@
             width: 8px;
             border-radius: 50%;
         }
-        /* --- UPDATED: Silver dot color --- */
-        .silver-dot { background-color: var(--color-metallic-silver); }
-        /* --- UPDATED: Subdued Blue dot color --- */
+        .silver-dot { background-color: var(--color-black); }
         .blue-dot { background-color: var(--color-subdued-blue); }
 
         /* Responsive Content Adjustments */
@@ -403,8 +460,8 @@
 
         .footer-logo, .footer-links, .footer-contact {
             padding: 0 10px;
-            flex: 1 1 30%; /* Allows sections to grow/shrink, minimum 30% width */
-            min-width: 150px; /* Minimum width for smaller screens */
+            flex: 1 1 30%;
+            min-width: 150px;
             text-align: left;
         }
 
@@ -477,7 +534,7 @@
                 text-align: center;
             }
             .footer-logo, .footer-links, .footer-contact {
-                flex: 1 1 100%; /* Full width on small screens */
+                flex: 1 1 100%;
                 margin-bottom: 20px;
                 text-align: center;
             }
@@ -495,22 +552,21 @@
                 display: inline;
             }
             .footer-links a:hover {
-                padding-left: 0; /* Remove hover shift on mobile links */
+                padding-left: 0;
             }
             .footer-links h4, .footer-contact h4 {
                 text-align: center;
             }
         }
-
     </style>
 </head>
 
 <body>
 <a href="#swiper">
-    <div class="logo">Souls Of Soulcity</div>
+    <div class="logo" id="main-logo">Souls Of Soulcity</div>
 </a>
 
-<nav>
+<nav id="main-nav">
     <ul class='nav-bar'>
         <input type='checkbox' id='check' />
         <span class="menu">
@@ -526,13 +582,6 @@
     </ul>
 </nav>
 
-<div class="social">
-    <div class="bar"></div>
-    <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
-    <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
-    <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
-</div>
-
 <main>
     <section id="about" class="page">
         <div class="container about-tournament">
@@ -546,8 +595,8 @@
                     <p>Souls of SoulCity isn’t just a race — it’s a battle of speed, skill, and survival. From auction to finals, every turn decides destiny.</p>
                     <ul class="tournament-format">
                         <li><span class="icon">🎯</span><div><strong>Auction Draft:</strong> Each team builds a squad of 6 racers.</div></li>
-                        <li><span class="icon">🚦</span><div><strong>Phase 1 – Qualifiers:</strong> All racers run 2 races each. Top teams advance, bottom eliminated, middle teams move to Knockouts.</div></li>
-                        <li><span class="icon">🔥</span><div><strong>Phase 2 – Knockouts:</strong> Surviving teams cut to 4 racers. Each runs 2 races. Top teams move forward, lowest eliminated.</div></li>
+                        <li><span class="icon">🚦</span><div><strong>Phase 1 – Qualifiers:</strong> All racers run 3 races each. Top teams advance, bottom eliminated, middle teams move to Knockouts.</div></li>
+                        <li><span class="icon">🔥</span><div><strong>Phase 2 – Knockouts:</strong> Surviving teams cut to 4 racers. Each runs 3 races. Top teams move forward, lowest eliminated.</div></li>
                         <li><span class="icon">🏁</span><div><strong>Grand Finals – Bracket Battles:</strong> Finalist teams face off in bracket-style team races until one Champion remains.</div></li>
                     </ul>
                 </div>
@@ -576,12 +625,12 @@
 
                     <ul>
                         <li><span class="silver-dot"></span> Prize Pool Contribution:60% of all SVC bidded on racers during the Auction is allocated directly to the final Prize Pool.</li>
-                        <li><span class="silver-dot"></span> Fund Boost: Any additional SVC recharge amounts are also fully added to the Prize Pool, maximizing total winnings.</li>
+                        <li><span class="silver-dot"></span> Fund Boost: Any additional SVC recharge amounts are also fully added to the final Prize Pool, maximizing total winnings.</li>
                         <li><span class="silver-dot"></span> Racer Earnings: The remaining 40% of the bidded SVC is paid directly to the respective racer.</li>
                     </ul>
 
-                    <p style="margin-top: 20px; font-size: 1.1rem; color: var(--color-white); font-weight: bold;">In addition to the SVC pool, winners receive:</p>
-                    <p style="margin-top: 20px; font-size: 0.9rem; color: var(--color-subdued-blue);"> *The final SVC prize breakdown (e.g., how the pool is split among 1st, 2nd, and 3rd place) and terms are detailed by management.*</p>
+                    <p style="margin-top: 20px; font-size: 1.1rem; color: var(--color-black); font-weight: bold;">In addition to the SVC pool, winners receive:</p>
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: var(--color-black);"> *The final SVC prize breakdown (e.g., how the pool is split among 1st, 2nd, and 3rd place) and terms are detailed by management.*</p>
                 </div>
             </div>
         </div>
@@ -616,10 +665,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="footer-bottom">
-            &copy; 2025 Souls Of Soulcity. All rights reserved. | Unauthorized Racing Prohibited.
-        </div>
     </footer>
 </main>
 
@@ -646,7 +691,7 @@
                 ease: "power2.out"
             }, "-=0.4") // Start description slightly before header ends
 
-            // 2. Staggered card animation (Removed call to setupCardTiltListeners)
+            // 2. Staggered card animation
             .to(".card", {
                 autoAlpha: 1,
                 y: 0,
@@ -655,7 +700,31 @@
                 ease: "back.out(1.7)"
             }, "-=0.2"); // Start card animation slightly before description finishes
     };
-    // Removed the setupCardTiltListeners function
+
+    // ----------------------------------------------------
+    // JAVASCRIPT FOR SCROLL-ACTIVATED NAVBAR BACKGROUND
+    // ----------------------------------------------------
+    document.addEventListener('DOMContentLoaded', () => {
+        const nav = document.getElementById('main-nav');
+        const logo = document.getElementById('main-logo');
+        const scrollThreshold = 50; // The number of pixels to scroll before changing the background
+
+        const changeNavBackground = () => {
+            if (window.scrollY >= scrollThreshold) {
+                nav.classList.add('scrolled');
+                logo.classList.add('scrolled'); // ADD CLASS TO LOGO
+            } else {
+                nav.classList.remove('scrolled');
+                logo.classList.remove('scrolled'); // REMOVE CLASS FROM LOGO
+            }
+        };
+
+        // Run on page load in case the user reloads while scrolled
+        changeNavBackground();
+
+        // Add the scroll event listener
+        window.addEventListener('scroll', changeNavBackground);
+    });
 </script>
 </body>
 </html>
