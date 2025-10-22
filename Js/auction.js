@@ -1,237 +1,323 @@
-// auction.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, doc, onSnapshot, collection, runTransaction, Timestamp, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-// DOM Elements
-const teamNameEl = document.getElementById('team-name');
-const ownerNameEl = document.getElementById('owner-name');
-const balanceEl = document.getElementById('remaining-balance');
-const racersWonEl = document.getElementById('racers-won');
-const logoutBtn = document.getElementById('logout-btn');
+// --- CONFIGURATION ---
 
-const racerNameEl = document.getElementById('racer-name');
-const currentBidEl = document.getElementById('current-bid');
-const lastBidderEl = document.getElementById('last-bidder');
-const auctionTimerEl = document.getElementById('auction-timer');
-const bidInput = document.getElementById('bid-input');
-const placeBidBtn = document.getElementById('place-bid-btn');
-const bidMessageEl = document.getElementById('bid-message');
-const rosterListEl = document.getElementById('roster-list');
+// 🚨 REPLACE WITH YOUR ACTUAL FIREBASE CONFIG
+const firebaseConfig = {
+    apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0", // Your actual key
+    authDomain: "souls-of-soulcity.firebaseapp.com",
+    projectId: "souls-of-soulcity",
+    storageBucket: "souls-of-soulcity.firebasestorage.app",
+    messagingSenderId: "402427120355",
+    appId: "1:402427120355:web:f0fa030a0a9034198213d6"
+};
 
-// Recharge Modal Elements
-const rechargeBtn = document.getElementById('recharge-btn');
-const rechargeModal = document.getElementById('recharge-modal');
-const closeModalBtn = rechargeModal.querySelector('.close-btn');
-const svcInput = document.getElementById('svc-input');
-const usdEstimateEl = document.getElementById('usd-estimate');
-const paymentNoteInput = document.getElementById('payment-note');
-const submitRechargeBtn = document.getElementById('submit-recharge-btn');
-
-let currentUserId = null;
-let currentBalance = 0;
-let currentMinBid = 0;
-let countdownInterval;
+// 🚨 REPLACE WITH YOUR ADMIN USER'S UID
+const AUTHORIZED_ADMIN_UIDS = ["8boxpeVzXUg299rHWXdZseORad92"];
 
 // --- INITIALIZATION ---
-auth.onAuthStateChanged(user => {
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// --- DOM ELEMENTS ---
+const logoutBtn = document.getElementById('logout-btn');
+const placeBidBtn = document.getElementById('place-bid-btn');
+const bidInput = document.getElementById('bid-input');
+const bidMessageEl = document.getElementById('bid-message');
+const auctionTimerEl = document.getElementById('auction-timer');
+// const teamNameEl = document.getElementById('team-name'); // ⚠️ Element with this ID is missing in provided HTML
+const ownerNameEl = document.getElementById('owner-name');
+const remainingBalanceEl = document.getElementById('remaining-balance');
+const rechargeBtn = document.getElementById('recharge-btn');
+const currentRacerEl = document.getElementById('current-racer-name');
+const currentBidEl = document.getElementById('current-bid');
+const lastBidderEl = document.getElementById('last-bidder');
+const rosterListEl = document.getElementById('roster-list');
+const racersWonEl = document.getElementById('racers-won');
+
+// --- STATE VARIABLES ---
+let currentUserId = null;
+let currentTeamName = "Loading...";
+let currentBalance = 0;
+let currentMinBid = 0;
+let racersWonCount = 0; // 👈 NEW STATE VARIABLE
+let countdownInterval;
+
+// --- AUTHENTICATION, SECURITY, AND REDIRECTION ---
+onAuthStateChanged(auth, user => {
     if (user) {
         currentUserId = user.uid;
+        const isAuthorizedAdmin = AUTHORIZED_ADMIN_UIDS.includes(user.uid);
+
+        if (isAuthorizedAdmin) {
+            window.location.href = 'admin.html';
+            return;
+        }
+
         setupTeamListener(user.uid);
         setupAuctionFeed();
-        setupRosterListener(user.uid);
+
     } else {
         window.location.href = 'login.html';
     }
 });
 
 logoutBtn.addEventListener('click', () => {
-    auth.signOut().then(() => {
+    signOut(auth).then(() => {
         window.location.href = 'login.html';
     });
 });
 
-// --- TEAM DATA LISTENER ---
-function setupTeamListener(uid) {
-    db.collection("teams").doc(uid).onSnapshot(doc => {
-        if (doc.exists) {
-            const data = doc.data();
-            teamNameEl.textContent = data.teamName;
-            ownerNameEl.textContent = data.ownerName;
-            currentBalance = data.balance;
-            balanceEl.textContent = `${currentBalance.toLocaleString()} SVC`;
-            racersWonEl.textContent = `${data.racersWon || 0}/6`;
+// --- LIVE DATA LISTENERS ---
 
-            // SECURITY CHECK: If user is admin, redirect them
-            if (data.isAdmin === true) {
-                window.location.href = 'admin.html';
+function setupTeamListener(userId) {
+    onSnapshot(doc(db, "teams", userId), docSnapshot => {
+        if (!docSnapshot.exists()) {
+            // Updated placeholders to reflect failure
+            // teamNameEl.textContent = "Unregistered Team"; // ⚠️ Element missing in HTML
+            remainingBalanceEl.textContent = "0 SVC";
+            ownerNameEl.textContent = "N/A";
+            rosterListEl.innerHTML = '<li class="p-3 rounded text-center text-sm font-medium roster-placeholder">No roster data found.</li>';
+            racersWonEl.textContent = "0/6";
+            console.error("Team document not found for UID:", userId);
+            return;
+        }
+
+        const teamData = docSnapshot.data();
+        currentBalance = teamData.balance || 0;
+        currentTeamName = teamData.teamName || 'N/A';
+
+        // Update Team Dashboard elements
+        // teamNameEl.textContent = currentTeamName; // ⚠️ Element missing in HTML
+        ownerNameEl.textContent = teamData.ownerName || 'N/A';
+        remainingBalanceEl.textContent = `${currentBalance.toLocaleString()} SVC`;
+
+        // 🎯 UPDATE NEW STATE VARIABLE and DOM
+        racersWonCount = (teamData.roster && teamData.roster.length) || 0;
+        racersWonEl.textContent = `${racersWonCount}/6`; // Assuming a max of 6 racers
+
+        // Update Roster
+        const rosterHtml = teamData.roster && teamData.roster.length > 0
+            ? teamData.roster.map(racer =>
+                // Using the specific class from the CSS to ensure visibility
+                `<li class="p-3 rounded text-sm font-medium roster-placeholder">${racer}</li>`
+            ).join('')
+            : '<li class="p-3 rounded text-center text-sm font-medium roster-placeholder">Roster is empty.</li>';
+        rosterListEl.innerHTML = rosterHtml;
+
+        // Disable bidding if roster is full, regardless of auction status
+        if (racersWonCount >= 6) {
+            placeBidBtn.disabled = true;
+            bidInput.disabled = true;
+            bidMessageEl.textContent = "Roster is full (6/6). You cannot bid on new racers.";
+        }
+    });
+}
+
+function setupAuctionFeed() {
+    onSnapshot(doc(db, "auctions", "currentRacer"), docSnapshot => {
+        if (!docSnapshot.exists()) return;
+
+        const data = docSnapshot.data();
+
+        currentRacerEl.textContent = data.racerName || 'Awaiting Setup...';
+        currentBidEl.textContent = `${data.currentBid ? data.currentBid.toLocaleString() : 0} SVC`;
+
+        // Ensure currentBid is a number for calculation
+        const currentBidValue = data.currentBid || 0;
+
+        // Min bid logic: 500 initial, 500 increase thereafter
+        currentMinBid = currentBidValue === 0
+            ? 500
+            : currentBidValue + 500;
+
+        bidInput.placeholder = `Min Bid: ${currentMinBid.toLocaleString()} SVC`;
+
+        lastBidderEl.textContent = data.lastBidderName
+            ? `${data.lastBidderName} (${data.currentBid ? data.currentBid.toLocaleString() : 0} SVC)`
+            : 'No Bids Yet';
+
+        // Update UI based on auction status AND roster status
+        if (data.status === 'Sold') {
+            bidMessageEl.textContent = `${data.lastSoldRacer} was SOLD! Waiting for next auction.`;
+            placeBidBtn.disabled = true;
+            bidInput.disabled = true;
+        } else {
+            // Re-enable/disable based on roster status and auction status
+            if (racersWonCount >= 6) {
+                // Keep disabled if roster is full
+                placeBidBtn.disabled = true;
+                bidInput.disabled = true;
+                bidMessageEl.textContent = "Roster is full (6/6). You cannot bid on new racers.";
+            } else {
+                bidMessageEl.textContent = '';
+                bidInput.disabled = false;
+                // Button state will be handled by startServerTimer for 'Live' auctions
             }
         }
+
+        startServerTimer(data.endTime, data.status);
     });
 }
 
-// --- LIVE AUCTION FEED LISTENER ---
-function setupAuctionFeed() {
-    db.collection("auctions").doc("currentRacer").onSnapshot(doc => {
-        if (doc.exists) {
-            const data = doc.data();
-            racerNameEl.textContent = data.name;
-            currentMinBid = data.currentBid + 1;
-            currentBidEl.textContent = `${data.currentBid.toLocaleString()} SVC`;
-            lastBidderEl.textContent = data.lastBidderName || "N/A (Base Price)";
-            bidInput.placeholder = `Minimum bid: ${currentMinBid.toLocaleString()} SVC`;
+// --- CORE BIDDING LOGIC (UPDATED FOR 60s RESET) ---
 
-            startServerTimer(data.timerEndsAt);
-        } else {
-            racerNameEl.textContent = "Auction Ended / Awaiting Setup";
-            currentBidEl.textContent = 'N/A';
-        }
-    });
-}
-
-// --- BIDDING LOGIC ---
 placeBidBtn.addEventListener('click', async () => {
+
+    // 🎯 INITIAL CHECK: Block bidding if roster is full
+    if (racersWonCount >= 6) {
+        bidMessageEl.textContent = "Bid failed: You have already won 6 racers. Your roster is full.";
+        return;
+    }
+
     const bidAmount = parseInt(bidInput.value);
-    bidMessageEl.textContent = '';
 
-    if (!bidAmount || bidAmount < currentMinBid) {
-        bidMessageEl.textContent = `Bid must be at least ${currentMinBid.toLocaleString()} SVC.`;
+    // Client-side validation using the correctly calculated currentMinBid
+    if (isNaN(bidAmount) || bidAmount < currentMinBid) {
+        let message;
+        if (currentMinBid === 500 && currentBidEl.textContent.trim() === '0 SVC') {
+            message = `Bid failed: The starting bid must be at least 500 SVC.`;
+        } else {
+            message = `Bid failed: Your bid must be at least ${currentMinBid.toLocaleString()} SVC (a minimum increase of 500 SVC).`;
+        }
+        bidMessageEl.textContent = message;
         return;
     }
+
     if (bidAmount > currentBalance) {
-        bidMessageEl.textContent = `Insufficient balance. You only have ${currentBalance.toLocaleString()} SVC.`;
+        bidMessageEl.textContent = "Bid failed: Insufficient balance.";
         return;
     }
 
-    // Securely update the bid using a transaction
-    const auctionRef = db.collection("auctions").doc("currentRacer");
-    const teamRef = db.collection("teams").doc(currentUserId);
+    const auctionRef = doc(db, "auctions", "currentRacer");
+    const teamRef = doc(db, "teams", currentUserId);
 
     try {
-        await db.runTransaction(async (t) => {
+        await runTransaction(db, async (t) => {
             const auctionDoc = await t.get(auctionRef);
             const teamDoc = await t.get(teamRef);
 
-            const currentData = auctionDoc.data();
+            const auctionData = auctionDoc.data();
             const teamData = teamDoc.data();
 
-            // Re-check security and min bid inside the transaction
-            if (bidAmount < currentData.currentBid + 1) {
-                throw new Error("Bid is too low or already surpassed.");
-            }
-            if (bidAmount > teamData.balance) {
-                throw new Error("Insufficient funds for this bid.");
+            // Server-side roster check
+            const dbRacersWonCount = (teamData.roster && teamData.roster.length) || 0;
+            if (dbRacersWonCount >= 6) {
+                throw new Error("RosterFull");
             }
 
-            // Update the auction state
+            // Server-side bid validation
+            const dbCurrentBid = auctionData.currentBid || 0;
+            const dbMinBid = dbCurrentBid === 0 ? 500 : dbCurrentBid + 500;
+
+            if (bidAmount < dbMinBid || bidAmount > teamData.balance) {
+                throw new Error("BidConditionFailed");
+            }
+
+            // ⚠️ CRITICAL CHANGE: Timer ALWAYS resets to 60 seconds (60000ms) on a valid bid
+            const newEndTime = Timestamp.fromMillis(Date.now() + 60000);
+
             t.update(auctionRef, {
                 currentBid: bidAmount,
                 lastBidderId: currentUserId,
-                lastBidderName: teamData.teamName,
-                timerEndsAt: firebase.firestore.Timestamp.fromMillis(Date.now() + 10000) // 10 second reset
+                lastBidderName: currentTeamName, // Use the client-side cached name
+                endTime: newEndTime,
+                status: 'Live'
             });
 
-            bidMessageEl.textContent = `Bid placed for ${bidAmount.toLocaleString()} SVC!`;
-            bidInput.value = '';
-
+            bidMessageEl.textContent = `Bid placed for ${bidAmount.toLocaleString()} SVC! Timer reset to 60s!`;
+            bidInput.value = ''; // Clear input after successful bid
         });
     } catch (e) {
-        console.error("Bid transaction failed: ", e.message);
-        bidMessageEl.textContent = `Bid failed: ${e.message}`;
+        // Targeted error handling
+        if (e.message.includes("RosterFull")) {
+            bidMessageEl.textContent = "Bid failed: Your roster is full (6/6). You cannot bid on new racers.";
+        } else if (e.message.includes("BidConditionFailed")) {
+            bidMessageEl.textContent = "Bid failed: Your bid was too low (must be 500 SVC higher than current bid) or your balance changed during the bid attempt. Please check the current minimum bid.";
+        } else {
+            bidMessageEl.textContent = `Bid failed: ${e.message}`;
+        }
     }
 });
 
-// --- ROSTER LISTENER ---
-function setupRosterListener(uid) {
-    db.collection("teams").doc(uid).collection("soldRacers").onSnapshot(snapshot => {
-        rosterListEl.innerHTML = '';
-        snapshot.forEach(doc => {
-            const racer = doc.data();
-            const li = document.createElement('li');
-            li.textContent = `Name: ${racer.racerName} (Won for ${racer.winningBid.toLocaleString()} SVC)`;
-            rosterListEl.appendChild(li);
-        });
-    });
-}
+// --- TIMER LOGIC ---
 
-
-// --- SVC RECHARGE LOGIC ---
-
-// Modal Open/Close Handlers
-closeModalBtn.addEventListener('click', () => { rechargeModal.style.display = 'none'; });
-rechargeBtn.addEventListener('click', () => {
-    rechargeModal.style.display = 'block';
-    svcInput.value = '';
-    usdEstimateEl.textContent = '$0.00 USD';
-});
-window.addEventListener('click', (event) => {
-    if (event.target == rechargeModal) { rechargeModal.style.display = 'none'; }
-});
-
-
-// SVC to USD Calculation
-svcInput.addEventListener('input', () => {
-    const svcAmount = parseFloat(svcInput.value) || 0;
-    // CALCULATION: USD Cost = SVC Amount * 200 (1 SVC = $200 USD)
-    const dollars = svcAmount * 200;
-    usdEstimateEl.textContent = `$${dollars.toFixed(2)} USD`;
-});
-
-
-// Submission Handler
-submitRechargeBtn.addEventListener('click', async () => {
-    const svcAmount = parseFloat(svcInput.value);
-    const dollars = svcAmount * 200;
-    const paymentNote = paymentNoteInput.value.trim();
-
-    if (svcAmount < 1 || !paymentNote) {
-        alert("The minimum purchase is 1 SVC ($200 USD). Please enter an amount and provide payment proof.");
-        return;
-    }
-
-    const teamName = teamNameEl.textContent;
-    const ownerName = ownerNameEl.textContent;
-
-    try {
-        await db.collection('rechargeRequests').add({
-            teamId: currentUserId,
-            teamName: teamName,
-            ownerName: ownerName,
-            dollarAmount: dollars,
-            svcAmount: svcAmount,
-            paymentDetails: paymentNote,
-            status: 'Pending',
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        alert(`Recharge request for ${svcAmount.toFixed(2)} SVC ($${dollars.toFixed(2)} USD) submitted! Please wait for admin approval.`);
-        rechargeModal.style.display = 'none';
-
-    } catch (error) {
-        console.error("Error submitting recharge request:", error);
-        alert("Failed to submit request. Please check your console.");
-    }
-});
-
-
-// --- TIMER LOGIC (Reuse) ---
-function startServerTimer(timerEndsAt) {
-    if (!timerEndsAt) {
+function startServerTimer(timerEndsAt, status) {
+    if (status !== 'Live' || !timerEndsAt || racersWonCount >= 6) {
         auctionTimerEl.textContent = "Auction Pending";
+        // Keep button disabled if auction is not live OR if the roster is full
+        placeBidBtn.disabled = true;
         return;
     }
+
     clearInterval(countdownInterval);
     const endTime = timerEndsAt.toDate().getTime();
 
     countdownInterval = setInterval(() => {
-        const now = Date.now();
-        const distance = endTime - now;
-
+        const distance = endTime - Date.now();
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
         if (distance > 0) {
-            auctionTimerEl.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            auctionTimerEl.textContent = `${seconds.toString().padStart(2, '0')}s`;
+            // Only enable the button if auction is live AND roster is NOT full
+            placeBidBtn.disabled = (racersWonCount >= 6);
         } else {
             clearInterval(countdownInterval);
-            auctionTimerEl.textContent = "SOLD!";
+            auctionTimerEl.textContent = "TIME EXPIRED";
+            placeBidBtn.disabled = true;
+            // NOTE: Finalizing the auction (selling the racer) must be handled by a
+            // server process (like a Firebase Cloud Function) that runs securely.
         }
     }, 1000);
 }
+
+// --- RECHARGE LOGIC ---
+
+rechargeBtn.addEventListener('click', async () => {
+    let requestedAmount;
+    bidMessageEl.textContent = 'Awaiting input for recharge...';
+
+    // Loop until a valid number >= 500 is entered or the user cancels
+    while (true) {
+        const amountInput = prompt(`Enter the SVC amount you are requesting (must be 500 SVC or more):`);
+
+        if (amountInput === null) { // User pressed Cancel
+            bidMessageEl.textContent = 'Recharge request cancelled.';
+            return;
+        }
+
+        requestedAmount = parseInt(amountInput);
+
+        if (isNaN(requestedAmount) || requestedAmount < 500) {
+            alert("Invalid amount. Please enter a number that is 500 SVC or greater.");
+        } else {
+            break; // Valid amount entered, exit loop
+        }
+    }
+
+    const paymentProof = prompt(`Enter payment transaction ID/Note for ${requestedAmount.toLocaleString()} SVC (e.g., Bank Transfer Ref, Cash Note):`);
+
+    if (!paymentProof) {
+        bidMessageEl.textContent = 'Recharge request cancelled.';
+        return; // User cancelled the second prompt
+    }
+
+    try {
+        await addDoc(collection(db, 'rechargeRequests'), {
+            userId: currentUserId,
+            teamName: currentTeamName,
+            svcAmount: requestedAmount, // Saving as a number
+            paymentNote: paymentProof,
+            status: 'Pending',
+            timestamp: Timestamp.now()
+        });
+        bidMessageEl.textContent = `✅ Request for ${requestedAmount.toLocaleString()} SVC submitted. Awaiting Admin approval.`;
+    } catch (e) {
+        console.error("Error submitting recharge request:", e);
+        bidMessageEl.textContent = "❌ Failed to submit request.";
+    }
+});
