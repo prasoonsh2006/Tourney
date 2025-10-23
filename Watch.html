@@ -37,7 +37,20 @@
 <main>
     <section id="watch" class="page">
         <div class="container">
-            <h1>Watch</h1>
+            <div class="watch-header-controls">
+                <h1>Watch</h1>
+                <div class="controls-group">
+                    <div class="search-container">
+                        <input type="text" id="watch-search" placeholder="Search title/driver..." class="search-input">
+                    </div>
+
+                    <div class="filter-buttons">
+                        <button id="filter-all" class="filter-btn active-filter">All</button>
+                        <button id="filter-vod" class="filter-btn">Videos</button>
+                        <button id="filter-live" class="filter-btn">Live</button>
+                    </div>
+                </div>
+            </div>
 
             <div id="live-broadcasts-section" style="display:none;">
                 <h2>Live Races Now! <i class="fa-solid fa-signal live-icon"></i></h2>
@@ -46,10 +59,8 @@
                 </div>
                 <hr style="margin-top: 2rem; border-color: rgba(255, 255, 255, 0.2);">
             </div>
-            <div class="search-container">
-                <input type="text" id="watch-search" placeholder="Search by title or driver..." class="search-input">
-            </div>
-            <div id="watch-content" class="video-grid">
+
+            <div id="vod-content" class="video-grid">
                 <div class="loading">Loading videos...</div>
             </div>
         </div>

@@ -566,8 +566,8 @@ nav {
 
 /* Distinct styling for live video cards */
 .live-card {
-    border: 2px solid #ff0000;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    border: 2px solid #000000;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
     transition: transform 0.3s;
 }
 
@@ -632,3 +632,82 @@ nav {
 
 
 
+/* Add this to your existing CSS/Style Block */
+.watch-header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.controls-group {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Spacing between search and filters */
+}
+
+.search-container {
+    /* Style for the search input wrapper */
+    min-width: 250px;
+}
+
+.search-input {
+    /* Assuming you have a basic input style, but here's a clean dark-mode one */
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    width: 100%;
+}
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.filter-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.filter-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.filter-btn.active-filter {
+    background: #007bff; /* Primary color for active state */
+    background: var(--primary-color, #007bff); /* Use a variable if defined */
+    border-color: white;
+    font-weight: 700;
+}
+
+/* Responsive adjustment for small screens */
+@media (max-width: 768px) {
+    .watch-header-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .controls-group {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .search-container {
+        min-width: 100%;
+    }
+}

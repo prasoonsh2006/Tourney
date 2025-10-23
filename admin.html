@@ -6,41 +6,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* --- CORE THEME & BACKGROUND (Clean Professional Grey/Black) --- */
         body {
-            font-family: 'Inter', sans-serif; /* Using Inter for compliance */
-            background-color: #0c0c0c; /* Near-black base */
-            color: #e0e0e0; /* Off-white text */
-            padding: 20px;
+            top: 20px;
+            width: 100vw;
+            font-family: "Poppins", sans-serif;
+            color: #e0e0e0; /* Adjusted for better contrast on lighter backgrounds */
+            min-height: 100vh;
+
+            /* Background Image with Dark Overlay */
+            background-image: url('images/carbg3.jpg');
+            background-color: var(--color-dark-grey); /* Fallback, though image covers */
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: center center;
+
             position: relative;
         }
 
+
+        /* --- DARK OVERLAY --- */
         body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85); /* Darker overlay for readability */
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Make this slightly lighter or more subtle to allow glassmorphism to shine */
+            background-color: rgba(0, 0, 0, 0.4);
             z-index: -1;
+            pointer-events: none;
         }
+
 
         .dashboard-container { max-width: 1400px; margin: auto; position: relative; z-index: 1; }
 
         /* Clean, Elevated Card Style */
         .card {
-            background: #1e1e1e; /* Solid dark grey card */
+            /* --- GLASSMORPHISM EFFECT --- */
+            background: rgba(255, 255, 255, 0.1); /* Slightly visible white background */
+            backdrop-filter: blur(10px) saturate(180%); /* Key for frosted glass */
+            -webkit-backdrop-filter: blur(10px) saturate(180%); /* Safari support */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Lighter, subtle border */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Enhanced shadow */
+
+            /* --- OR WHITE TRANSLUCENT EFFECT (Uncomment below and comment above for this option) --- */
+            /*
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            */
+
             padding: 25px;
             border-radius: 8px;
-            border: 1px solid #333333;
             margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth */
             transition: all 0.2s ease-in-out;
         }
 
         /* Subtle Hover Effect */
         .card:hover {
-            border-color: #555555;
+            border-color: rgba(255, 255, 255, 0.4); /* Lighter border on hover */
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.45); /* Stronger shadow on hover */
         }
 
         /* Standard Header Style */
@@ -58,19 +86,27 @@
             transition: opacity 0.5s;
         }
 
+        /* Make the modal card also translucent for consistency */
+        #message-box .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
         /* Form Inputs - Clean look */
         input[type="text"], input[type="number"], select {
             color: #e0e0e0;
-            background-color: #2b2b2b;
-            border: 1px solid #444444;
+            background-color: rgba(255, 255, 255, 0.1); /* Lighter translucent input background */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border for inputs */
             border-radius: 4px;
             padding: 10px;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
         input:focus, select:focus {
             outline: none;
-            border-color: #555555;
-            box-shadow: 0 0 0 2px rgba(85, 85, 85, 0.5);
+            border-color: rgba(255, 255, 255, 0.5); /* Lighter focus border */
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2); /* Lighter focus shadow */
         }
 
         /* Custom Scrollbar */
@@ -78,11 +114,11 @@
             width: 6px;
         }
         #recharge-requests-list::-webkit-scrollbar-thumb, #available-racers-list::-webkit-scrollbar-thumb {
-            background-color: #666666;
+            background-color: rgba(255, 255, 255, 0.4); /* Lighter scrollbar thumb */
             border-radius: 3px;
         }
         #recharge-requests-list::-webkit-scrollbar-track, #available-racers-list::-webkit-scrollbar-track {
-            background-color: #1a1a1a;
+            background-color: rgba(255, 255, 255, 0.05); /* Very subtle track */
         }
 
         /* --- BUTTON STYLES & FEEDBACK (Refined) --- */
@@ -104,8 +140,9 @@
         }
 
         /* Color Palette */
-        .btn-primary-action { background-color: #555555; color: white; }
-        .btn-primary-action:hover:not(:disabled) { background-color: #666666; }
+        /* Adjusted for better visibility on translucent cards */
+        .btn-primary-action { background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.3);}
+        .btn-primary-action:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.3); }
 
         .btn-danger { background-color: #c0392b; color: white; }
         .btn-danger:hover:not(:disabled) { background-color: #a03024; }
@@ -117,11 +154,11 @@
         .btn-warning:hover:not(:disabled) { background-color: #d88900; }
 
         /* Status colors */
-        .status-live { color: #5aa1ff; font-weight: 700; } /* Subtle Blue for Live */
+        .status-live { color: #5aa1ff; font-weight: 700; }
         .status-sold { color: #aaaaaa; font-weight: 600; }
         .status-awaiting { color: #888888; }
         .live-bid { color: #27ae60; }
-        .timer-display { color: #c0392b; }
+        .timer-display { color: #ff5555; } /* Brighter red for visibility */
 
         /* Feedback Message Styling */
         .feedback-message {
@@ -131,8 +168,9 @@
             font-size: 0.875rem;
             display: none;
         }
-        .feedback-success { background-color: rgba(39, 174, 96, 0.2); border: 1px solid #27ae60; color: #90ee90; }
-        .feedback-error { background-color: rgba(192, 57, 43, 0.2); border: 1px solid #c0392b; color: #ffaaaa; }
+        /* Adjusted background and border colors for translucent effect */
+        .feedback-success { background-color: rgba(39, 174, 96, 0.1); border: 1px solid rgba(39, 174, 96, 0.5); color: #90ee90; }
+        .feedback-error { background-color: rgba(192, 57, 43, 0.1); border: 1px solid rgba(192, 57, 43, 0.5); color: #ffaaaa; }
 
     </style>
 </head>

@@ -12,17 +12,20 @@
         :root {
             --primary-dark: #121212; /* Deep background black fallback */
             --highlight-light: #FFFFFF; /* Pure white for accents and highlights */
+            --highlight-horn: #a30000;
             --text-light: #E0E0E0; /* Light grey text */
             --text-muted: #A0A0A0; /* Muted grey text */
             --interactive-dark: #3A3A3A; /* Interactive elements like inputs/buttons */
             --border-color-glass: rgba(255, 255, 255, 0.1); /* Light transparent border for glass effect */
             --glass-bg-light: rgba(31, 31, 31, 0.6); /* Semi-transparent background for all cards */
             --divider-color: rgba(255, 255, 255, 0.3); /* Bright, visible divider color */
+
+            /* 🚨 LIVE accent color */
+            --live-red: #E84118;
         }
 
         /* 1. BACKGROUND AND OVERLAY */
         body {
-            /* Changed to simple system font stack */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             color: var(--text-light);
             padding: 0;
@@ -30,12 +33,27 @@
 
             /* --- BACKGROUND IMAGE IS HERE --- */
             background-color: var(--primary-dark);
-            background-image: url('images/Test.jpg'); /* 🚨 REPLACE THIS URL with your image path */
+            background-image: url('images/carbg3.jpg'); /* 🚨 REPLACE THIS URL with your image path */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             position: relative;
         }
+
+
+        /* --- DARK OVERLAY --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+            pointer-events: none;
+        }
+
 
         /* 2. GLASSMORPHISM CARD STYLES - UNIFIED */
         .dashboard-container {
@@ -44,26 +62,24 @@
             padding: 0 20px;
         }
 
-        /* Translucent effect for ALL cards (Team Info, Roster, and Live Auction) */
+        /* Translucent effect for ALL cards */
         .card {
             background-color: var(--glass-bg-light); /* Semi-transparent background */
             color: var(--text-light);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 25px;
-            border: 1px solid var(--border-color-glass); /* Light transparent border */
+            border: 1px solid var(--border-color-glass);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(8px); /* The core glass effect */
+            backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
 
-        /* Specific padding and blur for the main auction card for slightly more prominence, but using the same base style */
         .auction-card-prominent {
-            padding: 30px; /* Slightly more padding for the main area */
+            padding: 30px;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
-
 
         /* Custom Header Style */
         .app-header {
@@ -82,7 +98,7 @@
             align-items: center;
         }
 
-        /* Custom Logout Button Style (Dark Grey/Black) */
+        /* Custom Logout Button Style */
         .logout-btn-image {
             background-color: #555555;
             color: white;
@@ -95,20 +111,20 @@
             background-color: #777777;
         }
 
-        /* Custom Icon/Title Block Styling (Using White as the accent) */
+        /* Custom Icon/Title Block Styling */
         .card-title-block {
             display: flex;
             align-items: center;
             font-weight: 700;
-            color: var(--highlight-light); /* White for the icon/title block */
+            color: var(--highlight-light);
             margin-bottom: 15px;
             padding-bottom: 5px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Semi-transparent white border */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Input and Bid Button Styling - Adjusted for better contrast */
+        /* Input and Bid Button Styling */
         #bid-input {
-            background-color: #444444; /* Slightly brighter input background */
+            background-color: #444444;
             color: var(--text-light);
             border: 1px solid #666666;
             padding: 10px;
@@ -117,9 +133,9 @@
             border-radius: 0.25rem;
         }
 
-        /* Empty/Awaiting State Boxes (Dark Grey) */
+        /* Empty/Awaiting State Boxes */
         .awaiting-box {
-            background-color: #1A1A1A; /* Opaque dark grey for contrast */
+            background-color: #1A1A1A;
             border-radius: 0.25rem;
             padding: 20px 15px;
             height: 100px;
@@ -134,21 +150,21 @@
 
         /* Current Winning Bid Block Style (Opaque Black) */
         .current-bid-block {
-            background-color: rgba(10, 10, 10, 0); /* Deep opaque black */
+            background-color: rgba(10, 10, 10, 0);
             padding: 30px 20px;
             border-radius: 0.25rem;
-            color: white;
+            color: #ffffff;
         }
 
         /* SVC text on the Team Info Card */
         .svc-text {
-            color: var(--highlight-light); /* White highlight */
+            color: var(--highlight-light);
             font-weight: 900;
             font-size: 1.5rem;
             margin-left: 5px;
         }
 
-        /* Recharge Button (Inverted Grey) */
+        /* Recharge Button */
         .recharge-btn-image {
             background-color: #3A3A3A;
             color: white;
@@ -165,34 +181,92 @@
             background-color: #555555;
         }
 
-        /* Primary Bid Button (White Accent) */
+        /* Primary Bid Button */
         #place-bid-btn {
             background-color: var(--highlight-light);
-            color: #121212; /* Dark text on bright button */
+            color: #121212;
             font-weight: 900;
         }
         #place-bid-btn:hover {
             background-color: #DDDDDD;
         }
 
-        /* LIVE indicator for Black/Grey theme */
+        /* LIVE indicator */
         .live-indicator {
-            background-color: var(--highlight-light);
-            color: #121212;
+            background-color: var(--live-red);
+            color: var(--highlight-light);
             font-weight: 900;
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 0.8rem;
             margin-left: 10px;
+            animation: pulse-red 2s infinite;
         }
 
-        /* FIX: Ensure visibility for Roster items and data dividers */
+        /* Keyframe animation for pulse effect */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(232, 65, 24, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(232, 65, 24, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(232, 65, 24, 0); }
+        }
+
+
+        /* Roster items and data dividers */
         .roster-placeholder {
-            background-color: #333333; /* Distinct background */
-            color: var(--text-light); /* Light text */
+            background-color: #333333;
+            color: var(--text-light);
         }
         .data-divider {
-            border-bottom: 1px solid var(--divider-color); /* Bright, visible divider */
+            border-bottom: 1px solid var(--divider-color);
+        }
+
+        /* --- ODOMETER DIGIT-ROLL STYLES --- */
+
+        /* The main container for all digits, allowing flex layout */
+        .odometer-display-container {
+            display: flex;
+            font-size: 3.5rem; /* Large font size for digits */
+            line-height: 1.2; /* CRITICAL: This defines the height of one number slot (1.2em) */
+            font-weight: 900;
+        }
+
+        /* Wrapper for each individual digit 'window' */
+        .digit-wrapper {
+            width: 0.8em; /* Width of a single digit box */
+            height: 1.2em; /* Height of a single digit box (the viewport) */
+            overflow: hidden; /* Hides the digits above and below the current one */
+            position: relative;
+            text-align: center;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0); /* Slight box background for definition */
+            margin: 0 1px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* The element that contains all numbers 0-9 stacked vertically */
+        .digit-roll {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* CRITICAL: The transition property for the smooth roll */
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth animation timing */
+            white-space: nowrap; /* Prevents numbers from wrapping */
+        }
+
+        /* Styling for commas/separators */
+        .separator-wrapper {
+            line-height: 1.2em; /* Align with the digits */
+            padding: 0 2px;
+            color: var(--text-muted); /* Less prominent color for separator */
+        }
+
+        /* New rule for vertically centering the SVC label next to the odometer */
+        #svc-label {
+            /* Set font size to match the visual height of the digit window (1.2em of 3.5rem) */
+            font-size: 2.5rem;
+            /* Add padding to precisely align with the vertical center of the digit-wrapper */
+            padding-top: 0.15em;
         }
 
     </style>
@@ -252,7 +326,7 @@
 
         <div class="lg:col-span-2 card auction-card-prominent">
             <div class="flex items-center mb-6">
-                <i class="fas fa-bullhorn mr-3 text-2xl" style="color:var(--highlight-light);"></i>
+                <i class="fas fa-bullhorn mr-3 text-2xl" style="color:var(--highlight-horn);"></i>
                 <h2 class="text-xl font-bold text-white">Live Auction</h2>
                 <span class="live-indicator">LIVE</span>
             </div>
@@ -272,8 +346,9 @@
             <div class="current-bid-block mb-8">
                 <p class="text-sm text-gray-400 font-medium uppercase">CURRENT WINNING BID:</p>
                 <div class="flex justify-between items-end mt-2">
-                    <p class="text-5xl font-black leading-none" style="color:var(--highlight-light);">
-                        <span id="current-bid">0 SVC</span>
+                    <p class="text-5xl font-black leading-none flex items-center" style="color:var(--highlight-light);">
+                    <div id="odometer-container" class="odometer-display-container">
+                    </div>
                     </p>
                     <div class="text-right">
                         <p class="text-sm text-gray-400 font-medium uppercase">Last Bidder:</p>
