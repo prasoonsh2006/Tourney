@@ -39,8 +39,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = 'auction.html';
             })
             .catch((error) => {
-                // Login failed
-                alert("Login failed: " + error.message);
+                let errorMessage;
+
+                // Customize based on Firebase error codes
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage = "Please enter a valid email address.";
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = "Your account has been disabled. Contact the administrator.";
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage = "No account found with this email.";
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = "Incorrect password. Please try again.";
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = "Too many failed attempts. Please wait a moment before trying again.";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Check your internet connection and try again.";
+                        break;
+                    default:
+                        errorMessage = "Login failed. Please try again later.";
+                }
+
+                // Show your custom message
+                alert(errorMessage);
                 console.error("Login error:", error);
             });
     });
