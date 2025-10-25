@@ -1009,44 +1009,42 @@
         // Listen to all racers to populate both edit and delete dropdowns
         const q = query(collection(db, "racers"));
         onSnapshot(q, (querySnapshot) => {
-            let optionsHtml = '<option value="" data-price="" disabled selected>Select Racer</option>';
+            let editOptionsHtml = '<option value="" disabled selected>Select Racer to Edit</option>';
+            let deleteOptionsHtml = '<option value="" disabled selected>Select Racer to Remove</option>';
 
             querySnapshot.forEach((doc) => {
                 const racer = doc.data();
-                // Store startingPrice in a data attribute for the edit feature
-                optionsHtml += `<option value="${racer.name}" data-price="${racer.startingPrice}">${racer.name} (${racer.status}) - ${racer.startingPrice} SVC</option>`;
+                const racerName = racer.name;
+                const status = racer.status || 'Unknown'; // Ensure status exists
+
+                // 1. Populate the DELETE dropdown (shows ALL racers for full admin control)
+                deleteOptionsHtml += `<option value="${racerName}">${racerName} (Status: ${status})</option>`;
+
+                // 2. Populate the EDIT dropdown (Fulfills user request: only show 'Available' racers)
+                if (status === 'Available') {
+                    editOptionsHtml += `<option value="${racerName}">${racerName}</option>`;
+                }
             });
 
-            // 1. Populate Delete Dropdown
-            deleteRacerSelect.innerHTML = optionsHtml;
-            deleteRacerBtn.disabled = true;
+            editRacerSelect.innerHTML = editOptionsHtml;
+            deleteRacerSelect.innerHTML = deleteOptionsHtml;
 
-            // 2. Populate Edit Dropdown
-            editRacerSelect.innerHTML = optionsHtml;
-            editRacerBtn.disabled = true;
-            newStartingPriceInput.disabled = true;
+            // Ensure button states are checked after list updates
+            editRacerSelect.dispatchEvent(new Event('change'));
+            deleteRacerSelect.dispatchEvent(new Event('change'));
+        });
 
-            // 3. Add listener for Edit Select
-            editRacerSelect.onchange = () => {
-                const selectedOption = editRacerSelect.options[editRacerSelect.selectedIndex];
-                const startingPrice = selectedOption.dataset.price;
-                const racerName = editRacerSelect.value;
 
-                if (racerName) {
-                    newStartingPriceInput.value = startingPrice;
-                    newStartingPriceInput.disabled = false;
-                    editRacerBtn.disabled = false;
-                } else {
-                    newStartingPriceInput.value = '';
-                    newStartingPriceInput.disabled = true;
-                    editRacerBtn.disabled = true;
-                }
-            };
+        // Event listener for EDIT dropdown change: Enables price input and update button
+        editRacerSelect.addEventListener('change', () => {
+            const racerSelected = !!editRacerSelect.value;
+            newStartingPriceInput.disabled = !racerSelected;
+            editRacerBtn.disabled = !racerSelected;
+        });
 
-            // 4. Add listener for Delete Select
-            deleteRacerSelect.onchange = () => {
-                deleteRacerBtn.disabled = !deleteRacerSelect.value;
-            };
+        // Event listener for DELETE dropdown change: Enables the delete button
+        deleteRacerSelect.addEventListener('change', () => {
+            deleteRacerBtn.disabled = !deleteRacerSelect.value;
         });
     }
 
