@@ -270,6 +270,14 @@
             background-color: #a03024;
             transform: translateY(0); /* Override hover effect for small button */
         }
+
+        /* Responsive Content Adjustments */
+        @media (max-width: 768px) {
+            #about {
+                padding: 120px 20px 50px;
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -895,7 +903,7 @@
         const confirmed = await showCustomModal(
 
             "Confirm Roster Addition",
-            `Confirm adding racer **${racerName}** to team **${teamName}**?`,
+            `Confirm adding racer  ${racerName}  to team  ${teamName} ?`,
             true
         );
         if (!confirmed) return;
@@ -946,7 +954,7 @@
 
         const confirmed = await showCustomModal(
             "Confirm Roster Removal",
-            `Confirm removing racer **${racerName}** from team **${teamName}**? The racer will become **'Available'** for auction/re-assignment.`,
+            `Confirm removing racer  ${racerName}  from team  ${teamName} ? The racer will become  'Available'  for auction/re-assignment.`,
             true
         );
         if (!confirmed) return;
@@ -965,7 +973,7 @@
                     winningBid: 0
                 });
             });
-            await showCustomModal("Racer Removed", `${racerName} was successfully removed from **${teamName}** and is now 'Available'.`, false);
+            await showCustomModal("Racer Removed", `${racerName} was successfully removed from  ${teamName}  and is now 'Available'.`, false);
             // The onSnapshot listener will automatically refresh the list.
         } catch (e) {
             console.error("Error removing racer from roster:", e);
@@ -1063,7 +1071,7 @@
         const confirmed = await
             showCustomModal(
                 "Confirm Price Update",
-                `Confirm changing **${racerName}**'s starting price to **${newStartingPrice} SVC**?`,
+                `Confirm changing  ${racerName}'s starting price to  ${newStartingPrice} SVC ?`,
                 true
             );
 
@@ -1101,7 +1109,7 @@
         const confirmed = await
             showCustomModal(
                 "Confirm Racer Deletion",
-                `WARNING: This will permanently delete the racer: **${racerName}**. Are you sure?`,
+                `WARNING: This will permanently delete the racer:  ${racerName} . Are you sure?`,
                 true
             );
 
@@ -1271,8 +1279,8 @@
         // Confirmation
 
         const confirmMessage = lastBidderId
-            ? `Confirm SALE: **${racerName}** to **${lastBidderName}** for **${currentBid} SVC**?`
-            : `Confirm RESET: No bids placed on **${racerName}**. Reset auction?`;
+            ? `Confirm SALE:  ${racerName}  to  ${lastBidderName}  for  ${currentBid} SVC ?`
+            : `Confirm RESET: No bids placed on  ${racerName} . Reset auction?`;
 
         const confirmed = await showCustomModal(
             lastBidderId ? "Confirm Sale" : "Confirm Reset",
@@ -1353,7 +1361,7 @@
                 });
             });
 
-            await showCustomModal("Sale Complete", `SOLD! **${racerName}** to **${lastBidderName}** for **${currentBid} SVC**. Funds transferred.`, false);
+            await showCustomModal("Sale Complete", `SOLD!  ${racerName}  to  ${lastBidderName}  for  ${currentBid} SVC . Funds transferred.`, false);
             endAuctionBtn.disabled = true;
         } catch (e) {
             console.error("Transaction failed:", e);
