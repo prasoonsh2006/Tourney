@@ -10,12 +10,11 @@
             top: 20px;
             width: 100vw;
             font-family: "Poppins", sans-serif;
-            color: #e0e0e0; /* Adjusted for better contrast on lighter backgrounds */
+            color: #e0e0e0;
             min-height: 100vh;
-
             /* Background Image with Dark Overlay */
             background-image: url('images/carbg3.jpg');
-            background-color: var(--color-dark-grey); /* Fallback, though image covers */
+            background-color: var(--color-dark-grey);
             background-size: cover;
             background-attachment: fixed;
             background-repeat: no-repeat;
@@ -40,23 +39,22 @@
         }
 
 
-        .dashboard-container { max-width: 1400px; margin: auto; position: relative; z-index: 1; }
+        .dashboard-container { max-width: 1400px; margin: auto; position: relative;
+            z-index: 1; }
 
         /* Clean, Elevated Card Style */
         .card {
             /* --- GLASSMORPHISM EFFECT --- */
-            background: rgba(255, 255, 255, 0.1); /* Slightly visible white background */
-            backdrop-filter: blur(10px) saturate(180%); /* Key for frosted glass */
-            -webkit-backdrop-filter: blur(10px) saturate(180%); /* Safari support */
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Lighter, subtle border */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* Enhanced shadow */
-
-            /* --- OR WHITE TRANSLUCENT EFFECT (Uncomment below and comment above for this option) --- */
-            /*
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            */
+            background: rgba(255, 255, 255, 0.1);
+            /* Slightly visible white background */
+            backdrop-filter: blur(10px) saturate(180%);
+            /* Key for frosted glass */
+            -webkit-backdrop-filter: blur(10px) saturate(180%);
+            /* Safari support */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Lighter, subtle border */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            /* Enhanced shadow */
 
             padding: 25px;
             border-radius: 8px;
@@ -66,7 +64,8 @@
 
         /* Subtle Hover Effect */
         .card:hover {
-            border-color: rgba(255, 255, 255, 0.4); /* Lighter border on hover */
+            border-color: rgba(255, 255, 255, 0.4);
+            /* Lighter border on hover */
             transform: translateY(-2px);
             box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.45); /* Stronger shadow on hover */
         }
@@ -79,8 +78,10 @@
 
         /* Authentication/Modal Overlay */
         .auth-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(12, 12, 12, 0.95); /* Semi-transparent dark overlay */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(12, 12, 12, 0.95);
+            /* Semi-transparent dark overlay */
             display: flex; justify-content: center;
             align-items: center; z-index: 1000;
             transition: opacity 0.5s;
@@ -98,7 +99,8 @@
         input[type="text"], input[type="number"], select {
             color: #e0e0e0;
             background-color: rgba(255, 255, 255, 0.1); /* Lighter translucent input background */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border for inputs */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Lighter border for inputs */
             border-radius: 4px;
             padding: 10px;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -106,19 +108,22 @@
         input:focus, select:focus {
             outline: none;
             border-color: rgba(255, 255, 255, 0.5); /* Lighter focus border */
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2); /* Lighter focus shadow */
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+            /* Lighter focus shadow */
         }
 
         /* Custom Scrollbar */
-        #recharge-requests-list::-webkit-scrollbar, #available-racers-list::-webkit-scrollbar {
+        #recharge-requests-list::-webkit-scrollbar, #available-racers-list::-webkit-scrollbar, .roster-content::-webkit-scrollbar {
             width: 6px;
         }
-        #recharge-requests-list::-webkit-scrollbar-thumb, #available-racers-list::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.4); /* Lighter scrollbar thumb */
+        #recharge-requests-list::-webkit-scrollbar-thumb, #available-racers-list::-webkit-scrollbar-thumb, .roster-content::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.4);
+            /* Lighter scrollbar thumb */
             border-radius: 3px;
         }
-        #recharge-requests-list::-webkit-scrollbar-track, #available-racers-list::-webkit-scrollbar-track {
-            background-color: rgba(255, 255, 255, 0.05); /* Very subtle track */
+        #recharge-requests-list::-webkit-scrollbar-track, #available-racers-list::-webkit-scrollbar-track, .roster-content::-webkit-scrollbar-track {
+            background-color: rgba(255, 255, 255, 0.05);
+            /* Very subtle track */
         }
 
         /* --- BUTTON STYLES & FEEDBACK (Refined) --- */
@@ -141,24 +146,37 @@
 
         /* Color Palette */
         /* Adjusted for better visibility on translucent cards */
-        .btn-primary-action { background-color: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.3);}
-        .btn-primary-action:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.3); }
+        .btn-primary-action { background-color: rgba(255, 255, 255, 0.2);
+            color: white; border: 1px solid rgba(255, 255, 255, 0.3);}
+        .btn-primary-action:hover:not(:disabled) { background-color: rgba(255, 255, 255, 0.3);
+        }
 
-        .btn-danger { background-color: #c0392b; color: white; }
-        .btn-danger:hover:not(:disabled) { background-color: #a03024; }
+        .btn-danger { background-color: #c0392b; color: white;
+        }
+        .btn-danger:hover:not(:disabled) { background-color: #a03024;
+        }
 
-        .btn-success { background-color: #27ae60; color: white; }
-        .btn-success:hover:not(:disabled) { background-color: #229954; }
+        .btn-success { background-color: #27ae60; color: white;
+        }
+        .btn-success:hover:not(:disabled) { background-color: #229954;
+        }
 
-        .btn-warning { background-color: #f39c12; color: #333333; }
-        .btn-warning:hover:not(:disabled) { background-color: #d88900; }
+        .btn-warning { background-color: #f39c12; color: #333333;
+        }
+        .btn-warning:hover:not(:disabled) { background-color: #d88900;
+        }
 
         /* Status colors */
-        .status-live { color: #5aa1ff; font-weight: 700; }
-        .status-sold { color: #aaaaaa; font-weight: 600; }
-        .status-awaiting { color: #888888; }
-        .live-bid { color: #27ae60; }
-        .timer-display { color: #ff5555; } /* Brighter red for visibility */
+        .status-live { color: #5aa1ff;
+            font-weight: 700; }
+        .status-sold { color: #aaaaaa; font-weight: 600;
+        }
+        .status-awaiting { color: #888888;
+        }
+        .live-bid { color: #27ae60;
+        }
+        .timer-display { color: #ff5555;
+        } /* Brighter red for visibility */
 
         /* Feedback Message Styling */
         .feedback-message {
@@ -169,31 +187,111 @@
             display: none;
         }
         /* Adjusted background and border colors for translucent effect */
-        .feedback-success { background-color: rgba(39, 174, 96, 0.1); border: 1px solid rgba(39, 174, 96, 0.5); color: #90ee90; }
-        .feedback-error { background-color: rgba(192, 57, 43, 0.1); border: 1px solid rgba(192, 57, 43, 0.5); color: #ffaaaa; }
+        .feedback-success { background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid rgba(39, 174, 96, 0.5); color: #90ee90; }
+        .feedback-error { background-color: rgba(192, 57, 43, 0.1);
+            border: 1px solid rgba(192, 57, 43, 0.5); color: #ffaaaa; }
 
+        /* Tab Styles */
+        .tab-button {
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-button.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-bottom: 2px solid #5aa1ff;
+            color: #ffffff;
+        }
+        .tab-button:not(.active) {
+            color: #cccccc;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .tab-content {
+            padding: 20px;
+            border-radius: 0 8px 8px 8px;
+        }
+
+        /* --- NEW: Team Accordion Styles --- */
+        .team-header {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .team-header:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .roster-content {
+            padding: 0 15px;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            max-height: 0;
+            /* Hidden state */
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 6px 6px;
+        }
+        .roster-content.expanded {
+            max-height: 300px;
+            /* Adjust as needed for max roster size */
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+        .roster-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        .roster-item:last-child {
+            border-bottom: none;
+        }
+        .accordion-icon {
+            transition: transform 0.3s;
+        }
+        .roster-content.expanded + .team-accordion-item .accordion-icon {
+            transform: rotate(45deg);
+            /* Optional: rotate icon for visual effect */
+        }
+        .remove-roster-btn {
+            background-color: #c0392b;
+            padding: 4px 8px;
+            border-radius: 9999px; /* Circle button */
+        }
+        .remove-roster-btn:hover {
+            background-color: #a03024;
+            transform: translateY(0); /* Override hover effect for small button */
+        }
     </style>
 </head>
 <body>
 
-<!-- Custom Message/Confirmation Modal -->
 <div id="message-box" class="auth-container hidden">
     <div class="card p-6 w-96 text-center">
         <h3 id="message-box-title" class="text-xl font-bold mb-3 text-white tech-header">Notification</h3>
         <p id="message-box-content" class="text-gray-300 mb-6">Message content goes here.</p>
         <div id="message-box-actions" class="flex justify-center space-x-4">
             <button id="message-box-ok" class="btn-base btn-primary-action">OK</button>
-            <button id="message-box-cancel" class="btn-base btn-danger hidden">Cancel</button>
+            <button
+                    id="message-box-cancel" class="btn-base btn-danger hidden">Cancel</button>
         </div>
     </div>
 </div>
 
-<!-- Loading/Auth Overlay -->
 <div id="loading-overlay" class="auth-container">
     <div class="card text-center p-8 border-none">
         <svg class="animate-spin h-8 w-8 text-white mx-auto mb-4 tech-header" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+
         </svg>
         <div class="text-xl text-white tech-header">AUTHENTICATING ACCESS</div>
     </div>
@@ -207,85 +305,181 @@
         </button>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="card">
-            <h2 class="text-2xl font-bold mb-4 tech-header">LIVE AUCTION FEED</h2>
-            <div class="space-y-3 text-lg">
-                <p>Racer: <span id="live-auction-racer" class="status-awaiting">Awaiting Setup...</span></p>
-                <p>Current Bid: <span id="live-auction-bid" class="live-bid font-bold text-2xl">0 SVC</span></p>
-                <p>Bidder: <span id="live-auction-bidder" class="text-white font-medium">N/A</span></p>
-                <p>Time Left: <span id="auction-timer-display" class="timer-display font-extrabold text-3xl">--:--</span></p>
-            </div>
+    <div class="flex border-b border-gray-600 mb-6">
 
-            <button id="end-auction-btn" class="btn-base btn-danger text-white w-full mt-6" disabled>
-                END AUCTION & SELL
-            </button>
-        </div>
+        <button id="tab-bidding" class="tab-button active">LIVE BIDDING & APPROVALS</button>
+        <button id="tab-racers" class="tab-button">MANAGE RACERS</button>
+        <button id="tab-teams" class="tab-button">MANAGE TEAMS</button>
+    </div>
 
-        <div class="card">
-            <h2 class="text-2xl font-bold mb-4 tech-header">TRANSACTION APPROVALS</h2>
-            <div id="recharge-requests-list" class="text-sm space-y-3 max-h-72 overflow-y-auto pr-2">
-                <p class="text-gray-400">Loading requests...</p>
-            </div>
-        </div>
+    <div id="bidding-tab" class="tab-content card">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card p-4 md:col-span-1">
+                <h2 class="text-2xl font-bold mb-4 tech-header">LIVE AUCTION FEED</h2>
 
-        <div class="card">
-            <h2 class="text-2xl font-bold mb-4 tech-header">RACER MANAGEMENT</h2>
+                <div class="space-y-3 text-lg">
+                    <p>Racer: <span id="live-auction-racer" class="status-awaiting">Awaiting Setup...</span></p>
+                    <p>Current Bid: <span id="live-auction-bid" class="live-bid font-bold text-2xl">0 SVC</span></p>
+                    <p>Bidder: <span id="live-auction-bidder" class="text-white font-medium">N/A</span></p>
 
-            <h3 class="text-xl font-semibold text-white mt-4">New Racer Registration</h3>
-            <form id="add-racer-form" class="space-y-3 border-b pb-4 mb-4 border-gray-700">
-                <input type="text" id="racer-name" placeholder="Racer Name" required class="p-3 w-full">
-                <input type="number" id="racer-price" placeholder="Starting Price (SVC)" value="100" min="1" required class="p-3 w-full">
-                <button type="submit" class="btn-base btn-success text-white w-full">REGISTER RACER</button>
-                <div id="add-racer-feedback" class="feedback-message"></div>
-            </form>
+                    <p>Time Left: <span id="auction-timer-display" class="timer-display font-extrabold text-3xl">--:--</span></p>
+                </div>
 
-            <h3 class="text-xl font-semibold text-white">Initiate Auction</h3>
-            <div class="space-y-3">
-                <select id="racer-select" class="p-3 w-full" required>
-                    <option value="" disabled selected>Select Racer to Auction</option>
-                </select>
-                <button id="start-auction-btn" class="btn-base btn-primary-action text-white w-full" disabled>
-                    START AUCTION (60s Timer)
+                <button id="end-auction-btn" class="btn-base btn-danger text-white w-full mt-6" disabled>
+                    END AUCTION & SELL
                 </button>
             </div>
 
-            <h3 class="text-lg font-semibold text-white mt-4 border-t pt-3 border-gray-700">Available Roster</h3>
-            <ul id="available-racers-list" class="list-none text-sm space-y-1 max-h-32 overflow-y-auto">
-                <li class="text-gray-400">Scanning database...</li>
-            </ul>
+
+            <div class="card p-4 md:col-span-1">
+                <h2 class="text-2xl font-bold mb-4 tech-header">INITIATE AUCTION</h2>
+                <h3 class="text-xl font-semibold text-white">Available Roster</h3>
+                <div class="space-y-3">
+                    <select id="racer-select" class="p-3 w-full" required>
+
+                        <option value="" disabled selected>Select Racer to Auction</option>
+                    </select>
+                    <button id="start-auction-btn" class="btn-base btn-primary-action text-white w-full" disabled>
+                        START AUCTION (60s Timer)
+
+                    </button>
+                </div>
+
+                <h3 class="text-lg font-semibold text-white mt-4 border-t pt-3 border-gray-700">Racer Roster</h3>
+                <ul id="available-racers-list" class="list-none text-sm space-y-1 max-h-32 overflow-y-auto">
+
+                    <li class="text-gray-400">Scanning database...</li>
+                </ul>
+            </div>
+
+            <div class="card p-4 md:col-span-1">
+                <h2 class="text-2xl font-bold mb-4 tech-header">TRANSACTION APPROVALS</h2>
+                <div id="recharge-requests-list" class="text-sm space-y-3 max-h-96 overflow-y-auto pr-2">
+
+                    <p class="text-gray-400">Loading requests...</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="card mt-6">
-        <h2 class="text-2xl font-bold mb-4 tech-header">TEAM REGISTRATION & SETUP</h2>
-        <form id="register-team-form" class="space-y-4 p-5 border border-gray-600 rounded-lg">
-            <h3 class="text-xl font-semibold text-white">Link New Team to Firebase User</h3>
+    <div id="racers-tab" class="tab-content card hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="card p-4">
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <input type="text" id="new-team-id" placeholder="User's UID (Firebase Auth)" required class="p-3 col-span-2">
-                <input type="number" id="new-balance" placeholder="Starting Balance (SVC)" value="5000" min="0" required class="p-3 col-span-2">
-                <input type="text" id="new-team-name" placeholder="Team Name" required class="p-3 col-span-2">
-                <input type="text" id="new-owner-name" placeholder="Owner Name" required class="p-3 col-span-2">
+                <h2 class="text-2xl font-bold mb-4 tech-header">REGISTER NEW RACER</h2>
+                <form id="add-racer-form" class="space-y-3">
+                    <input type="text" id="racer-name" placeholder="Racer Name" required class="p-3 w-full">
+                    <input type="number" id="racer-price" placeholder="Starting Price (SVC)" value="100" min="1" required class="p-3 w-full">
+
+                    <button type="submit" class="btn-base btn-success text-white w-full">REGISTER RACER</button>
+                    <div id="add-racer-feedback" class="feedback-message"></div>
+                </form>
             </div>
 
-            <button type="submit" class="btn-base btn-primary-action text-white p-3 w-full">REGISTER TEAM & INIT FUNDING</button>
-            <div id="register-team-feedback" class="feedback-message"></div>
-        </form>
+            <div class="card p-4">
+                <h2 class="text-2xl font-bold mb-4 tech-header">EDIT RACER BIDDING AMOUNT</h2>
+                <form id="edit-racer-form" class="space-y-3">
+                    <select id="edit-racer-select" class="p-3 w-full" required>
+                        <option value="" disabled selected>Select Racer to Edit</option>
+                    </select>
+                    <input type="number" id="new-starting-price" placeholder="New Starting Price (SVC)" min="1" required class="p-3 w-full" disabled>
+                    <button type="submit" class="btn-base btn-primary-action text-white w-full" disabled id="edit-racer-btn">UPDATE PRICE</button>
+                    <div id="edit-racer-feedback" class="feedback-message"></div>
+                </form>
+            </div>
+
+            <div class="card p-4">
+                <h2 class="text-2xl font-bold mb-4 tech-header">REMOVE/DELETE RACER</h2>
+
+                <form id="delete-racer-form" class="space-y-3">
+                    <select id="delete-racer-select" class="p-3 w-full" required>
+                        <option value="" disabled selected>Select Racer to Remove</option>
+                    </select>
+
+                    <button type="submit" class="btn-base btn-danger text-white w-full" disabled id="delete-racer-btn">DELETE RACER</button>
+                    <div id="delete-racer-feedback" class="feedback-message"></div>
+                </form>
+            </div>
+        </div>
     </div>
 
+    <div id="teams-tab" class="tab-content card hidden">
+
+        <div class="card p-4 mb-6">
+
+            <h2 class="text-2xl font-bold mb-4 tech-header border-b border-gray-700 pb-2">TEAM SETUP & CONTROL</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <div class="p-4 rounded-lg bg-black bg-opacity-10 border border-gray-700">
+                    <h3 class="text-xl font-bold mb-3 text-white">REGISTER NEW TEAM</h3>
+
+                    <form id="register-team-form" class="space-y-4">
+                        <input type="text" id="new-team-id" placeholder="User's UID (Firebase Auth)" required class="p-3 w-full">
+                        <input type="number" id="new-balance" placeholder="Starting Balance (SVC)" value="5000" min="0" required class="p-3 w-full">
+                        <input type="text" id="new-team-name" placeholder="Team Name" required class="p-3
+                            w-full">
+                        <input type="text" id="new-owner-name" placeholder="Owner Name" required class="p-3 w-full">
+                        <button type="submit" class="btn-base btn-primary-action text-white p-3 w-full">REGISTER TEAM & INIT FUNDING</button>
+                        <div id="register-team-feedback" class="feedback-message"></div>
+
+                    </form>
+                </div>
+
+                <div class="p-4 rounded-lg bg-black bg-opacity-10 border border-gray-700">
+                    <h3 class="text-xl font-bold mb-3 text-white">REMOVE/DELETE TEAM</h3>
+                    <form id="delete-team-form" class="space-y-3">
+
+                        <select id="delete-team-select" class="p-3 w-full mt-7" required>
+                            <option value="" disabled selected>Select Team to Remove</option>
+                        </select>
+
+                        <button type="submit" class="btn-base btn-danger text-white w-full" disabled id="delete-team-btn">DELETE TEAM</button>
+                        <div id="delete-team-feedback" class="feedback-message"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card p-4">
+            <h2 class="text-2xl font-bold mb-4 tech-header border-b border-gray-700 pb-2">MANAGE TEAM ROSTER</h2>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold text-white mb-2">Manually Add Racer (Available Only)</h3>
+                <form id="add-roster-racer-form" class="space-y-2 flex gap-2 flex-wrap">
+
+                    <select id="roster-team-select-add" class="p-3 flex-grow min-w-[150px]" required>
+                        <option value="" disabled selected>Select Target Team</option>
+                    </select>
+                    <select id="add-racer-select" class="p-3 flex-grow min-w-[150px]" required>
+
+                        <option value="" disabled selected>Loading available racers...</option>
+                    </select>
+                    <button type="submit" class="btn-base btn-success" disabled id="add-roster-racer-btn">
+                        ADD
+
+                    </button>
+                </form>
+                <div id="add-roster-racer-feedback" class="feedback-message"></div>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-semibold text-white mb-2 border-t border-gray-700 pt-3">Current Team Rosters</h3>
+
+                <div id="teams-list-container" class="space-y-3">
+                    <p class="text-gray-400">Loading teams...</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-    // FIX 1: Removed 'FieldValue' and added 'increment' to the import list.
-    import { getFirestore, doc, setDoc, updateDoc, onSnapshot, collection, query, where, runTransaction, increment, Timestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
+    import { getFirestore, doc, setDoc, updateDoc, onSnapshot, collection, query, where, runTransaction, increment, Timestamp, arrayUnion, arrayRemove, getDocs, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
     // --- Configuration ---
-    // NOTE: The canvas environment automatically provides __firebase_config and __initial_auth_token.
-    // However, since this HTML is self-contained and uses hardcoded imports, we'll keep the
-    // simulated config for demonstration purposes.
     const firebaseConfig = {
         apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0", // Mocked key
         authDomain: "souls-of-soulcity.firebaseapp.com",
@@ -311,21 +505,26 @@
             const box = document.getElementById('message-box');
             const titleEl = document.getElementById('message-box-title');
             const contentEl = document.getElementById('message-box-content');
+
             const okBtn = document.getElementById('message-box-ok');
             const cancelBtn = document.getElementById('message-box-cancel');
 
             titleEl.textContent = title;
-            contentEl.textContent = message;
+            contentEl.innerHTML = message; // Use innerHTML to allow for bolding in messages
 
             okBtn.onclick = () => {
                 box.classList.add('hidden');
+
+                box.style.display = 'none';
                 resolve(true);
             };
 
             if (isConfirmation) {
                 cancelBtn.classList.remove('hidden');
                 cancelBtn.onclick = () => {
+
                     box.classList.add('hidden');
+                    box.style.display = 'none';
                     resolve(false);
                 };
             } else {
@@ -333,6 +532,30 @@
             }
 
             box.classList.remove('hidden');
+            box.style.display = 'flex';
+        });
+    }
+
+    // --- Tab Management ---
+    function setupTabs() {
+        const tabs = {
+            'tab-bidding': 'bidding-tab',
+            'tab-racers': 'racers-tab',
+            'tab-teams': 'teams-tab'
+        };
+        Object.keys(tabs).forEach(tabId => {
+            document.getElementById(tabId).addEventListener('click', () => {
+                // Deactivate all buttons and hide all content
+                Object.keys(tabs).forEach(id => {
+                    document.getElementById(id).classList.remove('active');
+                    document.getElementById(tabs[id]).classList.add('hidden');
+
+                });
+
+                // Activate clicked button and show content
+                document.getElementById(tabId).classList.add('active');
+                document.getElementById(tabs[tabId]).classList.remove('hidden');
+            });
         });
     }
 
@@ -357,9 +580,30 @@
     const auctionTimerDisplayEl = document.getElementById('auction-timer-display');
     const rechargeRequestsListEl = document.getElementById('recharge-requests-list');
 
+    // Existing DOM Elements for Deletion
+    const deleteRacerForm = document.getElementById('delete-racer-form');
+    const deleteRacerSelect = document.getElementById('delete-racer-select');
+    const deleteRacerBtn = document.getElementById('delete-racer-btn');
+
+    // NEW DOM Elements for Editing
+    const editRacerForm = document.getElementById('edit-racer-form');
+    const editRacerSelect = document.getElementById('edit-racer-select');
+    const newStartingPriceInput = document.getElementById('new-starting-price');
+    const editRacerBtn = document.getElementById('edit-racer-btn');
+
+    const deleteTeamForm = document.getElementById('delete-team-form');
+    const deleteTeamSelect = document.getElementById('delete-team-select');
+    const deleteTeamBtn = document.getElementById('delete-team-btn');
+    // NEW DOM Elements for Roster Management
+    const teamsListContainer = document.getElementById('teams-list-container');
+    const rosterTeamSelectAdd = document.getElementById('roster-team-select-add');
+    const addRacerSelect = document.getElementById('add-racer-select');
+    const addRosterRacerForm = document.getElementById('add-roster-racer-form');
+    const addRosterRacerBtn = document.getElementById('add-roster-racer-btn');
+
+
     let currentAuctionData = null;
     let countdownInterval;
-
     // --- SECURITY AND AUTH CHECK ---
     onAuthStateChanged(auth, user => {
         // Set initial visibility to prevent FOUC
@@ -367,48 +611,47 @@
         mainContent.style.display = 'none';
 
         if (!user) {
-            // If user logs out or session expires, they are redirected here by the listener
-            // If they are on the admin page without a user, redirect them to login.
             window.location.href = 'index.html'; // Redirect to login page
             return;
         }
 
-        // --- Simulating Admin Auth (Since we don't have sign-in logic here) ---
-        // For testing, user.uid would be dynamically set.
-        // const isAuthorized = AUTHORIZED_ADMIN_UIDS.includes(user.uid);
+
+        // --- Simulating Admin Auth ---
         const isAuthorized = true; // FORCE AUTH for testing the immersive
 
         if (!isAuthorized) {
-            // Simulating redirect or log out
             window.location.href = 'index.html';
             return;
         }
 
         // --- AUTHORIZED ADMIN: PROCEED ---
         loadingOverlay.style.opacity = '0';
+
         setTimeout(() => {
             loadingOverlay.classList.add('hidden');
             mainContent.style.display = 'block';
-        }, 500); // Fade out overlay
+        }, 500);
 
+        setupTabs(); // Initialize the tab system
         startAuctionListener();
         setupRacerManager();
         setupRechargeRequestsListener();
+        setupRacerManagers(); // Combined function for Edit/Delete
+        setupDeleteTeamManager();
+        setupRosterManager(); // Initialize Roster Manager
     });
-
-    // FIX APPLIED HERE: Added window.location.href redirect after successful sign out.
     logoutBtn.addEventListener('click', async () => {
         try {
             await signOut(auth);
-            // After successful sign out, redirect the user to the login page
             window.location.href = 'index.html';
         } catch (e) {
             console.error("Logout failed:", e);
             await showCustomModal("Logout Error", "Failed to log out. Please check your network connection.", false);
         }
+
     });
 
-    // --- 1. TEAM REGISTRATION (Manual Auth UID Linkage) ---
+    // --- TEAM REGISTRATION (Manual Auth UID Linkage) ---
 
     registerTeamForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -419,16 +662,16 @@
         const balance = parseInt(balanceInput);
         const feedbackId = 'register-team-feedback';
 
+
         if (teamId.length < 20 || isNaN(balance) || balance < 0) {
             showFeedback(feedbackId, "Error: Invalid UID or balance.", 'error');
             return;
         }
 
         try {
-            // Note: In a production environment, use the Canvas-provided __app_id for paths.
-            // For this self-contained example, we use generic top-level collections.
             await setDoc(doc(db, 'teams', teamId), {
                 teamName: teamName,
+
                 ownerName: ownerName,
                 balance: balance,
                 roster: [],
@@ -440,8 +683,298 @@
             showFeedback(feedbackId, "Error: Failed to register team. Check if UID is unique.", 'error');
         }
     });
+    // --- TEAM DELETION LOGIC ---
 
-    // --- 2. RACER MANAGEMENT (Add New Racer) ---
+    async function setupDeleteTeamManager() {
+        // Fetch all teams to populate the dropdown
+        const querySnapshot = await getDocs(collection(db, "teams"));
+        let optionsHtml = '<option value="" disabled selected>Select Team to Remove</option>';
+        querySnapshot.forEach((doc) => {
+            const team = doc.data();
+            optionsHtml += `<option value="${doc.id}">${team.teamName} (${doc.id.substring(0, 8)}...)</option>`;
+        });
+        deleteTeamSelect.innerHTML = optionsHtml;
+
+        deleteTeamSelect.addEventListener('change', () => {
+            deleteTeamBtn.disabled = !deleteTeamSelect.value;
+        });
+    }
+
+    deleteTeamForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const teamId = deleteTeamSelect.value;
+        const feedbackId = 'delete-team-feedback';
+
+        if (!teamId) {
+            showFeedback(feedbackId, "Error: Please select a team to delete.", 'error');
+            return;
+        }
+
+        const confirmed = await
+            showCustomModal(
+                "Confirm Team Deletion",
+                "WARNING: This will permanently delete the team and all its data. Are you sure?",
+                true
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            // Find the team name for feedback/cleanup
+            const teamDoc = await getDoc(doc(db, 'teams', teamId));
+            const teamRoster = teamDoc.exists() ? teamDoc.data().roster : [];
+
+            // 1. Update Racer status for any racers on the roster back to 'Available'
+            for (const racerName of teamRoster) {
+
+                await updateDoc(doc(db, 'racers', racerName), {
+                    status: 'Available',
+                    winningTeamName: null,
+                    winningBid: 0
+                }).catch(err => console.warn(`Could not update racer
+                    ${racerName} status upon team deletion.`, err));
+            }
+
+            // 2. Delete the team document
+            await deleteDoc(doc(db, 'teams', teamId));
+            showFeedback(feedbackId, `Team successfully deleted. Racers (${teamRoster.length}) reset to 'Available'.`, 'success');
+            // Re-run setup to refresh the dropdown list
+            setupDeleteTeamManager();
+            // Roster Manager refreshes automatically via onSnapshot
+        } catch (e) {
+            console.error("Error deleting team:", e);
+            showFeedback(feedbackId, "Error: Failed to delete team. Check console for details.", 'error');
+        }
+    });
+    // --- NEW: ROSTER MANAGEMENT LOGIC (Accordion View) ---
+
+    function setupRosterManager() {
+        // --- Live update Available Racers Dropdown ---
+        onSnapshot(query(collection(db, "racers"), where("status", "==", "Available")), (querySnapshot) => {
+            let racerOptionsHtml = '<option value="" disabled selected>Select Racer to Add</option>';
+            querySnapshot.forEach((doc) => {
+                const racer = doc.data();
+
+                racerOptionsHtml += `<option value="${racer.name}">${racer.name}</option>`;
+            });
+            addRacerSelect.innerHTML = racerOptionsHtml;
+            // Re-check button state on racer data change
+            updateAddRacerButtonState();
+        });
+        // --- Live update All Teams List & Roster Display ---
+        onSnapshot(collection(db, "teams"), (querySnapshot) => {
+            let teamsHtml = '';
+
+            // Re-populate Team Select for Add Racer Form
+            let teamSelectOptions = '<option value="" disabled selected>Select Target Team</option>';
+
+            querySnapshot.forEach((doc) => {
+
+                const teamId = doc.id;
+                const team = doc.data();
+                const roster = team.roster || [];
+                const teamName = team.teamName;
+
+                teamSelectOptions += `<option value="${teamId}">${teamName}</option>`;
+
+
+                // 1. Build Roster HTML (content to be hidden/expanded)
+                let rosterHtml = '';
+                if (roster.length === 0) {
+                    rosterHtml = '<div class="text-gray-400 py-2">Roster is currently empty.</div>';
+                } else {
+
+                    roster.forEach(racerName => {
+                        // The '-'' sign is an SVG in the button
+                        rosterHtml += `
+
+                            <div class="roster-item">
+                                <span class="text-white">${racerName}</span>
+                                <button class="remove-roster-btn btn-base btn-danger text-white text-xs"
+
+                                    data-racer-name="${racerName}"
+                                    data-team-id="${teamId}"
+                                    data-team-name="${teamName}">
+
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path></svg>
+                                </button>
+
+                            </div>
+                        `;
+                    });
+                }
+
+                // 2. Build Team List Item HTML (Accordion Header + Content)
+                teamsHtml += `
+                    <div class="team-accordion-item" data-team-id="${teamId}">
+                        <div class="team-header">
+
+                            <h3 class="text-xl font-bold">${teamName} <span class="text-sm text-gray-400 ml-2">(${roster.length} Racers)</span></h3>
+                            <span class="accordion-icon text-white text-2xl transition duration-300 transform">+</span>
+                        </div>
+
+                        <div class="roster-content" id="roster-for-${teamId}">
+                            ${rosterHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            teamsListContainer.innerHTML = teamsHtml || '<p class="text-yellow-500">No teams registered.</p>';
+            rosterTeamSelectAdd.innerHTML = teamSelectOptions;
+            // 3. Attach event listeners
+            setupAccordionListeners();
+            setupRemoveRacerListeners();
+            // Re-attach listeners to ensure button state updates
+            rosterTeamSelectAdd.removeEventListener('change', updateAddRacerButtonState);
+            rosterTeamSelectAdd.addEventListener('change', updateAddRacerButtonState);
+
+            // FIX: Add change listener for the racer dropdown so the button enables
+            addRacerSelect.removeEventListener('change', updateAddRacerButtonState);
+            addRacerSelect.addEventListener('change', updateAddRacerButtonState);
+
+            updateAddRacerButtonState(); // Initial check
+        });
+        // Add Racer Form Submission
+        addRosterRacerForm.removeEventListener('submit', handleAddRacerToRoster);
+        addRosterRacerForm.addEventListener('submit', handleAddRacerToRoster);
+    }
+
+    // Toggle the accordion view
+    function setupAccordionListeners() {
+        document.querySelectorAll('.team-accordion-item').forEach(item => {
+            const header = item.querySelector('.team-header');
+            const content = item.querySelector('.roster-content');
+            const icon = item.querySelector('.accordion-icon');
+
+            header.onclick = () => {
+
+                const isExpanded = content.classList.contains('expanded');
+
+                // Collapse all others
+                document.querySelectorAll('.roster-content.expanded').forEach(el => {
+                    const siblingIcon = el.closest('.team-accordion-item').querySelector('.accordion-icon');
+                    if (el !== content) {
+
+                        el.classList.remove('expanded');
+                        siblingIcon.textContent = '+';
+                    }
+                });
+
+                // Toggle current one
+
+                content.classList.toggle('expanded');
+                icon.textContent = isExpanded ? '+' : '-';
+            };
+        });
+    }
+
+    // New helper function to control the Add Racer button state
+    function updateAddRacerButtonState() {
+        const teamSelected = !!rosterTeamSelectAdd.value;
+        const racerSelected = !!addRacerSelect.value;
+        addRosterRacerBtn.disabled = !(teamSelected && racerSelected);
+    }
+
+    // Function to handle adding a racer
+    async function handleAddRacerToRoster(e) {
+        e.preventDefault();
+        const teamId = rosterTeamSelectAdd.value;
+        const teamName = rosterTeamSelectAdd.options[rosterTeamSelectAdd.selectedIndex].textContent.split(' (')[0];
+        const racerName = addRacerSelect.value;
+        const feedbackId = 'add-roster-racer-feedback';
+
+        if (!teamId || !racerName) {
+            showFeedback(feedbackId, "Error: Select a team and a racer.", 'error');
+            return;
+        }
+
+        const confirmed = await showCustomModal(
+
+            "Confirm Roster Addition",
+            `Confirm adding racer **${racerName}** to team **${teamName}**?`,
+            true
+        );
+        if (!confirmed) return;
+
+        const teamRef = doc(db, 'teams', teamId);
+        const racerRef = doc(db, 'racers', racerName);
+
+        try {
+
+            await runTransaction(db, async (t) => {
+                // 1. Add racer to team roster using arrayUnion
+                t.update(teamRef, { roster: arrayUnion(racerName) });
+                // 2. Mark racer status as 'Rostered' (claimed by an admin action)
+                t.update(racerRef, {
+
+                    status: 'Rostered',
+                    winningTeamName: teamName
+                });
+            });
+
+            showFeedback(feedbackId, `${racerName} added to ${teamName}'s roster.`, 'success');
+            rosterTeamSelectAdd.value = '';
+            // Reset team select
+            addRacerSelect.value = '';
+            // Reset racer select
+            updateAddRacerButtonState();
+            // Update button state
+        } catch (e) {
+            console.error("Error adding racer to roster:", e);
+            showFeedback(feedbackId, "Error: Failed to add racer to roster.", 'error');
+        }
+    }
+
+    // Function to attach listeners to dynamically created 'REMOVE' buttons
+    function setupRemoveRacerListeners() {
+        document.querySelectorAll('.remove-roster-btn').forEach(button => {
+            // Ensure single listener by removing it first
+            button.removeEventListener('click', handleRemoveRacerFromRoster);
+            button.addEventListener('click', handleRemoveRacerFromRoster);
+        });
+    }
+
+    // Function to handle removing a racer
+    async function handleRemoveRacerFromRoster(e) {
+        const teamId = e.currentTarget.dataset.teamId;
+        const teamName = e.currentTarget.dataset.teamName;
+        const racerName = e.currentTarget.dataset.racerName;
+
+        const confirmed = await showCustomModal(
+            "Confirm Roster Removal",
+            `Confirm removing racer **${racerName}** from team **${teamName}**? The racer will become **'Available'** for auction/re-assignment.`,
+            true
+        );
+        if (!confirmed) return;
+
+        const teamRef = doc(db, 'teams', teamId);
+        const racerRef = doc(db, 'racers', racerName);
+        try {
+            await runTransaction(db, async (t) => {
+                // 1. Remove racer from team roster using arrayRemove
+                t.update(teamRef, { roster: arrayRemove(racerName) });
+                // 2. Mark racer status as Available and clear team info
+
+                t.update(racerRef, {
+                    status: 'Available',
+                    winningTeamName: null,
+                    winningBid: 0
+                });
+            });
+            await showCustomModal("Racer Removed", `${racerName} was successfully removed from **${teamName}** and is now 'Available'.`, false);
+            // The onSnapshot listener will automatically refresh the list.
+        } catch (e) {
+            console.error("Error removing racer from roster:", e);
+            await showCustomModal("Error", "Failed to remove racer from roster. Check console for details.", false);
+        }
+    }
+
+
+    // --- RACER MANAGEMENT (Add/Edit/Delete) ---
 
     addRacerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -451,6 +984,7 @@
 
         if (!racerName || isNaN(startingPrice) || startingPrice < 1) {
             showFeedback(feedbackId, "Error: Invalid racer name or price.", 'error');
+
             return;
         }
 
@@ -459,6 +993,7 @@
                 name: racerName,
                 startingPrice: startingPrice,
                 status: 'Available',
+
                 winningTeamName: null,
             });
             showFeedback(feedbackId, `Racer ${racerName} added successfully!`, 'success');
@@ -469,28 +1004,163 @@
         }
     });
 
-    // --- 3. AUCTION START/END LOGIC ---
+    // Combined function to setup both Edit and Delete dropdowns
+    function setupRacerManagers() {
+        // Listen to all racers to populate both edit and delete dropdowns
+        const q = query(collection(db, "racers"));
+        onSnapshot(q, (querySnapshot) => {
+            let optionsHtml = '<option value="" data-price="" disabled selected>Select Racer</option>';
+
+            querySnapshot.forEach((doc) => {
+                const racer = doc.data();
+                // Store startingPrice in a data attribute for the edit feature
+                optionsHtml += `<option value="${racer.name}" data-price="${racer.startingPrice}">${racer.name} (${racer.status}) - ${racer.startingPrice} SVC</option>`;
+            });
+
+            // 1. Populate Delete Dropdown
+            deleteRacerSelect.innerHTML = optionsHtml;
+            deleteRacerBtn.disabled = true;
+
+            // 2. Populate Edit Dropdown
+            editRacerSelect.innerHTML = optionsHtml;
+            editRacerBtn.disabled = true;
+            newStartingPriceInput.disabled = true;
+
+            // 3. Add listener for Edit Select
+            editRacerSelect.onchange = () => {
+                const selectedOption = editRacerSelect.options[editRacerSelect.selectedIndex];
+                const startingPrice = selectedOption.dataset.price;
+                const racerName = editRacerSelect.value;
+
+                if (racerName) {
+                    newStartingPriceInput.value = startingPrice;
+                    newStartingPriceInput.disabled = false;
+                    editRacerBtn.disabled = false;
+                } else {
+                    newStartingPriceInput.value = '';
+                    newStartingPriceInput.disabled = true;
+                    editRacerBtn.disabled = true;
+                }
+            };
+
+            // 4. Add listener for Delete Select
+            deleteRacerSelect.onchange = () => {
+                deleteRacerBtn.disabled = !deleteRacerSelect.value;
+            };
+        });
+    }
+
+    // --- RACER EDIT LOGIC ---
+    editRacerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const racerName = editRacerSelect.value;
+        const newStartingPrice = parseInt(newStartingPriceInput.value);
+        const feedbackId = 'edit-racer-feedback';
+
+        if (!racerName || isNaN(newStartingPrice) || newStartingPrice < 1) {
+            showFeedback(feedbackId, "Error: Select a racer and enter a valid price.", 'error');
+            return;
+        }
+
+        const confirmed = await
+            showCustomModal(
+                "Confirm Price Update",
+                `Confirm changing **${racerName}**'s starting price to **${newStartingPrice} SVC**?`,
+                true
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await updateDoc(doc(db, 'racers', racerName), {
+                startingPrice: newStartingPrice
+            });
+            showFeedback(feedbackId, `Racer ${racerName}'s price successfully updated to ${newStartingPrice} SVC.`, 'success');
+            // Reset state
+            editRacerSelect.value = '';
+            newStartingPriceInput.value = '';
+            newStartingPriceInput.disabled = true;
+            editRacerBtn.disabled = true;
+        } catch (e) {
+            console.error("Error editing racer price:", e);
+            showFeedback(feedbackId, "Error: Failed to update racer price. Check console.", 'error');
+        }
+    });
+
+    // --- RACER DELETION LOGIC ---
+    deleteRacerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const racerName = deleteRacerSelect.value;
+        const feedbackId = 'delete-racer-feedback';
+
+        if (!racerName) {
+            showFeedback(feedbackId, "Error: Please select a racer to delete.", 'error');
+            return;
+        }
+
+        const confirmed = await
+            showCustomModal(
+                "Confirm Racer Deletion",
+                `WARNING: This will permanently delete the racer: **${racerName}**. Are you sure?`,
+                true
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            // Find any teams that have this racer in their roster
+            const teamQuery = query(collection(db, 'teams'), where('roster', 'array-contains', racerName));
+            const teamSnapshot = await getDocs(teamQuery);
+
+            // 1. Remove the racer from the team's roster if found
+            // FIX: Use a for...of loop to correctly await asynchronous updates
+            for (const teamDoc of teamSnapshot.docs) {
+                const teamId = teamDoc.id;
+                await updateDoc(doc(db, 'teams', teamId), {
+                    roster: arrayRemove(racerName)
+                });
+            }
+
+            // 2. Delete the racer document
+            await deleteDoc(doc(db, 'racers', racerName));
+            showFeedback(feedbackId, `Racer ${racerName} successfully deleted.`, 'success');
+            // Reset state
+            deleteRacerSelect.value = '';
+            deleteRacerBtn.disabled = true;
+        } catch (e) {
+            console.error("Error deleting racer:", e);
+            showFeedback(feedbackId, "Error: Failed to delete racer. Check console for details.", 'error');
+        }
+    });
+
+    // --- 3. AUCTION START/END LOGIC (No changes, included for completeness) ---
 
     function startTimer(timerEndsAt) {
         clearInterval(countdownInterval);
         endAuctionBtn.disabled = true;
 
-        if (!timerEndsAt) { auctionTimerDisplayEl.textContent = "--:--"; return; }
+        if (!timerEndsAt) { auctionTimerDisplayEl.textContent = "--:--"; return;
+        }
 
         const endTime = timerEndsAt.toDate().getTime();
-
         countdownInterval = setInterval(() => {
             const distance = endTime - Date.now();
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             const statusClass = seconds < 10 && seconds > 0 ? 'timer-display font-extrabold text-3xl animate-pulse' : 'timer-display font-extrabold text-3xl';
 
             if (distance > 0) {
+
                 auctionTimerDisplayEl.textContent = `${seconds.toString().padStart(2, '0')}s`;
                 auctionTimerDisplayEl.className = statusClass;
                 endAuctionBtn.disabled = false;
             } else {
                 clearInterval(countdownInterval);
                 auctionTimerDisplayEl.textContent = "TIMEOUT!";
+
                 auctionTimerDisplayEl.className = 'timer-display font-extrabold text-3xl animate-pulse';
                 endAuctionBtn.disabled = false;
             }
@@ -506,6 +1176,7 @@
             const { racerName, currentBid, lastBidderName, endTime, status } = currentAuctionData;
 
             liveAuctionRacerEl.textContent = racerName || 'N/A';
+
             liveAuctionBidEl.textContent = `${currentBid || 0} SVC`;
             liveAuctionBidderEl.textContent = lastBidderName || 'N/A';
 
@@ -519,7 +1190,6 @@
     // Populate racer dropdown from Firestore
     function setupRacerManager() {
         const q = query(collection(db, "racers"), where("status", "==", "Available"));
-
         onSnapshot(q, (querySnapshot) => {
             let optionsHtml = '<option value="" disabled selected>Select Racer to Auction</option>';
             let listHtml = '';
@@ -527,6 +1197,7 @@
             querySnapshot.forEach((doc) => {
                 const racer = doc.data();
                 optionsHtml += `<option value="${racer.name}|${racer.startingPrice}">${racer.name} (${racer.startingPrice} SVC)</option>`;
+
                 listHtml += `<li><span class="text-white font-bold">»</span> ${racer.name} <span class="text-gray-500">(${racer.startingPrice} SVC)</span></li>`;
             });
 
@@ -534,7 +1205,8 @@
             availableRacersList.innerHTML = listHtml || '<li class="text-yellow-500">All available racers are currently in auction or sold.</li>';
 
             racerSelect.addEventListener('change', () => {
-                startAuctionBtn.disabled = !racerSelect.value;
+                startAuctionBtn.disabled
+                    = !racerSelect.value;
             });
         });
     }
@@ -550,11 +1222,13 @@
         const [racerName, startingPriceStr] = selectedValue.split('|');
         const startingPrice = parseInt(startingPriceStr);
 
+
         // Check if an auction is currently live
         if (currentAuctionData && currentAuctionData.status === 'Live') {
             const confirmed = await showCustomModal(
                 "Warning: Auction In Progress",
                 `An auction for ${currentAuctionData.racerName} is currently LIVE. Do you want to forcibly start a new one?`,
+
                 true
             );
             if (!confirmed) {
@@ -563,7 +1237,8 @@
         }
 
         const auctionRef = doc(db, 'auctions', 'currentRacer');
-        const sixtySecondsFromNow = Timestamp.fromMillis(Date.now() + 60000); // 60 seconds timer
+        const sixtySecondsFromNow = Timestamp.fromMillis(Date.now() + 60000);
+        // 60 seconds timer
 
         try {
             await setDoc(auctionRef, {
@@ -571,16 +1246,14 @@
                 currentBid: startingPrice,
                 lastBidderId: null,
                 lastBidderName: null,
+
                 endTime: sixtySecondsFromNow,
                 status: 'Live',
                 racerDocId: racerName
             }, { merge: true });
-
-            // FIX 2: Set racer status to 'Live' so it disappears from the available list/dropdown
             await updateDoc(doc(db, 'racers', racerName), {
                 status: 'Live'
             });
-
             startAuctionBtn.disabled = true;
 
         } catch (e) {
@@ -588,7 +1261,6 @@
             await showCustomModal("Error", "Failed to start auction. Check console for details.", false);
         }
     });
-
     // "End Auction & Sell" Button Handler
     endAuctionBtn.addEventListener('click', async () => {
         if (!currentAuctionData || currentAuctionData.status !== 'Live') {
@@ -598,14 +1270,16 @@
 
         const { racerName, currentBid, lastBidderId, lastBidderName, racerDocId } = currentAuctionData;
 
-        // Confirmation dialog
+        // Confirmation
+
         const confirmMessage = lastBidderId
-            ? `Confirm SALE: ${racerName} to ${lastBidderName} for ${currentBid} SVC?`
-            : `Confirm RESET: No bids placed on ${racerName}. Reset auction?`;
+            ? `Confirm SALE: **${racerName}** to **${lastBidderName}** for **${currentBid} SVC**?`
+            : `Confirm RESET: No bids placed on **${racerName}**. Reset auction?`;
 
         const confirmed = await showCustomModal(
             lastBidderId ? "Confirm Sale" : "Confirm Reset",
             confirmMessage,
+
             true
         );
 
@@ -613,22 +1287,21 @@
             return;
         }
 
-        // Handle No Bids (Reset) - **CONTAINING FIX 1**
+        // Handle No Bids (Reset)
         if (!lastBidderId) {
             const racerRef = doc(db, 'racers', racerDocId);
-
             // 1. Reset auction document
             await updateDoc(doc(db, 'auctions', 'currentRacer'), {
                 racerName: 'Awaiting Setup...',
                 currentBid: 0,
                 lastBidderId: null,
                 lastBidderName: null,
+
                 endTime: null,
                 status: 'Pending',
                 racerDocId: null
             });
-
-            // 2. FIX 1: Reset the Racer's status to 'Available' so it reappears in the list.
+            // 2. Reset the Racer's status to 'Available' so it reappears in the list.
             if (racerDocId) {
                 await updateDoc(racerRef, {
                     status: 'Available'
@@ -650,48 +1323,49 @@
                 const teamData = teamDoc.data();
 
                 if (teamData.balance < currentBid) {
+
                     throw new Error(`Team ${lastBidderName} does not have enough funds (${teamData.balance} SVC) to cover the winning bid (${currentBid} SVC).`);
                 }
 
                 // 1. Deduct cost from Team's balance & add racer to roster
-                // FIX 2: Using the imported 'increment' function directly
                 t.update(teamRef, {
+
                     balance: increment(-currentBid), // Decrementing by bidding amount
                     roster: arrayUnion(racerName)
                 });
 
                 // 2. Update Racer status to 'Sold'
                 t.update(racerRef, {
+
                     status: 'Sold',
                     winningTeamName: lastBidderName,
                     winningBid: currentBid
                 });
-
                 // 3. Reset the live auction document
-                t.set(doc(db, 'auctions', 'currentRacer'), {
+                t.set(doc(db,
+                    'auctions', 'currentRacer'), {
                     racerName: 'Awaiting Setup...',
                     currentBid: 0,
                     lastBidderId: null,
                     lastBidderName: null,
+
                     endTime: null,
                     status: 'Sold',
                     lastSoldRacer: racerName
                 });
             });
 
-            await showCustomModal("Sale Complete", `SOLD! ${racerName} to ${lastBidderName} for ${currentBid} SVC. Funds transferred.`, false);
+            await showCustomModal("Sale Complete", `SOLD! **${racerName}** to **${lastBidderName}** for **${currentBid} SVC**. Funds transferred.`, false);
             endAuctionBtn.disabled = true;
         } catch (e) {
             console.error("Transaction failed:", e);
             await showCustomModal("Sale Failed", `SALE FAILED: ${e.message}. Funds/Racer not transferred. Check console.`, false);
         }
     });
-
-    // --- 4. RECHARGE REQUESTS ---
+    // --- 4. RECHARGE REQUESTS (No changes, included for completeness) ---
 
     function setupRechargeRequestsListener() {
         const q = query(collection(db, "rechargeRequests"), where("status", "==", "Pending"));
-
         onSnapshot(q, (querySnapshot) => {
             let html = '';
             if (querySnapshot.empty) {
@@ -700,24 +1374,30 @@
             }
 
             querySnapshot.forEach((doc) => {
+
                 const data = doc.data();
                 const requestId = doc.id;
 
                 html += `
                     <div class="border-b border-gray-700 p-3 flex flex-col md:flex-row justify-between items-start md:items-center bg-gray-900 rounded-sm hover:bg-gray-800">
+
                         <div class="mb-2 md:mb-0">
                             <p class="font-semibold text-white">${data.teamName}</p>
                             <p class="live-bid font-bold text-lg">+${data.svcAmount} SVC</p>
+
                             <p class="text-xs text-gray-400">Note: ${data.paymentNote || 'N/A'}</p>
                         </div>
                         <div class="flex flex-row space-x-2 md:flex-col md:space-x-0 md:space-y-1">
                             <button class="approve-btn btn-base btn-success text-xs"
-                                    data-uid="${data.userId}"
-                                    data-amount="${data.svcAmount}"
-                                    data-request-id="${requestId}">APPROVE</button>
+
+                                data-uid="${data.userId}"
+                                data-amount="${data.svcAmount}"
+
+                                data-request-id="${requestId}">APPROVE</button>
                             <button class="reject-btn btn-base btn-warning text-xs"
                                     data-request-id="${requestId}">REJECT</button>
                         </div>
+
                     </div>
                 `;
             });
@@ -734,19 +1414,22 @@
                 const amount = parseInt(e.target.dataset.amount);
                 const requestId = e.target.dataset.requestId;
 
+
                 const teamRef = doc(db, 'teams', userId);
                 const requestRef = doc(db, 'rechargeRequests', requestId);
 
                 try {
                     await runTransaction(db, async (t) => {
+
                         // 1. Update Team Balance
-                        // FIX 3: Changed FieldValue.increment(amount) to increment(amount)
                         t.update(teamRef, { balance: increment(amount) });
                         // 2. Mark Request as Approved
                         t.update(requestRef, {
+
                             status: 'Approved',
                             approvedBy: auth.currentUser.uid,
                             approvalTime: Timestamp.now()
+
                         });
                     });
                 } catch (e) {
@@ -761,11 +1444,13 @@
                 const requestId = e.target.dataset.requestId;
                 try {
                     await updateDoc(doc(db, 'rechargeRequests', requestId), {
+
                         status: 'Rejected',
                         rejectedBy: auth.currentUser.uid,
                         rejectionTime: Timestamp.now()
                     });
                 } catch (e) {
+
                     console.error("Recharge rejection failed:", e);
                     await showCustomModal("Error", "Recharge rejection failed. Check console.", false);
                 }
