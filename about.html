@@ -1,451 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <title>Souls Of Soulcity - About</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
-        /* -------------------- BASE STYLES -------------------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --f1-red: #e10600;
+            --f1-black: #0b0b0b;
+            --f1-text-dim: #b0b0b0;
+            --navbar-h: 80px;
         }
 
-        :root {
-            --color-black: #ffffff;
-            --color-dark-grey: #121212;
-            --color-mid-grey: #2a2a2a;
-            --color-light-grey: #e0e0e0;
-            --color-white: #ffffff;
-            /* --- UPDATED ACCENT COLORS: Subdued Metallic Silver --- */
-            --color-metallic-silver: #ffffff;
-            --color-subdued-blue: rgba(255, 255, 255, 0.07);
-            --color-dark-text: #1A1A1A;
-            /* ----------------------------- */
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            width: 100vw;
-            font-family: "Poppins", sans-serif;
-            color: var(--color-light-grey);
-            min-height: 100vh;
-
-            /* Background Image with Dark Overlay */
+            background-color: var(--f1-black);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
             background-image: url('images/carbg3.jpg');
-            background-color: var(--color-dark-grey);
             background-size: cover;
             background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-position: center center;
-
-            position: relative;
+            background-position: center;
         }
 
-        /* --- DARK OVERLAY --- */
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
             z-index: -1;
-            pointer-events: none;
         }
 
-
-        main {
-            width: 100%;
-            position: relative;
-            overflow-x: hidden;
-            min-height: 100vh;
-            z-index: 3;
-        }
-
-        h1, h2, h3 {
-            color: var(--color-white);
-            font-weight: 700;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--color-light-grey);
-            transition: color 0.3s;
-        }
-
-        /* -------------------- LOGO -------------------- */
+        /* -------------------- LOGO & NAV -------------------- */
         .logo {
             position: fixed;
-            /* Adjusted top for better visual alignment with broader nav */
             top: 23px;
             left: 40px;
-            z-index: 100;
+            z-index: 101;
             font-family: "Kaushan Script", sans-serif;
             font-weight: bolder;
             font-size: 24px;
             color: #e4e3d3;
-            text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
-            transition: color 0.3s, text-shadow 0.3s;
-        }
-        /* Logo color when scrolled: Remains light for dark navbar */
-        .logo.scrolled {
-            color: #e4e3d3;
-            text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
+            text-decoration: none;
+            transition: 0.3s;
         }
 
-        /* -------------------- HAMBURGER NAV - Default Transparent State -------------------- */
         nav {
             position: fixed;
             top: 0;
-            right: 0;
             width: 100%;
+            height: var(--navbar-h);
             z-index: 99;
-
-            /* KEY ADDITIONS FOR VERTICAL CENTERING */
             display: flex;
             align-items: center;
-
-            /* INITIAL TRANSPARENT STATE */
             background-color: transparent;
-            backdrop-filter: none;
-            /* Added padding to transition for smooth height change */
-            transition: background-color 0.4s ease, backdrop-filter 0.4s ease, padding 0.4s ease;
-
-            padding-top: 15px;
-            padding-bottom: 15px;
+            transition: all 0.4s ease;
         }
 
-        /* SCROLLED STATE: Dark, Smoky Translucent Effect, broader */
         nav.scrolled {
-            background-color: rgba(18, 18, 18, 0.85); /* Dark-grey/Black with 85% opacity */
-            backdrop-filter: blur(4px);
-            border-bottom: none;
-
-            padding-top: 18px; /* Increased for broader effect */
-            padding-bottom: 18px; /* Increased for broader effect */
+            background-color: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            height: 70px;
         }
-
-        /* Menu Link Color (Default & Scrolled - Light) */
-        .menu li a {
-            color: #fff; /* Default link color */
-        }
-        nav.scrolled .menu li a { /* Ensure links stay white on dark scrolled background */
-            color: #fff !important;
-        }
-
-        /* Change hover effect for links on dark background */
-        .menu li a:hover,
-        nav.scrolled .menu li a:hover {
-            color: var(--color-metallic-silver) !important; /* Metallic silver hover */
-        }
-        .menu li a::after,
-        nav.scrolled .menu li a::after {
-            background-color: var(--color-metallic-silver) !important; /* Metallic silver underline */
-        }
-
-        /* Hamburger/close icon color (Default & Scrolled - Light) */
-        .open-menu,
-        .close-menu {
-            color: #fff; /* Default icon color */
-        }
-        nav.scrolled .open-menu,
-        nav.scrolled .close-menu {
-            color: #fff !important;
-        }
-
 
         .nav-bar {
             width: 100%;
-            height: 100%; /* Important for vertical centering with flex on nav */
             display: flex;
             justify-content: flex-end;
             align-items: center;
             list-style: none;
-            position: relative;
-            padding: 0 20px;
-            margin: 0;
+            padding: 0 40px;
         }
 
-        .menu {
-            display: flex;
-        }
-
-        .menu li {
-            padding-left: 30px;
-        }
-
+        .menu { display: flex; list-style: none; }
+        .menu li { padding-left: 30px; }
         .menu li a {
-            display: inline-block;
-            text-decoration: none;
-            text-align: center;
-            transition: color 0.3s ease-in-out, 0.15s ease-in-out;
-            position: relative;
-            text-transform: uppercase;
-            padding: 0;
-        }
-
-        /* Hover effect updated to metallic silver */
-        .menu li a:hover {
-            color: var(--color-metallic-silver);
-        }
-
-        .menu li a::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background-color: var(--color-metallic-silver);
-            transition: 0.15s ease-in-out;
-        }
-
-        .menu li a:hover:after {
-            width: 100%;
-            /* Subdued blue/cyan for hover underline spread */
-            background-color: var(--color-subdued-blue);
-            box-shadow: 0 0 5px var(--color-subdued-blue);
-        }
-
-        .open-menu,
-        .close-menu {
-            position: absolute;
             color: #fff;
-            cursor: pointer;
-            font-size: 1.5rem;
-            display: none;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
         }
+        .menu li a:hover { color: var(--f1-red); }
 
-        .open-menu {
-            top: 8px;
-            right: 20px;
-        }
+        .open-menu, .close-menu { display: none; color: #fff; cursor: pointer; font-size: 1.5rem; }
+        #check { display: none; }
 
-        .close-menu {
-            top: 20px;
-            right: 20px;
-        }
-
-        #check {
-            display: none;
-        }
-
-        /* -------------------- MOBILE MEDIA QUERY -------------------- */
-        @media(max-width: 950px) {
-            /* Ensure logo is correctly positioned relative to the smaller nav */
-            .logo {
-                left: 20px; /* Adjust logo position for smaller screens */
-                top: 15px;
-                font-size: 20px;
-            }
-            /* Ensure the default nav padding for mobile is consistent/smaller than scrolled */
-            nav {
-                padding-top: 10px; /* Base smaller padding for mobile */
-                padding-bottom: 10px; /* Base smaller padding for mobile */
-            }
-            /* KEY MOBILE SCROLL CHANGE: Make the scrolled nav broader than default mobile nav */
-            nav.scrolled {
-                padding-top: 18px; /* Making it noticeably broader on scroll for mobile */
-                padding-bottom: 18px; /* Making it noticeably broader on scroll for mobile */
-                /* Ensure background/filter is applied */
-                height: 60px;
-                background-color: rgba(18, 18, 18, 0.85);
-                backdrop-filter: blur(4px);
-            }
-
-            .menu {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                width: 80%;
-                height: 100vh;
-                position: fixed;
-                top: 0;
-                right: -100%;
-                z-index: 100;
-                background-color: #181818;
-                transition: all 0.2s ease-in-out;
-            }
-
-            .menu li {
-                margin-top: 40px;
-                padding-left: 0;
-            }
-
-            .menu li a {
-                padding: 10px;
-                font-size: 1.5rem;
-            }
-
-            .open-menu,
-            .close-menu {
-                display: block;
-            }
-
-            .open-menu {
-                top: 0; /* Adjust position relative to new nav padding */
-                right: 20px;
-            }
-
-            .close-menu {
-                position: absolute;
-                top: 20px;
-                right: 30px;
-            }
-
-            #check:checked~.menu {
-                right: 0;
-            }
-        }
-
-        /* -------------------- ABOUT CONTENT STYLES - WITH CLEARANCE -------------------- */
-        #about {
-            padding: 80px 20px;
-            min-height: calc(100vh - 60px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Added clearance for fixed header/nav */
-            padding-top: 100px;
-        }
-
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            padding: 0 20px;
-        }
+        /* -------------------- ABOUT CARDS -------------------- */
+        main { padding-top: var(--navbar-h); }
+        #about { padding: 80px 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 1200px; width: 100%; }
 
         .about-tournament h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2rem, 5vw, 3.5rem);
             text-align: center;
             margin-bottom: 10px;
-            text-shadow: 0 0 5px rgb(255, 255, 255);
+            text-transform: uppercase;
+            font-weight: 800;
         }
 
         .about-tournament .description {
             text-align: center;
-            font-size: 1.25rem;
-            color: var(--color-light-grey);
-            margin-bottom: 50px;
-            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--f1-text-dim);
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin: 0 auto 60px;
         }
 
-        /* Cards Layout */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
 
         .card {
-            background-color: rgba(255, 255, 255, 0.15); /* White translucent */
-            backdrop-filter: blur(5px);
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgb(0, 0, 0);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: box-shadow 0.5s ease-out, border 0.5s ease-out, transform 0.3s;
+            border-top: 2px solid rgba(225, 6, 0, 0.3);
+            transition: transform 0.4s ease, border-top 0.4s ease;
             opacity: 0;
-            color: var(--color-black);
-        }
-
-        .card p, .card ul li {
-            color: var(--color-black);
         }
 
         .card:hover {
-            box-shadow:
-                    0 15px 40px rgba(0, 0, 0, 0.5),
-                    0 0 25px rgba(255, 255, 255, 0.9);
-
-            border: 1px solid var(--color-white);
-            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.07);
+            transform: translateY(-10px);
+            border-top: 2px solid var(--f1-red);
         }
 
         .card h2 {
-            font-size: 1.8rem;
-            margin-top: 0;
-            color: var(--color-black);
-            border-bottom: 2px solid var(--color-metallic-silver);
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             padding-bottom: 10px;
-            margin-bottom: 20px;
         }
 
-        /* Tournament Format Specific Styling */
-        .tournament-format {
-            list-style: none;
-            padding: 0;
+        .card p, .card li {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #d0d0d0;
+            margin-bottom: 15px;
         }
 
-        .tournament-format li {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            gap: 15px;
-        }
-
-        .tournament-format li .icon {
-            font-size: 1.5rem;
-            line-height: 1.2;
-            flex-shrink: 0;
-            color: var(--color-black);
-        }
-
-        .tournament-format li strong {
-            display: block;
-            color: var(--color-black);
-            font-size: 1.1rem;
-        }
-
-        /* Rules & Prize Pool List Styling */
-        .card ul {
-            list-style: none;
-            padding: 0;
-        }
-        .card ul li {
-            padding-left: 20px;
-            position: relative;
-            margin-bottom: 12px;
-            font-size: 1rem;
-            line-height: 1.4;
-            color: var(--color-black);
-        }
-
-        .silver-dot, .blue-dot {
-            position: absolute;
-            left: 0;
-            top: 6px;
-            height: 8px;
-            width: 8px;
-            border-radius: 50%;
-        }
-        .silver-dot { background-color: var(--color-black); }
-        .blue-dot { background-color: var(--color-subdued-blue); }
-
-        /* Responsive Content Adjustments */
-        @media (max-width: 768px) {
-            #about {
-                padding: 120px 20px 50px;
-            }
-        }
-
-        /* -------------------- NEW FOOTER STYLES -------------------- */
+        /* -------------------- FOOTER (FIXED) -------------------- */
         .site-footer {
-            background-color: var(--color-dark-grey);
-            color: var(--color-light-grey);
-            padding: 40px 20px;
-            border-top: 1px solid rgba(187, 187, 187, 0.1);
-            position: relative;
-            z-index: 5;
-            text-align: center;
+            background-color: var(--f1-black);
+            color: white;
+            padding: 60px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
         }
 
         .footer-content {
@@ -454,124 +164,93 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 30px;
+            gap: 40px;
         }
 
         .footer-logo, .footer-links, .footer-contact {
-            padding: 0 10px;
-            flex: 1 1 30%;
-            min-width: 150px;
-            text-align: left;
+            flex: 1 1 300px;
         }
 
         .footer-logo h3 {
             font-family: "Kaushan Script", sans-serif;
-            font-size: 1.8rem;
-            color: var(--color-metallic-silver);
+            font-size: 2.2rem;
+            color: white;
             margin-bottom: 15px;
-            line-height: 1;
         }
 
-        .footer-logo p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
+        .footer-logo p { opacity: 0.8; line-height: 1.6; }
 
         .footer-links h4, .footer-contact h4 {
-            color: var(--color-white);
-            font-size: 1.1rem;
-            border-bottom: 1px solid var(--color-metallic-silver);
-            padding-bottom: 5px;
-            margin-bottom: 15px;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* The line from your screenshot */
+            padding-bottom: 10px;
+            width: fit-content;
+            min-width: 200px;
         }
 
-        .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-
+        .footer-links ul { list-style: none; }
         .footer-links a {
-            color: var(--color-light-grey);
-            font-size: 0.95rem;
+            color: white;
+            text-decoration: none; /* Removed link underline */
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            transition: 0.3s;
+            opacity: 0.9;
         }
 
-        .footer-links a:hover {
-            color: var(--color-subdued-blue);
-            padding-left: 5px;
+        .footer-links a:hover { color: var(--f1-red); padding-left: 5px; opacity: 1; }
+
+        .footer-contact .social-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 1.6rem;
+            margin-top: 15px;
         }
 
-        .footer-contact p {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+        .footer-contact div a:hover .fa-discord {
+            color: #5865F2 !important;
         }
 
-        .footer-contact a {
-            color: var(--color-metallic-silver);
+        .footer-contact div a:hover .fa-instagram {
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; !important;
         }
 
-        .footer-contact a:hover {
-            color: var(--color-subdued-blue);
-        }
+        .footer-contact a { color: #fff; transition: 0.3s; text-decoration: none; }
+        .footer-contact a:hover { color: var(--f1-red); transform: translateY(-3px); }
 
-        .footer-bottom {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(187, 187, 187, 0.1);
-            font-size: 0.85rem;
-            opacity: 0.7;
-            text-align: center;
-            width: 100%;
-        }
+        @media (max-width: 950px) {
+            .open-menu { display: block; }
+            .menu {
+                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
+                background: #0a0a0a; flex-direction: column; align-items: center;
+                justify-content: center; transition: 0.3s; z-index: 100;
+            }
+            .menu li { padding: 20px 0; }
+            .close-menu { display: block; position: absolute; top: 25px; right: 25px; }
+            #check:checked ~ .menu { right: 0; }
 
-        /* Mobile adjustments for footer */
-        @media (max-width: 600px) {
-            .footer-content {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .footer-logo, .footer-links, .footer-contact {
-                flex: 1 1 100%;
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            .footer-links ul {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-            }
-            .footer-links li {
-                margin: 0;
-            }
-            .footer-links a {
-                margin-bottom: 0;
-                display: inline;
-            }
-            .footer-links a:hover {
-                padding-left: 0;
-            }
-            .footer-links h4, .footer-contact h4 {
-                text-align: center;
-            }
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-links h4, .footer-contact h4 { margin: 0 auto 20px; }
+            .footer-contact .social-icons { justify-content: center; }
         }
     </style>
 </head>
 
 <body>
-<a href="#swiper">
-    <div class="logo" id="main-logo">Souls Of Soulcity</div>
-</a>
+
+<a href="index.html" class="logo" id="main-logo">Souls Of Soulcity</a>
 
 <nav id="main-nav">
     <ul class='nav-bar'>
         <input type='checkbox' id='check' />
         <span class="menu">
-            <li><a href="index.html" >Home</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" style="color:var(--f1-red)">About</a></li>
             <li><a href="crews.html">Crews</a></li>
             <li><a href="rankings.html">Rankings</a></li>
             <li><a href="Watch.html">Watch</a></li>
@@ -583,54 +262,40 @@
 </nav>
 
 <main>
-    <section id="about" class="page">
+    <section id="about">
         <div class="container about-tournament">
-            <h1 class="animate-header"> Draft. Race. Survive. Conquer.</h1>
+            <h1 class="animate-header">Draft. Race. Survive. Conquer.</h1>
             <p class="description animate-description">
                 Through the neon nights of SoulCity, every street is a battlefield and only the bold rise.
             </p>
+
             <div class="cards">
                 <div class="card card-1">
                     <h2>Tournament Format</h2>
-                    <p>Souls of SoulCity isn’t just a race — it’s a battle of speed, skill, and survival. From auction to finals, every turn decides destiny.</p>
-                    <ul class="tournament-format">
-                        <li><span class="icon">🎯</span><div><strong>Auction Draft:</strong> Each team builds a squad of 6 racers.</div></li>
-                        <li><span class="icon">🚦</span><div><strong>Phase 1 – Qualifiers:</strong> All racers run 3 races each. Top teams advance, bottom eliminated, middle teams move to Knockouts.</div></li>
-                        <li><span class="icon">🔥</span><div><strong>Phase 2 – Knockouts:</strong> Surviving teams cut to 4 racers. Each runs 3 races. Top teams move forward, lowest eliminated.</div></li>
-                        <li><span class="icon">🏁</span><div><strong>Grand Finals – Bracket Battles:</strong> Finalist teams face off in bracket-style team races until one Champion remains.</div></li>
+                    <p>Souls of SoulCity isn’t just a race — it’s a battle of speed, skill, and survival.</p>
+                    <ul style="list-style:none">
+                        <li><strong>🎯 Auction Draft:</strong> Each team builds a squad of 6 racers.</li>
+                        <li><strong>🚦 Phase 1 – Qualifiers:</strong> All racers run 3 races each. Top teams advance.</li>
+                        <li><strong>🔥 Phase 2 – Knockouts:</strong> Surviving teams cut to 4 racers. Lowest eliminated.</li>
+                        <li><strong>🏁 Grand Finals:</strong> Finalist teams face off in bracket-style team races.</li>
                     </ul>
                 </div>
 
                 <div class="card card-2">
                     <h2>Rules & Regulations</h2>
-                    <p>Souls of SoulCity runs on fairness and skill. Every team and racer must follow these rules:</p>
-                    <ul>
-                        <li><span class="silver-dot"></span><strong>Squad Limit:</strong> Max 6 racers per team.</li>
-                        <li><span class="silver-dot"></span><strong>Recharge:</strong> Buy extra SVC; leftover refunded.</li>
-                        <li><span class="silver-dot"></span><strong>Roster Lock:</strong> Teams are locked after auction.</li>
-
-                        <li><span class="silver-dot"></span>Dashcam POV: 60 FPS or lower.</li>
-                        <li><span class="silver-dot"></span>Vehicles: Only approved classes/modifications.</li>
-                        <li><span class="silver-dot"></span>Conduct: No exploits or unfair play.</li>
-                        <li><span class="silver-dot"></span>Management: Officials can update rules anytime.</li>
+                    <p>Souls of SoulCity runs on fairness and skill. Every racer must follow these rules:</p>
+                    <ul style="list-style:none">
+                        <li><strong>Squad Limit:</strong> Max 6 racers per team.</li>
+                        <li><strong>Roster Lock:</strong> Teams are locked after auction.</li>
+                        <li><strong>Dashcam POV:</strong> 60 FPS or lower.</li>
+                        <li><strong>Conduct:</strong> No exploits or unfair play.</li>
                     </ul>
                 </div>
 
-
                 <div class="card card-3">
                     <h2>Prize Pool</h2>
-                    <p>Here, champions earn more than glory — they claim rewards forged by the streets.</p>
-
-                    <p style="margin-bottom: 15px;">The final SVC prize pool is calculated based on the league's financial activity:</p>
-
-                    <ul>
-                        <li><span class="silver-dot"></span> Prize Pool Contribution:60% of all SVC bidded on racers during the Auction is allocated directly to the final Prize Pool.</li>
-                        <li><span class="silver-dot"></span> Fund Boost: Any additional SVC recharge amounts are also fully added to the final Prize Pool, maximizing total winnings.</li>
-                        <li><span class="silver-dot"></span> Racer Earnings: The remaining 40% of the bidded SVC is paid directly to the respective racer.</li>
-                    </ul>
-
-                    <p style="margin-top: 20px; font-size: 1.1rem; color: var(--color-black); font-weight: bold;">In addition to the SVC pool, winners receive:</p>
-                    <p style="margin-top: 20px; font-size: 0.9rem; color: var(--color-black);"> *The final SVC prize breakdown (e.g., how the pool is split among 1st, 2nd, and 3rd place) and terms are detailed by management.*</p>
+                    <p>The final SVC prize pool is calculated based on the league's financial activity:</p>
+                    <p>60% of all Auction bids go to Prize Pool. Remaining 40% is paid to the racer. Additional recharges are added to the pool.</p>
                 </div>
             </div>
         </div>
@@ -656,12 +321,11 @@
 
             <div class="footer-contact">
                 <h4>Connect</h4>
-                <p>For inquiries and support, contact our pit crew:</p>
-                <p>Email: <a href="mailto:contact@soulsofsc.com">contact@soulsofsc.com</a></p>
-                <div style="margin-top: 15px; font-size: 1.5rem;">
-                    <a href="https://www.youtube.com/headflicker" target="_blank" style="margin-right: 15px;"><i class="fab fa-youtube"></i></a>
-                    <a href="https://discord.gg/phmcfrQ4" target="_blank" style="margin-right: 15px;"><i class="fab fa-discord"></i></a>
-                    <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+                <p>Join the community:</p>
+                <div class="social-icons">
+                    <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://www.instagram.com/8bit_headflicker/" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -669,61 +333,17 @@
 </main>
 
 <script>
-    // GSAP ANIMATION FOR CONTENT LOAD
     window.onload = function() {
-        // Initial state setup for animation
-        gsap.set(".animate-header, .animate-description, .card", { autoAlpha: 0, y: 50 });
-
-        // Timeline for sequential animation
+        gsap.set(".animate-header, .animate-description, .card", { autoAlpha: 0, y: 30 });
         const tl = gsap.timeline();
-
-        // 1. Header and description animation
-        tl.to(".animate-header", {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out"
-        })
-            .to(".animate-description", {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.6,
-                ease: "power2.out"
-            }, "-=0.4") // Start description slightly before header ends
-
-            // 2. Staggered card animation
-            .to(".card", {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.6,
-                stagger: 0.15, // Stagger the cards for a nice sequential effect
-                ease: "back.out(1.7)"
-            }, "-=0.2"); // Start card animation slightly before description finishes
+        tl.to(".animate-header", { autoAlpha: 1, y: 0, duration: 0.8 })
+            .to(".animate-description", { autoAlpha: 1, y: 0, duration: 0.6 }, "-=0.4")
+            .to(".card", { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.15 }, "-=0.2");
     };
 
-    // ----------------------------------------------------
-    // JAVASCRIPT FOR SCROLL-ACTIVATED NAVBAR BACKGROUND
-    // ----------------------------------------------------
-    document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('scroll', () => {
         const nav = document.getElementById('main-nav');
-        const logo = document.getElementById('main-logo');
-        const scrollThreshold = 50; // The number of pixels to scroll before changing the background
-
-        const changeNavBackground = () => {
-            if (window.scrollY >= scrollThreshold) {
-                nav.classList.add('scrolled');
-                logo.classList.add('scrolled'); // ADD CLASS TO LOGO
-            } else {
-                nav.classList.remove('scrolled');
-                logo.classList.remove('scrolled'); // REMOVE CLASS FROM LOGO
-            }
-        };
-
-        // Run on page load in case the user reloads while scrolled
-        changeNavBackground();
-
-        // Add the scroll event listener
-        window.addEventListener('scroll', changeNavBackground);
+        window.scrollY >= 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
     });
 </script>
 </body>

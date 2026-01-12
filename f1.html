@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>F1 Standings Dashboard</title>
+    <link rel="stylesheet" href="ui.css">
+</head>
+<body>
+
+<div class="dashboard">
+    <aside class="hero-section">
+        <div class="f1-logo">F1</div>
+        <div class="driver-focus">
+            <h1>MAX</h1>
+            <h2 class="outline-text">VERSTAPPEN</h2>
+            <img src="https://via.placeholder.com/400x600" alt="Max Verstappen" class="driver-img">
+        </div>
+    </aside>
+
+    <main class="content">
+        <nav class="top-nav">
+            <ul>
+                <li>Live</li>
+                <li>Schedule</li>
+                <li class="active">Drivers</li>
+                <li>Teams</li>
+                <li>More</li>
+            </ul>
+        </nav>
+
+        <table class="standings-table">
+            <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Driver</th>
+                <th>Points</th>
+                <th>Wins</th>
+                <th>Podiums</th>
+            </tr>
+            </thead>
+            <tbody id="standings-body">
+            </tbody>
+        </table>
+    </main>
+</div>
+
+<script src="Js/f1.js"></script>
+</body>
+</html>

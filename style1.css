@@ -7,6 +7,10 @@
     box-sizing: border-box;
 }
 
+:root{
+    --primary: #007bff;
+}
+
 html, body {
     height: auto; /* Revert to auto height to allow scrolling */
     min-height: 100vh; /* Optional: ensures at least a full-screen view */
@@ -17,6 +21,28 @@ body {
     font-family: "Poppins", sans-serif;
 }
 
+
+/* --- The Bright Fading Line Effect --- */
+.body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* Thickness of the line */
+    z-index: 101;
+
+    /* Create the fading gradient effect */
+    background: linear-gradient(
+            to right,
+            rgba(0, 255, 194, 0) 0%,     /* Fully transparent on the far left */
+            var(--primary) 15%,     /* Sharp blue starts here */
+            var(--primary) 85%,     /* Sharp blue ends here */
+            rgba(0, 255, 194, 0) 100%    /* Fully transparent on the far right */
+    );
+    /* Add a subtle glow/blur to enhance the effect */
+    box-shadow: 0 0 10px rgba(0, 255, 194, 0.5);
+}
 
 
 main {
@@ -113,6 +139,18 @@ main {
     left: 10px;
 }
 
+.logo {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    z-index: 10;
+    font-family: "Kaushan Script", sans-serif;
+    font-weight: bolder;
+    font-size: 24px;
+    color: #e4e3d3;
+    text-shadow: 1px 1px 2px rgba(170, 153, 153, 0.5);
+}
+
 .social {
     position: absolute;
     bottom: 70px;
@@ -138,27 +176,6 @@ main {
 .social a {
     color: #fff;
     transform: rotate(-90deg);
-}
-
-.social a:hover .fa-youtube {
-    color: #FF0000; /* Original YouTube Red */
-}
-
-/* Hover over Discord */
-.social a:hover .fa-discord {
-    color: #5865F2; /* Original Discord Blurple */
-}
-
-/* Hover over Instagram */
-.social a:hover .fa-instagram {
-    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* Optional: Slight scale up effect on hover */
-.social a:hover {
-    transform: scale(1.2);
 }
 
 .swiper-pagination {
@@ -187,91 +204,112 @@ main {
     border: 1px solid #fff;
 }
 
-/* Variables */
-:root {
-    --f1-red: #e10600;
-    --f1-black: #0b0b0b;
-    --navbar-h: 80px;
-}
-
-/* Logo Positioning */
-.logo {
-    position: fixed;
-    top: 23px;
-    left: 40px;
-    z-index: 101; /* Must be above the nav span */
-    font-family: "Kaushan Script", cursive;
-    font-weight: bolder;
-    font-size: 24px;
-    color: #e4e3d3;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-/* Navigation Base */
+/* -------------------- HAMBURGER NAV -------------------- */
 nav {
-    position: fixed;
-    top: 0;
+    position: absolute;
+    top: 12px;
+    right: 10px;
     width: 100%;
-    height: var(--navbar-h);
-    z-index: 99;
-    display: flex;
-    align-items: center;
-    transition: background 0.4s ease;
-}
-
-/* Background change on scroll */
-nav.scrolled {
-    background-color: rgba(11, 11, 11, 0.9);
-    backdrop-filter: blur(10px);
+    z-index: 20;
 }
 
 .nav-bar {
     width: 100%;
     display: flex;
-    justify-content: flex-end; /* Keeps items on the right */
+    justify-content: flex-end;
     align-items: center;
     list-style: none;
-    padding: 0 40px;
+    position: relative;
+    padding: 12px 20px;
 }
 
-.menu { display: flex; list-style: none; }
-.menu li { padding-left: 30px; }
+.menu {
+    display: flex;
+}
+
+.menu li {
+    padding-left: 30px;
+}
+
 .menu li a {
-    color: #fff;
+    display: inline-block;
     text-decoration: none;
+    color: #fff;
+    text-align: center;
+    transition: 0.15s ease-in-out;
+    position: relative;
     text-transform: uppercase;
-    font-size: 13px;
-    font-weight: 600;
-    transition: 0.3s;
 }
 
-.menu li a:hover { color: var(--f1-red); }
+.menu li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: #fff;
+    transition: 0.15s ease-in-out;
+}
 
-/* Mobile Menu Elements */
-.open-menu, .close-menu { display: none; color: #fff; cursor: pointer; font-size: 1.5rem; }
-#check { display: none; }
+.menu li a:hover:after {
+    width: 100%;
+}
 
+.open-menu,
+.close-menu {
+    position: absolute;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: none;
+}
 
-/* Responsive Design */
+.open-menu {
+    top: 20px;
+    right: 20px;
+}
+
+.close-menu {
+    top: 20px;
+    right: 20px;
+}
+
+#check {
+    display: none;
+}
+
 @media(max-width: 950px) {
-    .open-menu { display: block; }
     .menu {
-        position: fixed;
-        top: 0;
-        right: -100%; /* Slide out hide */
-        width: 70%;
-        height: 100vh;
-        background: #0a0a0a;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        transition: 0.4s ease;
+        width: 80%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: -100%;
         z-index: 100;
+        background-color: #181818;
+        transition: all 0.2s ease-in-out;
     }
-    .menu li { padding: 20px 0; padding-left: 0; }
-    .close-menu { display: block; position: absolute; top: 25px; right: 25px; }
-    #check:checked ~ .menu { right: 0; }
+
+    .menu li {
+        margin-top: 40px;
+    }
+
+    .menu li a {
+        padding: 10px;
+    }
+
+    .open-menu,
+    .close-menu {
+        display: block;
+    }
+
+    #check:checked~.menu {
+        right: 0;
+    }
 }
 
 
@@ -570,151 +608,108 @@ nav.scrolled {
 }
 
 
-/* YouTube Grid Style */
+/* Video Grid */
 .video-grid {
+    margin-top: 40px;
     display: grid;
-    /* This creates exactly 3 columns on large screens */
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    width: 100%;
-    margin-bottom: 40px;
-    align-items: start; /* Prevents cards from stretching vertically */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
-@media (max-width: 1024px) {
-    .video-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
-    }
-}
-
-@media (max-width: 600px) {
-    .video-grid {
-        grid-template-columns: 1fr; /* 1 column for mobile */
-    }
-}
-
-
-.custom-grid-card {
-    width: 100%;
-    max-width: 450px; /* Optional: adjust based on your design */
-    justify-self: center;
-    background: #0f0f0f;
-    border-radius: 12px;
+.video-card {
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
     overflow: hidden;
-    border: 1px solid #222;
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
+    max-width: 460px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
 }
 
-.custom-grid-card:hover {
+.video-card:hover {
     transform: translateY(-5px);
 }
 
-.thumbnail-container {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background: #000;
-}
-
-.grid-thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Overlays */
-.live-status-overlay {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: bold;
+.video-card-content {
+    padding: 1.5rem;
     color: white;
-    z-index: 5;
 }
 
-.status-live { background: #ff0000; }
-.status-vod { background: rgba(0,0,0,0.7); }
-
-.dot {
-    height: 6px; width: 6px;
-    background-color: white;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 4px;
+.video-card h3 {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
 }
 
-/* Info Section */
-.video-info-section { padding: 12px; color: white; }
-.video-title { font-size: 1rem; margin-bottom: 5px; font-weight: 600; }
-.video-subtitle { color: #aaa; font-size: 0.85rem; margin-bottom: 12px; }
-
-/* Stats Footer & Button */
-.video-stats-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid #333;
-    padding-top: 10px;
+.video-card .driver {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
 }
 
-.watch-btn-small {
-    background: rgb(193, 30, 30);
+.video-card .date {
+    color: #999;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.watch-btn {
+    background: linear-gradient(45deg, rgba(255, 53, 53, 0.8), rgba(210, 25, 25, 0.329));
     color: white;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: bold;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
     text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s;
+}
+
+.watch-btn:hover {
+    background: #f70000;
+}
+
+
+/* --- LIVE BROADCAST STYLES --- */
+
+/* Styling for the Live Broadcasts Section heading */
+#live-broadcasts-section h2 {
+    color: #ff0000; /* Red color for Live */
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 10px;
+    font-size: 1.8rem; /* Adjust as needed */
 }
 
-.watch-btn-small:hover { background: rgb(163, 0, 0); }
-
-
-/* Container for the Viewers and Likes icons */
-.stats-group {
-    display: flex;
-    gap: 15px; /* Adjust spacing between eye and heart */
-    align-items: center;
+/* Red signal icon */
+.live-icon {
+    color: #ff0000;
 }
 
-/* Base style for each stat (Icon + Text) */
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.85rem;
-    color: #e0e0e0;
-    font-weight: 500;
+/* Distinct styling for live video cards */
+.live-card {
+    border: 2px solid #000000;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    transition: transform 0.3s;
 }
 
-/* Neon Green for Viewers Eye as seen in screenshot */
-.stat-item .fa-eye {
-    color: #a3ff33;
+.live-card:hover {
+    transform: translateY(-3px);
 }
 
-/* Red for Likes Heart as seen in screenshot */
-.stat-item .fa-heart {
-    color: #ff4757;
+/* LIVE badge style */
+.live-badge {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    background: #ff0000;
+    color: white;
+    border-radius: 3px;
+    font-weight: bold;
+    margin-left: 5px;
+    /* Pulsing animation to catch the eye */
+    animation: pulse 1.5s infinite;
+    display: inline-block;
 }
-
-/* Footer layout to push button to the far right */
-.video-stats-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
 
 @keyframes pulse {
     0% { opacity: 1; }
@@ -821,30 +816,6 @@ nav.scrolled {
     font-weight: 700;
 }
 
-.live-signal {
-    color: #ff0000;
-    font-size: 0.9em;
-    animation: broadcast 1.5s ease-out infinite;
-}
-
-@keyframes broadcast {
-    0% {
-        text-shadow: 0 0 0 rgba(255, 0, 0, 0.7);
-        transform: scale(1);
-    }
-    70% {
-        text-shadow: 0 0 15px rgba(255, 0, 0, 0);
-        transform: scale(1.1);
-    }
-    100% {
-        text-shadow: 0 0 0 rgba(255, 0, 0, 0);
-        transform: scale(1);
-    }
-}
-
-
-
-
 /* Responsive adjustment for small screens */
 @media (max-width: 768px) {
     .watch-header-controls {
@@ -862,13 +833,5 @@ nav.scrolled {
         min-width: 100%;
     }
 }
-
-
-
-
-
-
-
-
 
 

@@ -24,12 +24,13 @@
 
         :root {
             --color-black: #ffffff;
-            --color-dark-grey: #121212;
+            --color-dark-grey: #050505;
             --color-mid-grey: #2a2a2a;
             --color-light-grey: #ffffff;
             --color-white: #ffffff;
             --color-metallic-silver: #ffffff;
-            --color-subdued-blue: rgb(0, 0, 0);
+            --color-subdued-blue: rgb(255, 0, 0);
+            --f1-red: #E10600FF;
         }
 
         body {
@@ -380,15 +381,13 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* -------------------- FOOTER STYLES (From About Page) -------------------- */
+        /* -------------------- FOOTER (FIXED) -------------------- */
         .site-footer {
-            background-color: var(--color-dark-grey);
-            color: var(--color-light-grey);
-            padding: 40px 20px;
-            border-top: 1px solid rgba(187, 187, 187, 0.1);
-            position: relative;
-            z-index: 5;
-            text-align: center;
+            background-color: var(--f1-black);
+            color: white;
+            padding: 60px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: left;
         }
 
         .footer-content {
@@ -397,93 +396,79 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 30px;
+            gap: 40px;
         }
 
         .footer-logo, .footer-links, .footer-contact {
-            padding: 0 10px;
-            flex: 1 1 30%;
-            min-width: 150px;
-            text-align: left;
+            flex: 1 1 300px;
         }
 
         .footer-logo h3 {
             font-family: "Kaushan Script", sans-serif;
-            font-size: 1.8rem;
-            color: var(--color-metallic-silver);
+            font-size: 2.2rem;
+            color: white;
             margin-bottom: 15px;
-            line-height: 1;
         }
 
-        .footer-logo p {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
+        .footer-logo p { opacity: 0.8; line-height: 1.6; }
 
         .footer-links h4, .footer-contact h4 {
-            color: var(--color-white);
-            font-size: 1.1rem;
-            border-bottom: 1px solid var(--color-metallic-silver);
-            padding-bottom: 5px;
-            margin-bottom: 15px;
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* The line from your screenshot */
+            padding-bottom: 10px;
+            width: fit-content;
+            min-width: 200px;
         }
 
-        .footer-links ul {
-            list-style: none;
-            padding: 0;
-        }
-
+        .footer-links ul { list-style: none; }
         .footer-links a {
-            color: var(--color-light-grey);
-            font-size: 0.95rem;
+            color: white;
+            text-decoration: none; /* Removed link underline */
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            transition: 0.3s;
+            opacity: 0.9;
         }
 
-        .footer-links a:hover {
-            color: var(--color-subdued-blue);
-            padding-left: 5px;
+        .footer-links a:hover { color: var(--f1-red); padding-left: 5px; opacity: 1; }
+
+        .footer-contact .social-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 1.6rem;
+            margin-top: 15px;
         }
 
-        .footer-contact p {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+        .footer-contact div a:hover .fa-discord {
+            color: #5865F2 !important;
         }
 
-        .footer-contact a {
-            color: var(--color-metallic-silver);
+        .footer-contact div a:hover .fa-instagram {
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; !important;
         }
 
-        .footer-contact a:hover {
-            color: var(--color-subdued-blue);
-        }
+        .footer-contact a { color: #fff; transition: 0.3s; text-decoration: none; }
+        .footer-contact a:hover { color: var(--f1-red); transform: translateY(-3px); }
 
+        @media (max-width: 950px) {
+            .open-menu { display: block; }
+            .menu {
+                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
+                background: #0a0a0a; flex-direction: column; align-items: center;
+                justify-content: center; transition: 0.3s; z-index: 100;
+            }
+            .menu li { padding: 20px 0; }
+            .close-menu { display: block; position: absolute; top: 25px; right: 25px; }
+            #check:checked ~ .menu { right: 0; }
 
-        /* Mobile adjustments for footer */
-        @media (max-width: 600px) {
-            .footer-content {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .footer-logo, .footer-links, .footer-contact {
-                flex: 1 1 100%;
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            .footer-links ul {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-            }
-            .footer-links a:hover {
-                padding-left: 0;
-            }
-            .footer-links h4, .footer-contact h4 {
-                text-align: center;
-            }
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-links h4, .footer-contact h4 { margin: 0 auto 20px; }
+            .footer-contact .social-icons { justify-content: center; }
         }
 
     </style>
@@ -537,10 +522,12 @@
             <button type="submit" class="btn-primary w-full">SIGN-IN</button>
             <p id="login-error-message" class="text-red-400 text-sm text-center mt-4 hidden font-medium"></p>
         </form>
+        <p id="error-msg" style="color:red; font-weight:500; margin-top:10px;"></p>
     </div>
+
 </main>
 
-<!-- FOOTER -->
+
 <footer class="site-footer">
     <div class="footer-content">
         <div class="footer-logo">
@@ -561,12 +548,11 @@
 
         <div class="footer-contact">
             <h4>Connect</h4>
-            <p>For inquiries and support, contact our pit crew:</p>
-            <p>Email: <a href="mailto:contact@soulsofsc.com">contact@soulsofsc.com</a></p>
-            <div style="margin-top: 15px; font-size: 1.5rem;">
-                <a href="https://www.youtube.com/headflicker" target="_blank" style="margin-right: 15px;"><i class="fab fa-youtube"></i></a>
-                <a href="https://discord.gg/phmcfrQ4" target="_blank" style="margin-right: 15px;"><i class="fab fa-discord"></i></a>
-                <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+            <p>Join the community:</p>
+            <div class="social-icons">
+                <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
+                <a href="https://www.instagram.com/8bit_headflicker/" target="_blank"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
     </div>

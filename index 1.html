@@ -13,35 +13,34 @@
 </head>
 
 <body>
+<header class="new-header">
+    <a href="#swiper">
+        <div class="logo">Souls Of Soulcity</div>
+    </a>
 
-<a href="index.html" class="logo" id="main-logo">Souls Of Soulcity</a>
+    <input type='checkbox' id='check' />
+    <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
 
-<nav id="main-nav">
-    <ul class='nav-bar'>
-        <input type='checkbox' id='check' />
-        <span class="menu">
-            <li><a href="index.html" style="color:var(--f1-red)">Home</a></li>
+    <nav class="nav-bar">
+        <ul class='nav-links'>
+            <li><a href="#swiper" >Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="crews.html">Crews</a></li>
             <li><a href="rankings.html">Rankings</a></li>
             <li><a href="Watch.html">Watch</a></li>
             <li><a href="login.html">Login</a></li>
-            <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
-        </span>
-        <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
-    </ul>
-</nav>
+        </ul>
+    </nav>
+</header>
 
-    <!-- SOCIAL ICONS -->
-    <div class="social">
-        <div class="bar"></div>
-        <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
-        <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
-        <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+<div class="social">
+    <div class="bar"></div>
+    <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
+    <a href="https://www.instagram.com/8bit_headflicker/"><i class="fab fa-instagram"></i></a>
+</div>
 
-    </div>
 <main>
-    <!-- SWIPER -->
     <div class="swiper" id="swiper">
         <div class="swiper-wrapper">
             <div class="swiper-slide first">
@@ -60,18 +59,10 @@
         </div>
         <div class="swiper-pagination"></div>
     </div>
-
-
-
-
-
-
 </main>
 
-<!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-<!-- Initialize Swiper + GSAP -->
 <script>
     var swiper = new Swiper(".swiper", {
         direction: "vertical",
@@ -101,36 +92,6 @@
     gsap.from(".first img", { x: 1000, duration: 2 })
     gsap.from(".first .small", { y: 100, opacity: 0, delay: 2.1 })
     gsap.from(".first .big span", { y: 100, opacity: 0, stagger: 0.2, delay: 2.1 })
-
-    // Change Nav background on scroll
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('main-nav');
-        if (window.scrollY >= 50) {
-            nav.classList.add('scrolled');
-        } else {
-            nav.classList.remove('scrolled');
-        }
-    });
-
-    // Animate Nav Items on Load
-    gsap.from(".nav-bar li", {
-        y: -50,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.1,
-        ease: "power2.out",
-        delay: 2.5 // Starts after the car animation begins
-    });
-
-    // Animate Social Icons
-    gsap.from(".social a", {
-        x: -50,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.2,
-        delay: 3
-    });
-
 </script>
 </body>
 

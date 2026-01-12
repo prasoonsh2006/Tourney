@@ -11,23 +11,108 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+<style>
+    /* -------------------- FOOTER (FIXED) -------------------- */
+    .site-footer {
+        background-color: var(--f1-black);
+        color: white;
+        padding: 60px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: left;
+    }
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 40px;
+    }
+
+    .footer-logo, .footer-links, .footer-contact {
+        flex: 1 1 300px;
+    }
+
+    .footer-logo h3 {
+        font-family: "Kaushan Script", sans-serif;
+        font-size: 2.2rem;
+        color: white;
+        margin-bottom: 15px;
+    }
+
+    .footer-logo p { opacity: 0.8; line-height: 1.6; }
+
+    .footer-links h4, .footer-contact h4 {
+        color: white;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        text-transform: capitalize;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* The line from your screenshot */
+        padding-bottom: 10px;
+        width: fit-content;
+        min-width: 200px;
+    }
+
+    .footer-links ul { list-style: none; }
+    .footer-links a {
+        color: white;
+        text-decoration: none; /* Removed link underline */
+        display: block;
+        margin-bottom: 12px;
+        transition: 0.3s;
+        opacity: 0.9;
+    }
+
+    .footer-links a:hover { color: var(--f1-red); padding-left: 5px; opacity: 1; }
+
+    .footer-contact .social-icons {
+        display: flex;
+        gap: 20px;
+        font-size: 1.6rem;
+        margin-top: 15px;
+    }
+
+    .footer-contact div a:hover .fa-discord {
+        color: #5865F2 !important;
+    }
+
+    .footer-contact div a:hover .fa-instagram {
+        background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent; !important;
+    }
+
+    .footer-contact a { color: #fff; transition: 0.3s; text-decoration: none; }
+    .footer-contact a:hover { color: var(--f1-red); transform: translateY(-3px); }
+
+    @media (max-width: 950px) {
+        .footer-content { flex-direction: column; text-align: center; }
+        .footer-links h4, .footer-contact h4 { margin: 0 auto 20px; }
+        .footer-contact .social-icons { justify-content: center; }
+    }
+</style>
 
 <body style="background: url('images/carbg3.jpg') no-repeat center/cover;">')>
-<a href="#swiper">
-    <div class="logo">Souls Of Soulcity</div>
-</a>
 
-<nav>
+<div id="edit-pencil" onclick="startEdit()" style="display:none; position:absolute; z-index:10001; background:white; color:black; width:24px; height:24px; border-radius:50%; text-align:center; line-height:24px; cursor:pointer; font-size:12px; box-shadow:0 2px 5px rgba(0,0,0,0.3);">
+    <i class="fa fa-pencil"></i>
+</div>
+
+<nav id="main-nav">
     <ul class='nav-bar'>
+        <a href="index.html">
+            <div class="logo" id="main-logo">Souls Of Soulcity</div>
+        </a>
         <input type='checkbox' id='check' />
         <span class="menu">
-                <li><a href="index.html" >Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="crews.html">Crews</a></li>
                 <li><a href="rankings.html">Rankings</a></li>
-                <li><a href="Watch.html">Watch</a></li>
+                <li><a href="Watch.html" style="color:var(--f1-red)">Watch</a></li>
                 <li><a href="login.html">Login</a></li>
-                <label for="check"><i class="fas fa-times"></i></label>
+                <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
             </span>
         <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
     </ul>
@@ -53,7 +138,7 @@
             </div>
 
             <div id="live-broadcasts-section" style="display:none;">
-                <h2>Live Races Now! <i class="fa-solid fa-signal live-icon"></i></h2>
+                <h2>Live Races Now! <i class="fa-solid fa-signal live-signal"></i></h2>
                 <div id="live-content" class="video-grid">
                     <div class="loading">Checking for live racers...</div>
                 </div>
@@ -65,12 +150,55 @@
             </div>
         </div>
     </section>
-    
 
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h3>Souls Of Soulcity</h3>
+                <p>The premier underground racing league. <br>Draft. Race. Survive. Conquer.</p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Quick Lanes</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">Tournament Info</a></li>
+                    <li><a href="crews.html">Crews & Teams</a></li>
+                    <li><a href="rankings.html">Leaderboards</a></li>
+                    <li><a href="Watch.html">Live Broadcast</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Connect</h4>
+                <p>Join the community:</p>
+                <div class="social-icons">
+                    <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
+                    <a href="https://www.instagram.com/8bit_headflicker/" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </main>
+
+
 
 <script src="Js/watch.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script>
+    window.onload = function() {
+        gsap.set(".animate-header, .animate-description, .card", { autoAlpha: 0, y: 30 });
+        const tl = gsap.timeline();
+        tl.to(".animate-header", { autoAlpha: 1, y: 0, duration: 0.8 })
+            .to(".animate-description", { autoAlpha: 1, y: 0, duration: 0.6 }, "-=0.4")
+            .to(".card", { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.15 }, "-=0.2");
+    };
 
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('main-nav');
+        window.scrollY >= 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+    });
+</script>
 </body>
 </html>
