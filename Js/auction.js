@@ -9,7 +9,7 @@ const firebaseConfig = {
     apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0", // Your actual key
     authDomain: "souls-of-soulcity.firebaseapp.com",
     projectId: "souls-of-soulcity",
-    storageBucket: "souls-of-soulcity.firebasestorage.app",
+    storageBucket: "souls-of-soulcity.firebaseapp.com",
     messagingSenderId: "402427120355",
     appId: "1:402427120355:web:f0fa030a0a9034198213d6"
 };
@@ -23,6 +23,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// --- CONSTANTS ---
+const SVC_TO_USD_RATE = 50; // 1 SVC = $50
+
 // --- DOM ELEMENTS ---
 const logoutBtn = document.getElementById('logout-btn');
 const placeBidBtn = document.getElementById('place-bid-btn');
@@ -31,12 +34,26 @@ const bidMessageEl = document.getElementById('bid-message');
 const auctionTimerEl = document.getElementById('auction-timer');
 const ownerNameEl = document.getElementById('owner-name');
 const remainingBalanceEl = document.getElementById('remaining-balance');
+const teamNameEl = document.getElementById('team-name');
 const rechargeBtn = document.getElementById('recharge-btn');
 const currentRacerEl = document.getElementById('current-racer-name');
 const odometerContainerEl = document.getElementById('odometer-container');
 const lastBidderEl = document.getElementById('last-bidder');
 const rosterListEl = document.getElementById('roster-list');
 const racersWonEl = document.getElementById('racers-won');
+
+// 🎯 NEW MODAL DOM ELEMENTS
+const rechargeModal = document.getElementById('recharge-modal');
+const modalAmountInput = document.getElementById('modal-amount-input');
+const modalProofInput = document.getElementById('modal-proof-input');
+const modalCancelBtn = document.getElementById('modal-cancel-btn');
+const modalSubmitBtn = document.getElementById('modal-submit-btn');
+const modalError = document.getElementById('modal-error');
+const totalAmountDisplay = document.getElementById('total-amount-display');
+// We now only use the USD display in the final total
+// const modalTotalAmountSVC = document.getElementById('modal-total-amount-svc'); 
+const modalTotalAmountUSD = document.getElementById('modal-total-amount-usd');
+
 
 // --- STATE VARIABLES ---
 let currentUserId = null;
@@ -47,6 +64,11 @@ let racersWonCount = 0;
 let countdownInterval;
 // 🎯 State variable to track the bid for the odometer effect
 let previousBidValue = 0;
+// 🎯 State variables for audio control
+let tickSoundPlaying = false;
+const tickTockSound = document.getElementById('tick-tock-audio');
+
+
 
 
 // --- ODOMETER ANIMATION HANDLER (Digit-by-Digit) ---
@@ -171,6 +193,7 @@ logoutBtn.addEventListener('click', () => {
 function setupTeamListener(userId) {
     onSnapshot(doc(db, "teams", userId), docSnapshot => {
         if (!docSnapshot.exists()) {
+            teamNameEl.textContent = "N/A";
             remainingBalanceEl.textContent = "0 SVC";
             ownerNameEl.textContent = "N/A";
             rosterListEl.innerHTML = '<li class="p-3 rounded text-center text-sm font-medium roster-placeholder">No roster data found.</li>';
@@ -184,6 +207,7 @@ function setupTeamListener(userId) {
         currentTeamName = teamData.teamName || 'N/A';
 
         // Update Team Dashboard elements
+        teamNameEl.textContent = teamData.teamName || 'N/A';
         ownerNameEl.textContent = teamData.ownerName || 'N/A';
         remainingBalanceEl.textContent = `${currentBalance.toLocaleString()} SVC`;
 
@@ -202,7 +226,10 @@ function setupTeamListener(userId) {
         if (racersWonCount >= 6) {
             placeBidBtn.disabled = true;
             bidInput.disabled = true;
+            // 1. Set the text content
             bidMessageEl.textContent = "Roster is full (6/6). You cannot bid on new racers.";
+            // 2. Set the color style to 'red'
+            bidMessageEl.style.color = "red";
         }
     });
 }
@@ -277,6 +304,8 @@ placeBidBtn.addEventListener('click', async () => {
 
     if (bidAmount > currentBalance) {
         bidMessageEl.textContent = "Bid failed: Insufficient balance.";
+        // 2. Set the color style to 'red'
+        bidMessageEl.style.color = "red";
         return;
     }
 
@@ -318,6 +347,7 @@ placeBidBtn.addEventListener('click', async () => {
 
             bidMessageEl.textContent = `Bid placed for ${bidAmount.toLocaleString()} SVC! Timer reset to 60s!`;
             bidInput.value = ''; // Clear input after successful bid
+
         });
     } catch (e) {
         if (e.message.includes("RosterFull")) {
@@ -330,12 +360,21 @@ placeBidBtn.addEventListener('click', async () => {
     }
 });
 
-// --- TIMER LOGIC ---
+// --- TIMER LOGIC (MODIFIED) ---
+
+// --- TIMER LOGIC (MODIFIED) ---
 
 function startServerTimer(timerEndsAt, status) {
     if (status !== 'Live' || !timerEndsAt || racersWonCount >= 6) {
         auctionTimerEl.textContent = "Auction Pending";
         placeBidBtn.disabled = true;
+
+        // 🛑 STOP sound if auction is not live
+        if (tickSoundPlaying) {
+            tickTockSound.pause();
+            tickTockSound.currentTime = 0; // Reset for next time
+            tickSoundPlaying = false;
+        }
         return;
     }
 
@@ -348,45 +387,136 @@ function startServerTimer(timerEndsAt, status) {
 
         if (distance > 0) {
             auctionTimerEl.textContent = `${seconds.toString().padStart(2, '0')}s`;
+
+            // 🚀 MODIFIED LOGIC: Flash Red and Start Ticking for the last 5 seconds
+            if (seconds <= 10 && seconds >= 0) {
+                auctionTimerEl.style.color = "#FF0000"; // Pure Red for high drama
+
+                // 🔊 START TICKING SOUND
+                if (!tickSoundPlaying) {
+                    // Start playback and mark state
+                    tickTockSound.play().catch(e => console.error("Error playing sound:", e));
+                    tickSoundPlaying = true;
+                }
+
+            } else {
+                auctionTimerEl.style.color = ""; // Reset color to default (white/light)
+
+                // 🔇 STOP TICKING SOUND
+                if (tickSoundPlaying) {
+                    tickTockSound.pause();
+                    tickTockSound.currentTime = 0; // Rewind the audio
+                    tickSoundPlaying = false;
+                }
+            }
+
             placeBidBtn.disabled = (racersWonCount >= 6);
-        } else {
+
+        }
+        else {
+            // TIME EXPIRED logic
             clearInterval(countdownInterval);
             auctionTimerEl.textContent = "TIME EXPIRED";
+            auctionTimerEl.style.color = "#FF0000"; // Time Expired Red
             placeBidBtn.disabled = true;
+
+            // 🔇 STOP TICKING SOUND when time expires
+            if (tickSoundPlaying) {
+                tickTockSound.pause();
+                tickTockSound.currentTime = 0;
+                tickSoundPlaying = false;
+            }
+
+
             // Server process must handle the final sale.
         }
-    }, 1000);
+    }, 1000); // Check and update every second
 }
+// 🎯 --- CUSTOM MODAL HANDLERS (UPDATED for 1 SVC = $50) ---
 
-// --- RECHARGE LOGIC ---
+// Listener for real-time total amount calculation
+modalAmountInput.addEventListener('input', () => {
+    const svcAmount = parseInt(modalAmountInput.value);
 
-rechargeBtn.addEventListener('click', async () => {
-    let requestedAmount;
-    bidMessageEl.textContent = 'Awaiting input for recharge...';
+    // Update placeholder to show the rate
+    modalAmountInput.placeholder = `e.g., 5000 (1 SVC = $${SVC_TO_USD_RATE})`;
 
-    while (true) {
-        const amountInput = prompt(`Enter the SVC amount you are requesting (must be 500 SVC or more):`);
+    if (svcAmount >= 500) {
+        const usdAmount = svcAmount * SVC_TO_USD_RATE;
 
-        if (amountInput === null) {
-            bidMessageEl.textContent = 'Recharge request cancelled.';
-            return;
-        }
+        // Display calculated USD amount, formatted as currency
+        modalTotalAmountUSD.textContent = usdAmount.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
 
-        requestedAmount = parseInt(amountInput);
-
-        if (isNaN(requestedAmount) || requestedAmount < 500) {
-            alert("Invalid amount. Please enter a number that is 500 SVC or greater.");
-        } else {
-            break;
-        }
+        totalAmountDisplay.classList.remove('hidden');
+    } else {
+        // Reset and hide the total display if the amount is too low or cleared
+        totalAmountDisplay.classList.add('hidden');
+        modalTotalAmountUSD.textContent = '$0';
     }
 
-    const paymentProof = prompt(`Enter payment transaction ID/Note for ${requestedAmount.toLocaleString()} SVC (e.g., Bank Transfer Ref, Cash Note):`);
+    // Clear the error message on new input
+    modalError.classList.add('hidden');
+    modalError.textContent = '';
+});
 
-    if (!paymentProof) {
-        bidMessageEl.textContent = 'Recharge request cancelled.';
+
+// Handler to open the modal (resetting the new USD element and setting rate)
+rechargeBtn.addEventListener('click', () => {
+    // Clear previous state and show modal
+    modalAmountInput.value = '';
+    modalProofInput.value = '';
+    modalError.textContent = '';
+    modalError.classList.add('hidden');
+
+    // Set placeholder to show the exchange rate
+    modalAmountInput.placeholder = `e.g., 5000 (1 SVC = $${SVC_TO_USD_RATE})`;
+
+    // Reset and hide total display when opening
+    modalTotalAmountUSD.textContent = '$0';
+    totalAmountDisplay.classList.add('hidden');
+
+    rechargeModal.classList.remove('hidden');
+    bidMessageEl.textContent = 'Awaiting input for recharge...';
+});
+
+// Handler to close the modal
+modalCancelBtn.addEventListener('click', () => {
+    rechargeModal.classList.add('hidden');
+    bidMessageEl.textContent = 'Recharge request cancelled.';
+});
+
+
+// --- RECHARGE LOGIC (SUBMISSION) ---
+
+modalSubmitBtn.addEventListener('click', async () => {
+    const requestedAmount = parseInt(modalAmountInput.value);
+    const paymentProof = modalProofInput.value.trim();
+
+    modalError.classList.add('hidden');
+    modalError.textContent = '';
+
+    // 1. Validation for Amount
+    if (isNaN(requestedAmount) || requestedAmount < 500) {
+        modalError.textContent = "Invalid amount. Please enter a number that is 500 SVC or greater.";
+        modalError.classList.remove('hidden');
         return;
     }
+
+    // 2. Validation for Payment Proof
+    if (!paymentProof) {
+        modalError.textContent = "Please enter a payment transaction ID or note.";
+        modalError.classList.remove('hidden');
+        return;
+    }
+
+    // Disable button to prevent double submission and provide feedback
+    modalSubmitBtn.disabled = true;
+    modalSubmitBtn.textContent = 'Submitting...';
 
     try {
         await addDoc(collection(db, 'rechargeRequests'), {
@@ -397,9 +527,22 @@ rechargeBtn.addEventListener('click', async () => {
             status: 'Pending',
             timestamp: Timestamp.now()
         });
+
+        // Success
         bidMessageEl.textContent = `✅ Request for ${requestedAmount.toLocaleString()} SVC submitted. Awaiting Admin approval.`;
+        rechargeModal.classList.add('hidden'); // Hide modal on success
+
     } catch (e) {
+        // Failure
         console.error("Error submitting recharge request:", e);
         bidMessageEl.textContent = "❌ Failed to submit request.";
+
+        // Show error in modal
+        modalError.textContent = "Failed to submit request. Please try again.";
+        modalError.classList.remove('hidden');
+    } finally {
+        // Re-enable button
+        modalSubmitBtn.disabled = false;
+        modalSubmitBtn.textContent = 'Submit Request';
     }
 });
