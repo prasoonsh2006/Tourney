@@ -2,370 +2,268 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Souls Of Soulcity - Tournament Standings</title>
+    <title>Souls Of Soulcity - Pro Rankings</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
-        :root {
-            --f1-red: #e10600;
-            --f1-black: #0b0b0b;
-            --f1-text-dim: #949494;
-            --color-dark-grey: rgb(5, 5, 5);
-            --color-light-grey: #ffffff;
-            --navbar-h: 80px;
-        }
-
+        :root { --f1-red: #e10600; --f1-black: #0b0b0b; --f1-text-dim: #949494; --navbar-h: 80px; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--f1-black); color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
 
-        /* -------------------- NAV STYLES -------------------- */
-        .logo { position: fixed; top: 23px; left: 40px; z-index: 101; font-family: "Kaushan Script", sans-serif; font-weight: bolder; font-size: 24px; color: #e4e3d3; text-decoration: none; transition: 0.3s; }
-        nav { position: fixed; top: 0; left: 0; width: 100%; height: var(--navbar-h); z-index: 99; display: flex; align-items: center; background-color: transparent; transition: all 0.4s ease; }
-        nav.scrolled { background-color: rgba(11, 11, 11, 0.95); backdrop-filter: blur(10px); height: 70px; }
-        .nav-bar { width: 100%; display: flex; justify-content: flex-end; align-items: center; list-style: none; padding: 0 40px; }
-        .menu { display: flex; list-style: none; }
-        .menu li { padding-left: 30px; }
-        .menu li a { color: #fff; text-decoration: none; text-transform: uppercase; font-size: 13px; font-weight: 600; transition: 0.3s; }
-        .menu li a:hover { color: var(--f1-red); }
-        .open-menu, .close-menu { display: none; color: #fff; cursor: pointer; font-size: 1.5rem; }
-        #check { display: none; }
-
-        @media(max-width: 950px) {
-            .open-menu { display: block; }
-            .menu { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: #0a0a0a; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; z-index: 100; }
-            .menu li { padding: 20px 0; }
-            .close-menu { display: block; position: absolute; top: 25px; right: 25px; }
-            #check:checked ~ .menu { right: 0; }
-        }
-
-        /* -------------------- HERO SECTION -------------------- */
+        .logo { position: fixed; top: 23px; left: 40px; z-index: 101; font-family: "Kaushan Script"; font-size: 24px; color: #e4e3d3; text-decoration: none; }
         .dashboard { display: flex; margin-top: var(--navbar-h); min-height: calc(100vh - var(--navbar-h)); }
 
-        .hero-section {
-            flex: 1;
-            padding: 60px;
-            position: sticky;
-            top: var(--navbar-h);
-            height: calc(100vh - var(--navbar-h));
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
-        }
+        /* HERO SECTION */
+        .hero-section { flex: 1; padding: 60px; position: sticky; top: var(--navbar-h); height: calc(100vh - var(--navbar-h)); display: flex; flex-direction: column; justify-content: center; }
+        .hero-image-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0; filter: grayscale(1); transition: opacity 0.4s ease; }
+        .hero-image-container img { width: 100%; height: 100%; object-fit: cover; mask-image: linear-gradient(to bottom, black 70%, transparent); }
+        .f1-tag { color: var(--f1-red); font-weight: 900; letter-spacing: 2px; font-size: 0.75rem; margin-bottom: 10px; text-transform: uppercase; }
+        .hero-section h1 { font-size: 4.5rem; font-weight: 900; line-height: 0.8; text-transform: uppercase; }
+        .outline-text { -webkit-text-stroke: 1px white; color: transparent; }
 
-        .hero-image-container {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.7;
-            filter: grayscale(1) contrast(1.1);
-        }
-
-        .hero-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%),
-            linear-gradient(to left, black 70%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 70%, transparent 100%),
-            linear-gradient(to left, black 70%, transparent 100%);
-            -webkit-mask-composite: source-in;
-            mask-composite: intersect;
-        }
-
-        .f1-tag { color: var(--f1-red); font-weight: 900; letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 10px; text-transform: uppercase; z-index: 2; }
-        .hero-section h1 { font-size: 5.5rem; font-weight: 900; line-height: 0.8; text-transform: uppercase; margin: 0; z-index: 2; }
-        .outline-text { font-size: 3.8rem; -webkit-text-stroke: 1px white; color: transparent; text-transform: uppercase; z-index: 2; }
-
-        /* -------------------- TABLE SECTION -------------------- */
-        .standings-section { flex: 1.8; padding: 40px; }
+        /* MAIN SECTION */
+        .standings-section { flex: 1.8; padding: 40px; border-left: 1px solid #222; }
         .tab-nav { display: flex; gap: 30px; margin-bottom: 30px; border-bottom: 1px solid #252525; }
-        .tab-btn { background: none; border: none; color: var(--f1-text-dim); font-weight: 800; text-transform: uppercase; cursor: pointer; padding: 15px 0; border-bottom: 3px solid transparent; transition: 0.3s; }
+        .tab-btn { background: none; border: none; color: var(--f1-text-dim); font-weight: 800; text-transform: uppercase; cursor: pointer; padding: 15px 0; border-bottom: 3px solid transparent; }
         .tab-btn.active { color: white; border-bottom: 3px solid var(--f1-red); }
-        .f1-table { width: 100%; border-collapse: collapse; }
-        .f1-table th { text-align: left; color: var(--f1-text-dim); font-size: 0.75rem; text-transform: uppercase; padding: 15px; border-bottom: 1px solid #252525; }
-        .f1-table td { padding: 22px 15px; border-bottom: 1px solid #252525; }
-        .main-row { cursor: pointer; transition: 0.2s; }
-        .main-row:hover { background: rgba(255,255,255,0.05); }
-        .rank-col { font-size: 1.4rem; font-weight: 900; width: 60px; }
-        .pts-col { text-align: right; font-weight: 800; font-size: 1.3rem; }
-        .detail-row { display: none; background: #111; }
-        .race-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .race-table td, .race-table th { padding: 12px; border-bottom: 1px solid #222; }
 
-        /* -------------------- FOOTER -------------------- */
-        .site-footer {
-            background-color: #0b0b0b;
-            color: white;
-            padding: 60px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: left;
-        }
-        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; }
-        .footer-logo, .footer-links, .footer-contact { flex: 1 1 300px; }
-        .footer-logo h3 { font-family: "Kaushan Script", sans-serif; font-size: 2.2rem; color: white; margin-bottom: 15px; }
-        .footer-logo p { opacity: 0.8; line-height: 1.6; }
+        /* TABLES */
+        .f1-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .f1-table th { text-align: left; color: var(--f1-text-dim); font-size: 11px; padding: 10px; border-bottom: 1px solid #333; text-transform: uppercase; }
+        .f1-table td { padding: 15px 10px; font-size: 14px; border-bottom: 1px solid #222; font-weight: 600; }
+        .pts-cell { text-align: right; font-weight: 900; font-size: 1.2rem; color: #fff; }
 
-        .footer-links h4, .footer-contact h4 {
-            color: white;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            text-transform: capitalize;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
-            padding-bottom: 10px;
-            width: fit-content;
-            min-width: 200px;
-        }
+        /* BRACKET ALIGNMENT FIX */
+        .bracket-wrapper { display: flex; gap: 60px; padding: 20px 0; overflow-x: auto; align-items: flex-start; }
+        .round-col { display: flex; flex-direction: column; min-width: 240px; }
+        .matchup { position: relative; margin: 25px 0; display: flex; flex-direction: column; gap: 2px; }
+        .team-box { background: #111; border: 1px solid #222; padding: 12px 15px; cursor: pointer; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .team-box:hover { border-color: var(--f1-red); background: #1a1a1a; }
+        .team-box.winner { border-left: 4px solid var(--f1-red); }
 
-        .footer-links ul { list-style: none; }
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            margin-bottom: 12px;
-            transition: 0.3s;
-            opacity: 0.9;
-        }
-        .footer-links a:hover { color: var(--f1-red); padding-left: 5px; opacity: 1; }
+        /* DETAILS VIEW */
+        #details-view { display: none; }
+        .back-btn { background: var(--f1-red); color: white; border: none; padding: 10px 20px; font-weight: 800; cursor: pointer; margin-bottom: 20px; text-transform: uppercase; font-size: 12px; border-radius: 2px; }
+        .stat-card { background: #0f0f0f; padding: 25px; border: 1px solid #222; margin-top: 20px; border-top: 4px solid var(--f1-red); }
 
-        .footer-contact p { margin-bottom: 15px; opacity: 0.9; }
-        .footer-contact .social-icons { display: flex; gap: 20px; font-size: 1.6rem; }
-        .footer-contact a { color: white; transition: 0.3s; text-decoration: none; }
-        .footer-contact a:hover { color: var(--f1-red); transform: translateY(-3px); }
-
-        @media (max-width: 950px) {
-            .dashboard { flex-direction: column; }
-            .hero-section { position: relative; height: 400px; top: 0; padding: 40px; }
-            .hero-section h1 { font-size: 3.5rem; }
-            .outline-text { font-size: 2.5rem; }
-        }
+        @media (max-width: 950px) { .dashboard { flex-direction: column; } .hero-section { height: 350px; position: relative; } }
     </style>
 </head>
 <body>
 
-<a href="index.html" class="logo">Souls Of Soulcity</a>
-
-<nav id="main-nav">
-    <ul class='nav-bar'>
-        <input type='checkbox' id='check' />
-        <span class="menu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="crews.html">Crews</a></li>
-            <li><a href="rankings.html" style="color:var(--f1-red)">Rankings</a></li>
-            <li><a href="Watch.html">Watch</a></li>
-            <li><a href="login.html">Login</a></li>
-            <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
-        </span>
-        <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
-    </ul>
-</nav>
+<a href="#" class="logo">Souls Of Soulcity</a>
 
 <div class="dashboard">
     <aside class="hero-section">
-        <div class="hero-image-container"><img src="" id="hero-img"></div>
-        <div class="f1-tag" id="hero-tag">QUALIFIERS LEADER</div>
+        <div class="hero-image-container" id="hero-container"><img src="" id="hero-img"></div>
+        <div class="f1-tag" id="hero-tag">Tournament Rankings</div>
         <div id="hero-name-container">
-            <h1 id="hero-first">LOADING</h1>
-            <h1 class="outline-text" id="hero-last">DATA</h1>
+            <h1 id="hero-first">SELECT</h1>
+            <h1 class="outline-text" id="hero-last">A TEAM</h1>
         </div>
     </aside>
 
     <main class="standings-section">
-        <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('phase1')">Qualifiers</button>
-            <button class="tab-btn" onclick="switchTab('phase2')">Knockouts</button>
+        <div id="navigation-container">
+            <div class="tab-nav">
+                <button class="tab-btn active" id="btn-phase1" onclick="switchTab('phase1')">Qualifiers</button>
+                <button class="tab-btn" id="btn-phase2" onclick="switchTab('phase2')">Knockouts</button>
+                <button class="tab-btn" id="btn-brackets" onclick="switchTab('brackets')">Brackets</button>
+            </div>
+
+            <div id="phase1-container" class="tab-content">
+                <table class="f1-table" onmouseleave="resetHero()">
+                    <thead><tr><th>Pos</th><th>Crew</th><th style="text-align:right">Pts</th></tr></thead>
+                    <tbody id="phase1-body"></tbody>
+                </table>
+            </div>
+            <div id="phase2-container" class="tab-content" style="display:none">
+                <table class="f1-table" onmouseleave="resetHero()">
+                    <thead><tr><th>Pos</th><th>Crew</th><th style="text-align:right">Pts</th></tr></thead>
+                    <tbody id="phase2-body"></tbody>
+                </table>
+            </div>
+            <div id="brackets-container" class="tab-content" style="display:none">
+                <div class="bracket-wrapper" id="bracket-render" onmouseleave="resetHero()"></div>
+            </div>
         </div>
-        <div id="phase1-container">
-            <table class="f1-table">
-                <thead><tr><th>Pos</th><th>Crew</th><th style="text-align:right">Pts</th></tr></thead>
-                <tbody id="phase1-body"></tbody>
-            </table>
-        </div>
-        <div id="phase2-container" style="display:none;">
-            <table class="f1-table">
-                <thead><tr><th>Pos</th><th>Crew</th><th style="text-align:right">Pts</th></tr></thead>
-                <tbody id="phase2-body"></tbody>
-            </table>
+
+        <div id="details-view">
+            <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+            <div id="details-title"></div>
+            <div class="stat-card">
+                <h4 class="f1-tag" id="performance-label">Racer Performance Breakdown</h4>
+                <div style="overflow-x: auto;">
+                    <table class="f1-table">
+                        <thead><tr id="details-headers"></tr></thead>
+                        <tbody id="details-body"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
 </div>
 
-<footer class="site-footer">
-    <div class="footer-content">
-        <div class="footer-logo">
-            <h3>Souls Of Soulcity</h3>
-            <p>The premier underground racing league. <br>Draft. Race. Survive. Conquer.</p>
-        </div>
-        <div class="footer-links">
-            <h4>Quick Lanes</h4>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">Tournament Info</a></li>
-                <li><a href="crews.html">Crews & Teams</a></li>
-                <li><a href="rankings.html">Leaderboards</a></li>
-                <li><a href="Watch.html">Live Broadcast</a></li>
-            </ul>
-        </div>
-        <div class="footer-contact">
-            <h4>Connect</h4>
-            <div class="social-icons">
-                <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
-                <a href="https://www.instagram.com/8bit_headflicker/" target="_blank"><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>
-    </div>
-</footer>
-
 <script>
-    const PHASE_1_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-4K7CF0Xdi3VK3Snca_xV9huBCAg--xoRyhPVuCxfI6yzuD3ZSsuVngiRJQ_KfXXZRBfJzG5Kq/pub?gid=933387074&single=true&output=csv';
-    const PHASE_2_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-4K7CF0Xdi3VK3Snca_xV9huBCAg--xoRyhPVuCxfI6yzuD3ZSsuVngiRJQ_KfXXZRBfJzG5Kq/pub?gid=882333842&single=true&output=csv';
+    const BASE_GID = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-4K7CF0Xdi3VK3Snca_xV9huBCAg--xoRyhPVuCxfI6yzuD3ZSsuVngiRJQ_KfXXZRBfJzG5Kq/pub?';
+    const CONFIG = {
+        phase1: BASE_GID + 'gid=933387074&single=true&output=csv',
+        phase2: BASE_GID + 'gid=882333842&single=true&output=csv',
+        bracketStats: BASE_GID + 'gid=1780190838&single=true&output=csv', // Data for breakdown
+        bracketMap: BASE_GID + 'gid=1780190838&single=true&output=csv'   // Data for matchups
+    };
 
-    let currentPhase = 'phase1';
-    let dataStore = { phase1: [], phase2: [] };
-    let headersStore = { phase1: [], phase2: [] };
-    const DEFAULT_IMAGE = "images/Chotu18.png";
+    let dataStore = { phase1: [], phase2: [], bracketStats: [], brackets: [] };
+    let activeTab = 'phase1';
 
     async function init() {
-        await Promise.all([loadSheet('phase1', PHASE_1_URL), loadSheet('phase2', PHASE_2_URL)]);
-        render('phase1');
-        if (dataStore.phase1.length > 0) {
-            updateHero(dataStore.phase1[0].name, dataStore.phase1[0].image, 0, 'phase1');
-        }
+        await Promise.all([
+            loadSheet('phase1', CONFIG.phase1),
+            loadSheet('phase2', CONFIG.phase2),
+            loadSheet('bracketStats', CONFIG.bracketStats),
+            loadBrackets(CONFIG.bracketMap)
+        ]);
+        renderList('phase1');
+        renderList('phase2');
+        renderBrackets();
     }
 
     async function loadSheet(key, url) {
         try {
             const res = await fetch(url);
             const text = await res.text();
-            const lines = text.trim().split('\n');
-            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-            headersStore[key] = headers;
+            const rows = text.split('\n').map(r => r.split(',').map(c => c.trim().replace(/"/g, '')));
+            const headers = rows[0];
+            const imgIdx = 0, crewIdx = 1, racerIdx = 3, ptsIdx = 4;
+            const tableHeaders = headers.filter(h => !['Image', 'Crew Name', 'ID', ''].includes(h));
 
-            const rows = lines.slice(1).map(l => {
-                const v = l.split(',');
-                const o = {};
-                headers.forEach((h, i) => o[h] = v[i]?.trim().replace(/"/g, '') || '');
-                return o;
-            });
+            let crews = [];
+            let current = null;
 
-            const processedCrews = [];
-            let currentCrew = null;
-
-            rows.forEach(r => {
-                if (r['Crew Name'] && r['Crew Name'] !== "") {
-                    currentCrew = {
-                        name: r['Crew Name'],
-                        id: r['ID'],
-                        image: r['Image'] || DEFAULT_IMAGE,
-                        total: 0,
-                        races: []
-                    };
-                    processedCrews.push(currentCrew);
-                } else if (currentCrew && r['Racer Name'] && r['Racer Name'] !== "") {
-                    currentCrew.total = parseFloat(r['Total Points']) || 0;
-                    currentCrew.races.push(r);
+            rows.slice(1).forEach(r => {
+                if (r[crewIdx] && r[crewIdx] !== "") {
+                    current = { name: r[crewIdx], total: 0, image: r[imgIdx] || '', racers: [], headers: tableHeaders, source: key };
+                    crews.push(current);
+                }
+                if (current && r[racerIdx] && r[racerIdx] !== "") {
+                    let rData = {};
+                    headers.forEach((h, i) => rData[h] = r[i] || "0");
+                    current.racers.push(rData);
+                    current.total += parseFloat(r[ptsIdx]) || 0;
                 }
             });
-
-            dataStore[key] = processedCrews.sort((a, b) => b.total - a.total);
-        } catch (e) { console.error("Error loading sheet:", e); }
+            if(key !== 'bracketStats') crews.sort((a, b) => b.total - a.total);
+            dataStore[key] = crews;
+        } catch(e) { console.error("Load error", key, e); }
     }
 
-    function render(key) {
-        const body = document.getElementById(`${key}-body`);
-        const subHeaders = headersStore[key].filter(h => h !== 'Crew Name' && h !== 'ID' && h !== 'Image');
+    async function loadBrackets(url) {
+        try {
+            const res = await fetch(url);
+            const text = await res.text();
+            const rows = text.split('\n').map(r => r.split(',').map(c => c.trim().replace(/"/g, '')));
+            let roundsMap = {};
+            rows.slice(1).forEach(r => {
+                if (!r[0]) return;
+                if (!roundsMap[r[0]]) roundsMap[r[0]] = { round: r[0], matches: [] };
+                roundsMap[r[0]].matches.push({ t1: r[1] || "TBD", t2: r[2] || "TBD", winner: r[3] || "" });
+            });
+            dataStore.brackets = Object.values(roundsMap);
+        } catch(e) { console.error("Bracket load error", e); }
+    }
 
-        body.innerHTML = dataStore[key].map((crew, i) => `
-            <tr class="main-row" onclick="toggleCrew('${key}', ${i})">
-                <td class="rank-col">${i+1}</td>
-                <td class="crew-col">${crew.name}</td>
-                <td class="pts-col">${crew.total}</td>
-            </tr>
-            <tr id="detail-${key}-${i}" class="detail-row">
-                <td colspan="3">
-                    <table class="race-table">
-                        <thead><tr>${subHeaders.map(h => `<th>${h}</th>`).join('')}</tr></thead>
-                        <tbody>
-                            ${crew.races.map(r => `<tr>${subHeaders.map(h => `<td>${r[h]}</td>`).join('')}</tr>`).join('')}
-                        </tbody>
-                    </table>
-                </td>
+    function resetHero() {
+        document.getElementById('hero-tag').innerText = "Tournament Rankings";
+        document.getElementById('hero-first').innerText = "SELECT";
+        document.getElementById('hero-last').innerText = "A TEAM";
+        gsap.to("#hero-container", { opacity: 0, duration: 0.3 });
+    }
+
+    function previewTeam(teamName) {
+        if (!teamName || teamName.toLowerCase() === "tbd") return;
+        let team = dataStore[activeTab === 'brackets' ? 'bracketStats' : activeTab].find(t => t.name.toLowerCase() === teamName.toLowerCase());
+        if (!team) team = [...dataStore.phase1, ...dataStore.phase2].find(t => t.name.toLowerCase() === teamName.toLowerCase());
+        if (!team) return;
+
+        const [first, ...last] = team.name.split(' ');
+        document.getElementById('hero-first').innerText = first;
+        document.getElementById('hero-last').innerText = last.join(' ') || 'TEAM';
+        if (team.image) {
+            document.getElementById('hero-img').src = team.image;
+            gsap.to("#hero-container", { opacity: 0.7, duration: 0.4 });
+        }
+    }
+
+    function showTeamDetails(teamName) {
+        if (!teamName || teamName.toLowerCase() === "tbd") return;
+        let team = (activeTab === 'brackets') ? dataStore.bracketStats.find(t => t.name.toLowerCase() === teamName.toLowerCase())
+            : dataStore[activeTab].find(t => t.name.toLowerCase() === teamName.toLowerCase());
+        if (!team) return;
+
+        document.getElementById('navigation-container').style.display = 'none';
+        document.getElementById('details-view').style.display = 'block';
+        document.getElementById('details-title').innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;">
+                <h1 style="font-size: 3.2rem; font-weight: 900; text-transform: uppercase;">${team.name}</h1>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="flex-grow: 1; height: 3px; background: linear-gradient(90deg, var(--f1-red), transparent);"></div>
+                    <span style="font-size: 1.6rem; font-weight: 900;">${team.total} PTS</span>
+                </div>
+            </div>`;
+
+        document.getElementById('details-headers').innerHTML = team.headers.map(h => `<th>${h}</th>`).join('');
+        document.getElementById('details-body').innerHTML = team.racers.map(r => `
+            <tr>${team.headers.map(h => `<td>${r[h] || '0'}</td>`).join('')}</tr>
+        `).join('');
+    }
+
+    function renderList(key) {
+        const body = document.getElementById(`${key}-body`);
+        body.innerHTML = dataStore[key].map((c, i) => `
+            <tr onmouseenter="previewTeam('${c.name}')" onclick="showTeamDetails('${c.name}')" style="cursor:pointer">
+                <td>${i+1}</td>
+                <td>${c.name}</td>
+                <td class="pts-cell">${c.total}</td>
             </tr>
         `).join('');
     }
 
-    function toggleCrew(phase, index) {
-        const crew = dataStore[phase][index];
-        const rowId = `detail-${phase}-${index}`;
-        const row = document.getElementById(rowId);
-        const isOpening = row.style.display !== 'table-row';
-
-        document.querySelectorAll('.detail-row').forEach(r => r.style.display = 'none');
-        if (isOpening) row.style.display = 'table-row';
-
-        updateHero(crew.name, crew.image, index, phase);
+    function renderBrackets() {
+        const area = document.getElementById('bracket-render');
+        area.innerHTML = dataStore.brackets.map(round => `
+            <div class="round-col">
+                <div class="f1-tag" style="text-align:center; padding-bottom: 20px;">${round.round}</div>
+                ${round.matches.map(m => `
+                    <div class="matchup">
+                        <div class="team-box ${m.winner === m.t1 && m.t1 !== 'TBD' ? 'winner' : ''}" onmouseenter="previewTeam('${m.t1}')" onclick="showTeamDetails('${m.t1}')">
+                             <span>${m.t1}</span> ${m.winner === m.t1 && m.t1 !== 'TBD' ? '<i class="fas fa-trophy" style="color:#e10600; font-size:12px;"></i>' : ''}
+                        </div>
+                        <div class="team-box ${m.winner === m.t2 && m.t2 !== 'TBD' ? 'winner' : ''}" onmouseenter="previewTeam('${m.t2}')" onclick="showTeamDetails('${m.t2}')">
+                             <span>${m.t2}</span> ${m.winner === m.t2 && m.t2 !== 'TBD' ? '<i class="fas fa-trophy" style="color:#e10600; font-size:12px;"></i>' : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
     }
 
-    function updateHero(name, imageUrl, index, phase) {
-        const heroFirst = document.getElementById('hero-first');
-        const heroLast = document.getElementById('hero-last');
-        const heroImg = document.getElementById('hero-img');
-        const heroTag = document.getElementById('hero-tag');
-
-        const rank = index + 1;
-        const phaseName = phase === 'phase1' ? 'Qualifier' : 'Knockout';
-
-        // Dynamic Title Logic
-        let title = "";
-        if (rank === 1) title = `${phaseName} Leader`;
-        else if (rank === 2) title = `${phaseName} Runner-Up`;
-        else title = `${phaseName} #${rank}`;
-
-        heroTag.innerText = title;
-
-        const parts = name.split(' ');
-        heroFirst.innerText = parts[0];
-        heroLast.innerText = parts.slice(1).join(' ') || 'TEAM';
-
-        gsap.to(heroImg, {
-            opacity: 0,
-            duration: 0.3,
-            onComplete: () => {
-                heroImg.src = imageUrl || DEFAULT_IMAGE;
-                gsap.to(heroImg, { opacity: 0.7, duration: 0.5 });
-            }
-        });
-
-        gsap.fromTo("#hero-name-container", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5 });
+    function goBack() {
+        document.getElementById('details-view').style.display = 'none';
+        document.getElementById('navigation-container').style.display = 'block';
+        resetHero();
     }
 
     window.switchTab = (key) => {
-        currentPhase = key;
+        activeTab = key;
+        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector(`[onclick="switchTab('${key}')"]`).classList.add('active');
-        document.getElementById('phase1-container').style.display = key === 'phase1' ? 'block' : 'none';
-        document.getElementById('phase2-container').style.display = key === 'phase2' ? 'block' : 'none';
-
-        if (dataStore[key].length > 0) {
-            updateHero(dataStore[key][0].name, dataStore[key][0].image, 0, key);
-        }
-        render(key);
+        document.getElementById(`${key}-container`).style.display = 'block';
+        document.getElementById(`btn-${key}`).classList.add('active');
+        resetHero();
     };
-
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('main-nav');
-        window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
-    });
 
     init();
 </script>

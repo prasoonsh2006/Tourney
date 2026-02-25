@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Driver Directory - Souls Of Soulcity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <style>
+        :root {
+            --f1-red: #e10600;
+            --f1-black: #0b0b0b;
+            --f1-dark-grey: #151515;
+            --f1-text-dim: #949494;
+        }
+
+        body { background-color: var(--f1-black); color: white; font-family: 'Poppins', sans-serif; padding: 40px; }
+        .header { text-align: center; margin-bottom: 50px; }
+        .header h1 { font-weight: 900; text-transform: uppercase; letter-spacing: -1px; }
+        .header span { color: var(--f1-red); }
+
+        .racer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .racer-card {
+            background: var(--f1-dark-grey);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            border-bottom: 4px solid #333;
+            transition: transform 0.3s;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .racer-card:hover { transform: translateY(-5px); border-bottom-color: var(--f1-red); }
+
+        /* Racer Image Styling */
+        .racer-img-container {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            background: #222;
+        }
+
+        .racer-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.3);
+            transition: 0.3s;
+        }
+
+        .racer-card:hover img { filter: grayscale(0); transform: scale(1.05); }
+
+        /* Class Badges */
+        .class-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-weight: 900;
+            font-size: 0.9rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: rgba(0,0,0,0.7);
+            z-index: 2;
+        }
+        .class-S { color: #ff00ff; border: 1px solid #ff00ff; }
+        .class-A { color: #4ade80; border: 1px solid #4ade80; }
+        .class-B { color: #60a5fa; border: 1px solid #60a5fa; }
+
+        .alias { font-size: 1.4rem; font-weight: 800; margin-bottom: 2px; text-transform: uppercase; }
+        .real-name { color: var(--f1-text-dim); font-size: 0.8rem; margin-bottom: 15px; display: block; }
+
+        .stars i { color: #ffd700; cursor: pointer; margin: 0 2px; }
+        .avg-label { font-size: 0.7rem; color: var(--f1-text-dim); display: block; margin-top: 5px; }
+
+        .yt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ff0000;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Driver <span>Directory</span></h1>
+    <p style="color: var(--f1-text-dim)">Public ratings determine racer classifications</p>
+</div>
+
+<div id="racer-list" class="racer-grid"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, runTransaction, query, orderBy }
+        from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+    // Configuration from your auction.js
+    const firebaseConfig = {
+        apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0",
+        authDomain: "souls-of-soulcity.firebaseapp.com",
+        projectId: "souls-of-soulcity",
+        storageBucket: "souls-of-soulcity.firebaseapp.com",
+        messagingSenderId: "402427120355",
+        appId: "1:402427120355:web:f0fa030a0a9034198213d6"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    function getTier(avg) {
+        if (avg >= 4.5) return 'S';
+        if (avg >= 3.7) return 'A';
+        if (avg >= 2.5) return 'B';
+        return 'C';
+    }
+
+    const racerContainer = document.getElementById('racer-list');
+
+    onSnapshot(query(collection(db, "racers"), orderBy("name")), (snapshot) => {
+        racerContainer.innerHTML = '';
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const id = docSnap.id;
+            const avg = data.avgRating || 0;
+            const tier = getTier(avg);
+            // Use default image if none provided in DB
+            const imgPath = data.image || "images/default-racer.png";
+
+            const card = document.createElement('div');
+            card.className = 'racer-card';
+            card.innerHTML = `
+                    <div class="class-badge class-${tier}">${tier} Class</div>
+                    <div class="racer-img-container">
+                        <img src="${imgPath}" alt="${data.name}">
+                    </div>
+                    <div class="alias">${data.name}</div>
+                    <span class="real-name">${data.realName || 'No Name Provided'}</span>
+
+                    <div class="rating-section">
+                        <div class="stars" data-id="${id}">
+                            ${[1, 2, 3, 4, 5].map(num => `
+                                <i class="${num <= Math.round(avg) ? 'fas' : 'far'} fa-star" data-value="${num}"></i>
+                            `).join('')}
+                        </div>
+                        <span class="avg-label">${avg.toFixed(1)} Rating (${data.totalVotes || 0} votes)</span>
+                    </div>
+
+                    <a href="${data.youtubeUrl || '#'}" target="_blank" class="yt-btn">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </a>
+                `;
+
+            card.querySelectorAll('.stars i').forEach(star => {
+                star.addEventListener('click', () => submitVote(id, parseInt(star.dataset.value)));
+            });
+
+            racerContainer.appendChild(card);
+        });
+    });
+
+    async function submitVote(racerId, val) {
+        const ref = doc(db, "racers", racerId);
+        try {
+            await runTransaction(db, async (transaction) => {
+                const sfDoc = await transaction.get(ref);
+                const data = sfDoc.data();
+                const newTotal = (data.totalVotes || 0) + 1;
+                const newSum = (data.sumRating || 0) + val;
+                transaction.update(ref, {
+                    totalVotes: newTotal,
+                    sumRating: newSum,
+                    avgRating: newSum / newTotal
+                });
+            });
+        } catch (e) { console.error("Vote failed: ", e); }
+    }
+</script>
+</body>
+</html>

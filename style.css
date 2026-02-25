@@ -194,18 +194,25 @@ main {
     --navbar-h: 80px;
 }
 
-/* Logo Positioning */
 .logo {
     position: fixed;
-    top: 23px;
+    top: 10px;
     left: 40px;
-    z-index: 101; /* Must be above the nav span */
-    font-family: "Kaushan Script", cursive;
-    font-weight: bolder;
-    font-size: 24px;
-    color: #e4e3d3;
+    z-index: 101;
     text-decoration: none;
-    transition: 0.3s;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    display: block; /* Ensures the link wraps the image correctly */
+}
+
+.logo-img {
+    height: 90px; /* Adjust this value to your preferred size */
+    width: auto;  /* Maintains aspect ratio */
+    display: block;
+}
+
+/* Adds a nice interactive feel since there's no text */
+.logo:hover {
+    opacity: 0.8;
 }
 
 /* Navigation Base */

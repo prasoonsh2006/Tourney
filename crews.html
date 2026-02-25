@@ -8,82 +8,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:ital,wght@0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
 
         /* -------------------- BASE STYLES -------------------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
-            --color-black: #ffffff;
-            --color-dark-grey: #000000;
-            --color-mid-grey: #2a2a2a;
-            --color-light-grey: #ffffff;
-            --color-white: #ffffff;
-            /* --- UPDATED ACCENT COLORS: Subdued Metallic Silver --- */
-            --color-metallic-silver: #ffffff;
-            --color-subdued-blue: rgb(0, 0, 0); /* Keeping a subtle blue/cyan for secondary highlight */
-            /* ----------------------------- */
-        }
-
-        body {
-            width: 100vw;
-            font-family: "Poppins", sans-serif;
-            color: var(--color-light-grey);
-            min-height: 100vh;
-
-            /* Background Image with Dark Overlay */
-            background-image: url('images/carbg3.jpg');
-            background-color: var(--color-dark-grey);
-            background-size: cover;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-position: center center;
-
-            position: relative;
-        }
-
-        /* --- DARK OVERLAY --- */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        main {
-            width: 100%;
-            position: relative;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        h1, h2, h3 {
-            color: var(--color-white);
-            font-weight: 700;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--color-light-grey);
-            transition: color 0.3s;
-        }
-
-        /* -------------------- UNIFIED NAV STYLES -------------------- */
         :root {
             --f1-red: #e10600;
             --f1-black: #0b0b0b;
-            --navbar-h: 80px;
+            --font-racing: "Poppins", sans-serif;
+            --font-mono: "Space Mono", monospace;
         }
 
+        body {
+            width: 100vw; font-family: var(--font-racing); color: #fff;
+            background-color: var(--f1-black); overflow-x: hidden;
+            background-image: url('images/carbg3.jpg'); background-size: cover; background-attachment: fixed;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.4), rgba(0,0,0,0.9)); z-index: -1;
+        }
+
+        /* -------------------- LOGO & NAV -------------------- */
         .logo {
             position: fixed;
             top: 23px;
@@ -99,8 +47,7 @@
 
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 30px;
             width: 100%;
             height: var(--navbar-h);
             z-index: 99;
@@ -111,7 +58,7 @@
         }
 
         nav.scrolled {
-            background-color: rgba(11, 11, 11, 0.95);
+            background-color: rgba(18, 18, 18, 0.95);
             backdrop-filter: blur(10px);
             height: 70px;
         }
@@ -135,241 +82,89 @@
             font-weight: 600;
             transition: 0.3s;
         }
-
         .menu li a:hover { color: var(--f1-red); }
 
         .open-menu, .close-menu { display: none; color: #fff; cursor: pointer; font-size: 1.5rem; }
         #check { display: none; }
 
-        /* Mobile Menu Slide-out */
-        @media(max-width: 950px) {
-            .open-menu { display: block; margin-right: 0; }
-            .menu {
-                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
-                background: #0a0a0a; flex-direction: column; align-items: center;
-                justify-content: center; transition: 0.3s; z-index: 100;
-            }
-            .menu li { padding: 20px 0; padding-left: 0; }
-            .close-menu { display: block; position: absolute; top: 25px; right: 25px; }
-            #check:checked ~ .menu { right: 0; }
+        /* -------------------- CLEAN SEARCH BAR -------------------- */
+        .search-container { max-width: 500px; margin: 40px auto; padding: 0 20px; }
+        .search-box {
+            width: 100%; padding: 12px 0; background: transparent;
+            border: none; border-bottom: 2px solid rgba(255,255,255,0.2);
+            color: #fff; font-family: var(--font-mono); font-size: 1.1rem;
+            outline: none; transition: 0.4s; text-align: center;
         }
+        .search-box::placeholder { color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
+        .search-box:focus { border-bottom-color: var(--f1-red); }
 
         /* -------------------- CREWS SECTION -------------------- */
-        #crews {
-            padding: 120px 20px 80px; /* Increased top padding to clear nav and logo/social bar */
-            min-height: calc(100vh);
-            background-color: rgba(13, 13, 13, 0.1);
-        }
+        #crews { padding: 120px 20px 80px; text-align: center; }
+        .crews-container h1 { font-size: clamp(2rem, 8vw, 5rem); font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -3px; }
+        .subtitle { font-family: var(--font-mono); color: var(--f1-red); letter-spacing: 5px; margin-bottom: 20px; font-size: 0.8rem; }
 
-        .crews-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            text-align: center;
-        }
+        /* -------------------- HUD SLIDE CARDS -------------------- */
+        .crew-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
 
-        .crews-container h1 {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, #dddddd, #999999);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .crews-container p.subtitle {
-            font-size: 1.1rem;
-            color: #ccc;
-            margin-bottom: 60px;
-        }
-
-        /* Crew Card Grid */
-        .crew-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            padding: 20px 0;
-        }
-
-        /* Placeholder for loading state */
-        .crew-grid .loading {
-            grid-column: 1 / -1;
-            text-align: center;
-            font-size: 1.5rem;
-            color: var(--color-metallic-silver);
-            padding: 50px;
-        }
-
-        /* 3D Flip Card Container */
         .crew-card {
-            background-color: transparent;
-            width: 100%;
-            height: 400px;
-            perspective: 1000px;
-
-            /* --- STAGGERED TRANSITION START STATE --- */
-            opacity: 0;
-            transform: translateY(30px);
-            /* Combined transition for stagger (opacity/y) and hover (box-shadow) */
-            transition:
-                    opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1),
-                    transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1),
-                    box-shadow 0.4s;
-            /* -------------------------------------- */
+            position: relative; height: 450px; background: #111;
+            border-radius: 0 30px 0 30px; overflow: hidden;
+            border: 1px solid #222; opacity: 0; transform: scale(0.9);
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
+        .crew-card.in-view { opacity: 1; transform: scale(1); }
+        .crew-card.hidden { display: none; }
 
-        /* STAGGERED TRANSITION END STATE (Added by JS) */
-        .crew-card.in-view {
-            opacity: 1;
-            transform: translateY(0);
+        .card-display {
+            height: 100%; width: 100%; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 40px;
+            background: linear-gradient(145deg, #151515, #050505); transition: 0.5s;
         }
+        .crew-card:hover .card-display { transform: scale(0.9); opacity: 0.3; filter: blur(5px); }
 
-        /* Added lift and scale on hover for the card container */
-        .crew-card:hover {
-            transform: translateY(-8px) scale(1.02);
+        .card-display h2 { font-size: 2.2rem; font-style: italic; font-weight: 900; text-transform: uppercase; line-height: 0.9; text-align: center; }
+        .card-display .owner-tag { font-family: var(--font-mono); font-size: 0.7rem; color: var(--f1-red); margin-bottom: 10px; border: 1px solid var(--f1-red); padding: 2px 10px; }
+        .specialty-tag { font-family: var(--font-mono); font-size: 0.65rem; color: #888; margin-top: 15px; text-transform: uppercase; }
+
+        /* HUD Overlay */
+        .card-hud {
+            position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
+            background: rgba(225, 6, 0, 0.98); transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+            display: flex; flex-direction: column; padding: 30px; justify-content: flex-start;
         }
+        .crew-card:hover .card-hud { top: 0; }
 
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s ease-out;
-            transform-style: preserve-3d;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Scanline */
+        .crew-card:hover::after {
+            content: ""; position: absolute; top: -10%; left: 0; width: 100%; height: 3px;
+            background: #fff; box-shadow: 0 0 10px #fff;
+            animation: scan-once 0.6s ease-out forwards; z-index: 10;
         }
+        @keyframes scan-once { 0% { top: -10%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-        /* Card Flip on Hover - Enhanced Glow (Default Silver/Steel) */
-        .crew-card:hover .card-inner {
-            transform: rotateY(180deg);
-            box-shadow: 0 0 35px 8px rgba(176, 196, 222, 0.6), 0 10px 40px rgba(0, 0, 0, 0.8);
+        .card-hud h3 { font-family: var(--font-mono); font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.3); margin-bottom: 15px; text-transform: uppercase; padding-top: 10px; letter-spacing: 3px; }
+
+        /* Roster & New Amount Design */
+        .roster-list { overflow-y: auto; max-height: 280px; list-style: none; }
+        .roster-list::-webkit-scrollbar { width: 2px; }
+        .roster-list::-webkit-scrollbar-thumb { background: #fff; }
+
+        .roster-list li {
+            font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem;
+            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            transform: translateX(-20px); opacity: 0; transition: 0.3s;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .crew-card:hover .roster-list li { transform: translateX(0); opacity: 1; }
 
-
-        /* Card Front and Back Styles */
-        .card-front,
-        .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 12px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
+        /* New Amount Styling */
+        .price-badge {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 0.75rem; color: #fff;
+            background: #000; padding: 2px 8px; border-radius: 2px;
+            border-left: 3px solid #fff;
         }
-
-        /* Front specific styles */
-        .card-front {
-            background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
-        }
-
-        .card-front h2 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            color: #b0c4de; /* Silver/Steel Blue Accent */
-            letter-spacing: 1px;
-        }
-
-        .card-front p {
-            font-size: 1.1rem;
-            color: #ccc;
-        }
-
-        .card-front .owner {
-            margin-top: 15px;
-            font-style: italic;
-        }
-
-        .card-front .specialty {
-            /* New style for the specialty text from the sheet */
-            margin-top: 10px;
-            font-weight: 500;
-        }
-
-        /* Back specific styles */
-        .card-back {
-            background: linear-gradient(135deg, #111111 0%, #444444 100%);
-            transform: rotateY(180deg);
-            padding: 40px 20px;
-        }
-
-        .card-back h3 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: #b0c4de; /* Silver/Steel Blue Accent */
-        }
-
-        .card-back ul {
-            list-style: none;
-            padding: 0;
-            font-size: 1.1rem;
-            text-align: left;
-            width: 80%;
-            max-height: 200px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #0d0d0d #333333;
-        }
-
-        .card-back ul::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .card-back ul::-webkit-scrollbar-thumb {
-            background-color: #0d0d0d;
-            border-radius: 10px;
-        }
-
-        .card-back ul::-webkit-scrollbar-track {
-            background-color: #333333;
-            border-radius: 10px;
-        }
-
-        /* Roster List Item Animation */
-        .card-back li {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            margin-bottom: 8px;
-            padding: 5px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-back li:last-child {
-            border-bottom: none;
-        }
-
-        .card-back li::before {
-            content: "🏁";
-            margin-right: 5px;
-            font-size: 0.9rem;
-        }
-
-        /* Roster List Item Animation (Staggered Reveal on Flip) */
-        .crew-card:hover .card-back li {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .crew-card:hover .card-back li:nth-child(1) { transition-delay: 0.4s; }
-        .crew-card:hover .card-back li:nth-child(2) { transition-delay: 0.45s; }
-        .crew-card:hover .card-back li:nth-child(3) { transition-delay: 0.5s; }
-        .crew-card:hover .card-back li:nth-child(4) { transition-delay: 0.55s; }
-        .crew-card:hover .card-back li:nth-child(5) { transition-delay: 0.6s; }
-        .crew-card:hover .card-back li:nth-child(6) { transition-delay: 0.65s; }
+        .price-badge span { color: rgba(255,255,255,0.5); font-weight: 400; font-size: 0.6rem; }
 
         /* -------------------- FOOTER (FIXED) -------------------- */
         .site-footer {
@@ -460,7 +255,6 @@
             .footer-links h4, .footer-contact h4 { margin: 0 auto 20px; }
             .footer-contact .social-icons { justify-content: center; }
         }
-
     </style>
 </head>
 
@@ -487,10 +281,14 @@
 <main>
     <section id="crews">
         <div class="crews-container">
-            <h1>Soulcity's Elite Drivers</h1>
-            <p class="subtitle">The dark heart of the city's racing scene. Hover over a crew to reveal their true soul.</p>
+            <h1>TEAM_GRID</h1>
+            <p class="subtitle">DATA_SYNC // ACTIVE</p>
+
+            <div class="search-container">
+                <input type="text" id="crewSearch" class="search-box" placeholder="Find Crew or Racer...">
+            </div>
+
             <div class="crew-grid" id="crew-grid">
-                <div class="loading">Loading crew data...</div> <span>l</span>
             </div>
         </div>
     </section>
@@ -517,9 +315,9 @@
         <div class="footer-contact">
             <h4>Connect</h4>
             <p>Join the community:</p>
-            <div style="margin-top: 15px; font-size: 1.5rem;">
-                <a href="https://www.youtube.com/headflicker" target="_blank" style="margin-right: 15px;"><i class="fab fa-youtube"></i></a>
-                <a href="https://discord.gg/phmcfrQ4" target="_blank" style="margin-right: 15px;"><i class="fab fa-discord"></i></a>
+            <div class="social-icons">
+                <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
                 <a href="https://www.instagram.com/8bit_headflicker/" target="_blank"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
@@ -527,169 +325,89 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script>
+    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSIuui-HVDxX_XP9KsR2Tp1tRD8GGXLKyReLCin1DQPLsalXjtZV_5Wa0_Sy3W6tGDYs8SeSPksvVHK/pub?gid=868866381&single=true&output=csv';
 
-<script id="crew-data-script">
-    // Simple JS to close the mobile menu if needed
-    document.querySelectorAll('.menu a').forEach(item => {
-        item.addEventListener('click', () => {
-            const checkbox = document.getElementById('check');
-            if (checkbox.checked) {
-                checkbox.checked = false;
-            }
-        });
-    });
-
-    // ----------------------------------------------------
-    // DYNAMIC DATA LOADING FROM GOOGLE SHEET
-    // ----------------------------------------------------
-
-    // ⭐⭐ IMPORTANT: REPLACE THIS URL WITH YOUR PUBLISHED GOOGLE SHEET CSV LINK ⭐⭐
-    // The sheet must have columns: Crew Name, Owner, Specialty, Racer 1, Racer 2, Racer 3, ...
-    const CREW_DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSIuui-HVDxX_XP9KsR2Tp1tRD8GGXLKyReLCin1DQPLsalXjtZV_5Wa0_Sy3W6tGDYs8SeSPksvVHK/pub?gid=868866381&single=true&output=csv'; // Example URL
-
-    /**
-     * Parses the CSV data into a structured array of crew objects.
-     * @param {Array<Object>} data The raw array from PapaParse.
-     * @returns {Array<Object>} Structured data.
-     */
-    function structureCrewData(data) {
-        return data.map(row => {
-            const racers = [];
-
-            // DYNAMICALLY COLLECT RACERS: Loop through all headers.
-            // If a header starts with 'Racer' and the cell value is not empty, add it to the list.
-            Object.keys(row).forEach(key => {
-                if (key.startsWith('Racer') && row[key] && row[key].trim() !== '') {
-                    racers.push(row[key].trim());
-                }
-            });
-
-            return {
-                name: row['Crew Name'] || 'Open Slot',
-                owner: row['Owner'] || 'TBD',
-                specialty: row['Specialty'] || 'No defined strategy.',
-                racers: racers
-            };
-        }).filter(crew => crew.name !== 'Open Slot' || crew.racers.length > 0); // Filter out empty placeholder rows
-    }
-
-    /**
-     * Generates the HTML for a single crew card.
-     * @param {Object} crew The structured crew object.
-     * @returns {string} The HTML string for the crew card.
-     */
-    function createCrewCardHTML(crew) {
-        // Generate the roster list HTML based on the dynamic racers array
-        const rosterHTML = crew.racers.length > 0
-            ? crew.racers.map(racer => `<li>${racer}</li>`).join('')
-            : '<li>Recruiting...</li>';
-
-        return `
-            <div class="crew-card">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <h2>${crew.name}</h2>
-                        <p class="owner">Owner: ${crew.owner}</p>
-                        <p class="specialty">Specialty: ${crew.specialty}</p>
-                    </div>
-                    <div class="card-back">
-                        <h3>Racer Roster</h3>
-                        <ul>
-                            ${rosterHTML}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    /**
-     * Fetches, parses, and renders the crew data.
-     */
-    async function loadCrewData() {
-        const crewGrid = document.getElementById('crew-grid');
-        crewGrid.innerHTML = '<div class="loading">Loading crew data...</div>';
-
+    async function fetchCrews() {
+        const grid = document.getElementById('crew-grid');
         try {
-            const response = await fetch(CREW_DATA_URL);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const rawCSV = await response.text();
+            const response = await fetch(SHEET_URL);
+            const csv = await response.text();
 
-            // PapaParse configuration for dynamic header matching
-            Papa.parse(rawCSV, {
+            Papa.parse(csv, {
                 header: true,
-                skipEmptyLines: true,
                 complete: (results) => {
-                    const structuredData = structureCrewData(results.data);
+                    const activeCrews = results.data.filter(r => r['Crew Name'] && r['Crew Name'].trim() !== "");
 
-                    if (structuredData.length === 0) {
-                        crewGrid.innerHTML = '<div class="loading">No crew data found in the sheet.</div>';
-                        return;
-                    }
+                    grid.innerHTML = activeCrews.map(crew => {
+                        const crewName = crew['Crew Name'];
+                        const owner = crew['Owner'] || '---';
+                        const specialty = crew['Specialty'] || '';
 
-                    // Generate all card HTML and insert into the grid
-                    crewGrid.innerHTML = structuredData.map(createCrewCardHTML).join('');
+                        let racerHTML = "";
+                        let racerCount = 0;
 
-                    // Trigger the staggered animation after insertion
-                    staggerCards();
-                },
-                error: (error) => {
-                    throw new Error("CSV Parsing Error: " + error);
+                        // Check Racer columns based on image structure
+                        const keys = ["Racer 1", "Racer 2", "Racer 3", "Racer4", "Racer5"];
+
+                        keys.forEach((key, i) => {
+                            const name = crew[key];
+                            // Match Price (for Racer 1) or Amount (for Racer 2) based on table image
+                            let amt = "";
+                            if (i === 0 && crew['Price']) amt = crew['Price'];
+                            if (i === 1 && crew['Amount']) amt = crew['Amount'];
+
+                            if(name && name.trim() !== "") {
+                                racerCount++;
+                                racerHTML += `
+                                    <li>
+                                        ${name}
+                                        ${amt ? `<div class="price-badge"><span>VAL</span> $${amt}</div>` : ''}
+                                    </li>`;
+                            }
+                        });
+
+                        if(racerCount === 0) racerHTML = '<li style="justify-content:center; opacity:0.5;">RECRUITING</li>';
+
+                        return `
+                        <div class="crew-card">
+                            <div class="card-display">
+                                <span class="owner-tag">${owner}</span>
+                                <h2>${crewName}</h2>
+                                <p class="specialty-tag">${specialty}</p>
+                            </div>
+                            <div class="card-hud">
+                                <h3>ROSTER_FILES</h3>
+                                <ul class="roster-list">${racerHTML}</ul>
+                            </div>
+                        </div>`;
+                    }).join('');
+
+                    setupSearch();
+                    const cards = document.querySelectorAll('.crew-card');
+                    cards.forEach((c, i) => setTimeout(() => c.classList.add('in-view'), i * 50));
                 }
             });
-
-        } catch (error) {
-            console.error("Failed to load crew data:", error);
-            crewGrid.innerHTML = `<div class="loading" style="color:red;">Error loading data: ${error.message}. Check your console and sheet URL.</div>`;
-        }
+        } catch (e) { grid.innerHTML = "<h2>ERROR_LOADING_DATA</h2>"; }
     }
 
-
-    /**
-     * Staggers the card reveal animation on page load.
-     */
-    function staggerCards() {
+    function setupSearch() {
+        const input = document.getElementById('crewSearch');
         const cards = document.querySelectorAll('.crew-card');
-        let delay = 0;
-        const staggerInterval = 120; // Time delay between each card reveal (120ms)
-
-        cards.forEach(card => {
-            setTimeout(() => {
-                // Add the 'in-view' class to trigger the CSS transition
-                card.classList.add('in-view');
-            }, delay);
-            // Increase the delay for the next card
-            delay += staggerInterval;
+        input.addEventListener('input', () => {
+            const val = input.value.toLowerCase();
+            cards.forEach(card => {
+                card.innerText.toLowerCase().includes(val) ? card.classList.remove('hidden') : card.classList.add('hidden');
+            });
         });
     }
 
-    // ----------------------------------------------------
-    // JAVASCRIPT FOR SCROLL-ACTIVATED NAVBAR BACKGROUND
-    // ----------------------------------------------------
-    document.addEventListener('DOMContentLoaded', () => {
-        // 1. Load the crew data and render cards
-        loadCrewData();
-
-        // 2. Navbar Scroll Handler
+    window.addEventListener('scroll', () => {
         const nav = document.getElementById('main-nav');
-        const logo = document.getElementById('main-logo');
-        const scrollThreshold = 50; // The number of pixels to scroll before changing the background
-
-        const changeNavBackground = () => {
-            if (window.scrollY >= scrollThreshold) {
-                nav.classList.add('scrolled');
-                logo.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-                logo.classList.remove('scrolled');
-            }
-        };
-
-        // Run on page load and add the scroll event listener
-        changeNavBackground();
-        window.addEventListener('scroll', changeNavBackground);
+        window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
     });
+
+    document.addEventListener('DOMContentLoaded', fetchCrews);
 </script>
 </body>
-
 </html>

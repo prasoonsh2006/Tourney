@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Admin - Auction Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #0b0b0b; color: white; font-family: 'Poppins', sans-serif; }
+        .card { background: #151515; border: 1px solid #252525; border-radius: 15px; padding: 25px; }
+        input, textarea { background: #222; border: 1px solid #333; color: white; padding: 10px; border-radius: 8px; width: 100%; margin-bottom: 15px; }
+        button { background: #e10600; color: white; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; transition: 0.3s; }
+        button:hover { background: white; color: black; }
+    </style>
+</head>
+<body class="p-10">
+<div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="card">
+        <h2 class="text-xl font-bold mb-4 uppercase text-red-600">Add New Racer</h2>
+        <input type="text" id="r-name" placeholder="Racer Name (e.g. Silver Bullet)">
+        <input type="text" id="r-img" placeholder="Image URL (e.g. images/Chotu18.png)">
+        <input type="number" id="r-price" placeholder="Base Price (SVC)">
+        <textarea id="r-desc" placeholder="Racer Description..."></textarea>
+        <button id="add-racer-btn">Add to Database</button>
+    </div>
+
+    <div class="card">
+        <h2 class="text-xl font-bold mb-4 uppercase text-red-600">Live Auction Control</h2>
+        <div id="racer-list" class="space-y-4">
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, setDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+    const firebaseConfig = { /* PASTE YOUR CONFIG HERE */ };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ADD RACER TO FIRESTORE
+    document.getElementById('add-racer-btn').onclick = async () => {
+        const racer = {
+            name: document.getElementById('r-name').value,
+            imageUrl: document.getElementById('r-img').value,
+            basePrice: parseInt(document.getElementById('r-price').value),
+            description: document.getElementById('r-desc').value,
+            status: "available"
+        };
+        await addDoc(collection(db, "racers"), racer);
+        alert("Racer Added!");
+        location.reload();
+    };
+
+    // LOAD RACERS & START BUTTONS
+    const racerList = document.getElementById('racer-list');
+    const querySnapshot = await getDocs(collection(db, "racers"));
+    querySnapshot.forEach((docSnap) => {
+        const r = docSnap.data();
+        const div = document.createElement('div');
+        div.className = "p-3 bg-black rounded-lg border border-gray-800 flex justify-between items-center";
+        div.innerHTML = `<span>${r.name}</span> <button onclick="window.startAuction('${docSnap.id}')" class="w-auto px-4 py-1 text-xs">GO LIVE</button>`;
+        racerList.appendChild(div);
+    });
+
+    window.startAuction = async (id) => {
+        const rSnap = await getDocs(collection(db, "racers")); // Simplified for demo
+        const target = rSnap.docs.find(d => d.id === id).data();
+
+        await setDoc(doc(db, "auctionState", "current"), {
+            racerId: id,
+            name: target.name,
+            highestBid: target.basePrice,
+            highestBidderName: "Starting Bid",
+            endTime: Timestamp.fromMillis(Date.now() + 60000), // 60 Seconds
+            status: "active"
+        });
+        alert("Auction Started for " + target.name);
+    };
+</script>
+</body>
+</html>
