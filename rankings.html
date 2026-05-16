@@ -13,7 +13,56 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--f1-black); color: white; font-family: 'Poppins', sans-serif; overflow-x: hidden; }
 
-        .logo { position: fixed; top: 23px; left: 40px; z-index: 101; font-family: "Kaushan Script"; font-size: 24px; color: #e4e3d3; text-decoration: none; }
+        /* -------------------- LOGO & NAV -------------------- */
+        .logo {
+            position: fixed;
+            top: 23px;
+            left: 40px;
+            z-index: 101;
+            font-family: "Kaushan Script", sans-serif;
+            font-weight: bolder;
+            font-size: 24px;
+            color: #e4e3d3;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        nav {
+            position: fixed;
+            top: 30px;
+            width: 100%;
+            height: var(--navbar-h);
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            transition: all 0.4s ease;
+        }
+
+        .nav-bar {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            list-style: none;
+            padding: 0 40px;
+        }
+
+        .menu { display: flex; list-style: none; }
+        .menu li { padding-left: 30px; }
+        .menu li a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .menu li a:hover { color: var(--f1-red); }
+
+        .open-menu, .close-menu { display: none; color: #fff; cursor: pointer; font-size: 1.5rem; }
+        #check { display: none; }
+
         .dashboard { display: flex; margin-top: var(--navbar-h); min-height: calc(100vh - var(--navbar-h)); }
 
         /* HERO SECTION */
@@ -26,23 +75,32 @@
 
         /* MAIN SECTION */
         .standings-section { flex: 1.8; padding: 40px; border-left: 1px solid #222; }
-        .tab-nav { display: flex; gap: 30px; margin-bottom: 30px; border-bottom: 1px solid #252525; }
-        .tab-btn { background: none; border: none; color: var(--f1-text-dim); font-weight: 800; text-transform: uppercase; cursor: pointer; padding: 15px 0; border-bottom: 3px solid transparent; }
+        .tab-nav { display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid #252525; overflow-x: auto; white-space: nowrap; }
+        .tab-btn { background: none; border: none; color: var(--f1-text-dim); font-weight: 800; text-transform: uppercase; cursor: pointer; padding: 15px 0; border-bottom: 3px solid transparent; font-size: 12px; letter-spacing: 1px; }
         .tab-btn.active { color: white; border-bottom: 3px solid var(--f1-red); }
 
         /* TABLES */
         .f1-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         .f1-table th { text-align: left; color: var(--f1-text-dim); font-size: 11px; padding: 10px; border-bottom: 1px solid #333; text-transform: uppercase; }
         .f1-table td { padding: 15px 10px; font-size: 14px; border-bottom: 1px solid #222; font-weight: 600; }
-        .pts-cell { text-align: right; font-weight: 900; font-size: 1.2rem; color: #fff; }
 
-        /* BRACKET ALIGNMENT FIX */
-        .bracket-wrapper { display: flex; gap: 60px; padding: 20px 0; overflow-x: auto; align-items: flex-start; }
-        .round-col { display: flex; flex-direction: column; min-width: 240px; }
-        .matchup { position: relative; margin: 25px 0; display: flex; flex-direction: column; gap: 2px; }
-        .team-box { background: #111; border: 1px solid #222; padding: 12px 15px; cursor: pointer; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        /* BRACKET SYSTEM STYLING */
+        .bracket-wrapper { display: flex; gap: 50px; padding: 30px 0; overflow-x: auto; align-items: stretch; min-height: 550px; }
+        .round-col { display: flex; flex-direction: column; min-width: 260px; justify-content: space-around; }
+        .matchup { position: relative; margin: 15px 0; display: flex; flex-direction: column; gap: 3px; width: 100%; }
+        .match-id-tag { font-size: 9px; color: var(--f1-text-dim); font-weight: 800; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .team-box { background: #111; border: 1px solid #222; padding: 12px 15px; cursor: pointer; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; border-radius: 2px; }
         .team-box:hover { border-color: var(--f1-red); background: #1a1a1a; }
-        .team-box.winner { border-left: 4px solid var(--f1-red); }
+        .team-box.winner { border-left: 4px solid var(--f1-red); background: #141414; }
+        .team-box span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* CURRENT ONGOING RACE CARD */
+        .live-race-card { background: linear-gradient(135deg, #111 0%, #1c0201 100%); border: 1px solid #333; border-top: 4px solid var(--f1-red); padding: 30px; border-radius: 4px; margin-top: 20px; }
+        .live-grid { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 25px; }
+        .live-team { flex: 1; background: #000; border: 1px solid #222; padding: 25px; text-align: center; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .live-team:hover { border-color: var(--f1-red); }
+        .live-team h3 { font-size: 1.8rem; font-weight: 900; margin-top: 5px; text-transform: uppercase; }
+        .vs-circle { background: var(--f1-red); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 0 15px rgba(225,6,0,0.4); }
 
         /* DETAILS VIEW */
         #details-view { display: none; }
@@ -54,7 +112,23 @@
 </head>
 <body>
 
-<a href="#" class="logo">Souls Of Soulcity</a>
+<a href="index.html" class="logo" id="main-logo">Souls Of Soulcity</a>
+
+<nav id="main-nav">
+    <ul class='nav-bar'>
+        <input type='checkbox' id='check' />
+        <span class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="crews.html">Crews</a></li>
+            <li><a href="rankings.html" style="color:var(--f1-red)">Rankings</a></li>
+            <li><a href="Watch.html">Watch</a></li>
+            <li><a href="login.html">Login</a></li>
+            <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
+        </span>
+        <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
+    </ul>
+</nav>
 
 <div class="dashboard">
     <aside class="hero-section">
@@ -69,28 +143,30 @@
     <main class="standings-section">
         <div id="navigation-container">
             <div class="tab-nav">
-                <button class="tab-btn active" id="btn-phase1" onclick="switchTab('phase1')">Qualifiers</button>
-                <button class="tab-btn" id="btn-phase2" onclick="switchTab('phase2')">Knockouts</button>
-                <button class="tab-btn" id="btn-brackets" onclick="switchTab('brackets')">Brackets</button>
+                <button class="tab-btn active" id="btn-currentRace" onclick="switchTab('currentRace')">Current Race</button>
+                <button class="tab-btn" id="btn-winners" onclick="switchTab('winners')">Winners Bracket</button>
+                <button class="tab-btn" id="btn-losers" onclick="switchTab('losers')">Losers Bracket</button>
             </div>
 
-            <div id="phase1-container" class="tab-content">
-                <table class="f1-table" onmouseleave="resetHero()">
-                    <thead><tr><th>Pos</th><th>Crew</th><th style="text-align:right">Pts</th></tr></thead>
-                    <tbody id="phase1-body"></tbody>
-                </table>
+            <!-- TAB CONTAINER: CURRENT LIVE ONGOING RACE -->
+            <div id="currentRace-container" class="tab-content">
+                <div class="live-race-card" id="live-race-render" onmouseleave="resetHero()">
+                    <!-- Rendered dynamically by JS -->
+                </div>
             </div>
-            <div id="phase2-container" class="tab-content" style="display:none">
-                <table class="f1-table" onmouseleave="resetHero()">
-                    <thead><tr><th>Pos</th><th>Crew</th><th style="text-align:right">Pts</th></tr></thead>
-                    <tbody id="phase2-body"></tbody>
-                </table>
+
+            <!-- TAB CONTAINER: WINNER BRACKET MAP -->
+            <div id="winners-container" class="tab-content" style="display:none">
+                <div class="bracket-wrapper" id="winner-bracket-render" onmouseleave="resetHero()"></div>
             </div>
-            <div id="brackets-container" class="tab-content" style="display:none">
-                <div class="bracket-wrapper" id="bracket-render" onmouseleave="resetHero()"></div>
+
+            <!-- TAB CONTAINER: LOSER BRACKET MAP -->
+            <div id="losers-container" class="tab-content" style="display:none">
+                <div class="bracket-wrapper" id="loser-bracket-render" onmouseleave="resetHero()"></div>
             </div>
         </div>
 
+        <!-- DETAILS WRAPPER VIEW -->
         <div id="details-view">
             <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
             <div id="details-title"></div>
@@ -110,25 +186,20 @@
 <script>
     const BASE_GID = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS4ud-4K7CF0Xdi3VK3Snca_xV9huBCAg--xoRyhPVuCxfI6yzuD3ZSsuVngiRJQ_KfXXZRBfJzG5Kq/pub?';
     const CONFIG = {
-        phase1: BASE_GID + 'gid=933387074&single=true&output=csv',
-        phase2: BASE_GID + 'gid=882333842&single=true&output=csv',
-        bracketStats: BASE_GID + 'gid=1780190838&single=true&output=csv', // Data for breakdown
-        bracketMap: BASE_GID + 'gid=1780190838&single=true&output=csv'   // Data for matchups
+        bracketStats: BASE_GID + 'gid=1780190838&single=true&output=csv',
+        bracketMap: BASE_GID + 'gid=1780190838&single=true&output=csv'
     };
 
-    let dataStore = { phase1: [], phase2: [], bracketStats: [], brackets: [] };
-    let activeTab = 'phase1';
+    let dataStore = { bracketStats: [], winners: [], losers: [], currentRace: null };
+    let activeTab = 'currentRace';
 
     async function init() {
         await Promise.all([
-            loadSheet('phase1', CONFIG.phase1),
-            loadSheet('phase2', CONFIG.phase2),
             loadSheet('bracketStats', CONFIG.bracketStats),
-            loadBrackets(CONFIG.bracketMap)
+            loadBracketsAndLive(CONFIG.bracketMap)
         ]);
-        renderList('phase1');
-        renderList('phase2');
-        renderBrackets();
+        renderDoubleEliminationBrackets();
+        renderCurrentRace();
     }
 
     async function loadSheet(key, url) {
@@ -137,7 +208,7 @@
             const text = await res.text();
             const rows = text.split('\n').map(r => r.split(',').map(c => c.trim().replace(/"/g, '')));
             const headers = rows[0];
-            const imgIdx = 0, crewIdx = 1, racerIdx = 3, ptsIdx = 4;
+            const crewIdx = 1, racerIdx = 3, ptsIdx = 4;
             const tableHeaders = headers.filter(h => !['Image', 'Crew Name', 'ID', ''].includes(h));
 
             let crews = [];
@@ -145,7 +216,7 @@
 
             rows.slice(1).forEach(r => {
                 if (r[crewIdx] && r[crewIdx] !== "") {
-                    current = { name: r[crewIdx], total: 0, image: r[imgIdx] || '', racers: [], headers: tableHeaders, source: key };
+                    current = { name: r[crewIdx], total: 0, image: r[0] || '', racers: [], headers: tableHeaders, source: key };
                     crews.push(current);
                 }
                 if (current && r[racerIdx] && r[racerIdx] !== "") {
@@ -155,24 +226,46 @@
                     current.total += parseFloat(r[ptsIdx]) || 0;
                 }
             });
-            if(key !== 'bracketStats') crews.sort((a, b) => b.total - a.total);
             dataStore[key] = crews;
         } catch(e) { console.error("Load error", key, e); }
     }
 
-    async function loadBrackets(url) {
+    async function loadBracketsAndLive(url) {
         try {
             const res = await fetch(url);
             const text = await res.text();
             const rows = text.split('\n').map(r => r.split(',').map(c => c.trim().replace(/"/g, '')));
-            let roundsMap = {};
-            rows.slice(1).forEach(r => {
+
+            let winnersMap = {};
+            let losersMap = {};
+
+            rows.slice(1).forEach((r, idx) => {
                 if (!r[0]) return;
-                if (!roundsMap[r[0]]) roundsMap[r[0]] = { round: r[0], matches: [] };
-                roundsMap[r[0]].matches.push({ t1: r[1] || "TBD", t2: r[2] || "TBD", winner: r[3] || "" });
+
+                const roundName = r[0].trim();
+                const t1 = r[1] || "TBD";
+                const t2 = r[2] || "TBD";
+                const winner = r[3] || "";
+                const isLive = r[4] ? r[4].toLowerCase().trim() === "true" : false;
+
+                const matchObj = { id: `M-${idx+1}`, t1, t2, winner };
+
+                if (isLive) {
+                    dataStore.currentRace = matchObj;
+                }
+
+                if (roundName.toLowerCase().includes('loser') || roundName.toLowerCase().includes('lq')) {
+                    if (!losersMap[roundName]) losersMap[roundName] = { round: roundName, matches: [] };
+                    losersMap[roundName].matches.push(matchObj);
+                } else {
+                    if (!winnersMap[roundName]) winnersMap[roundName] = { round: roundName, matches: [] };
+                    winnersMap[roundName].matches.push(matchObj);
+                }
             });
-            dataStore.brackets = Object.values(roundsMap);
-        } catch(e) { console.error("Bracket load error", e); }
+
+            dataStore.winners = Object.values(winnersMap);
+            dataStore.losers = Object.values(losersMap);
+        } catch(e) { console.error("Double elimination allocation parsing error", e); }
     }
 
     function resetHero() {
@@ -184,8 +277,7 @@
 
     function previewTeam(teamName) {
         if (!teamName || teamName.toLowerCase() === "tbd") return;
-        let team = dataStore[activeTab === 'brackets' ? 'bracketStats' : activeTab].find(t => t.name.toLowerCase() === teamName.toLowerCase());
-        if (!team) team = [...dataStore.phase1, ...dataStore.phase2].find(t => t.name.toLowerCase() === teamName.toLowerCase());
+        let team = dataStore.bracketStats.find(t => t.name.toLowerCase() === teamName.toLowerCase());
         if (!team) return;
 
         const [first, ...last] = team.name.split(' ');
@@ -199,8 +291,7 @@
 
     function showTeamDetails(teamName) {
         if (!teamName || teamName.toLowerCase() === "tbd") return;
-        let team = (activeTab === 'brackets') ? dataStore.bracketStats.find(t => t.name.toLowerCase() === teamName.toLowerCase())
-            : dataStore[activeTab].find(t => t.name.toLowerCase() === teamName.toLowerCase());
+        let team = dataStore.bracketStats.find(t => t.name.toLowerCase() === teamName.toLowerCase());
         if (!team) return;
 
         document.getElementById('navigation-container').style.display = 'none';
@@ -220,24 +311,51 @@
         `).join('');
     }
 
-    function renderList(key) {
-        const body = document.getElementById(`${key}-body`);
-        body.innerHTML = dataStore[key].map((c, i) => `
-            <tr onmouseenter="previewTeam('${c.name}')" onclick="showTeamDetails('${c.name}')" style="cursor:pointer">
-                <td>${i+1}</td>
-                <td>${c.name}</td>
-                <td class="pts-cell">${c.total}</td>
-            </tr>
-        `).join('');
+    function renderCurrentRace() {
+        const target = document.getElementById('live-race-render');
+        if(!dataStore.currentRace) {
+            target.innerHTML = `
+                <div class="f1-tag">Live Status Update</div>
+                <h2 style="font-weight:900; text-transform:uppercase; margin-top:10px;">No Ongoing Track Battles Scheduled</h2>
+                <p style="color: var(--f1-text-dim); margin-top:5px; font-size:13px;">Check back once next race cycle initiates.</p>
+            `;
+            return;
+        }
+
+        const { t1, t2, id } = dataStore.currentRace;
+        target.innerHTML = `
+            <div class="f1-tag"><i class="fas fa-circle-dot" style="color:var(--f1-red); margin-right:5px; animation: blink 1.5s infinite;"></i> Grid Battle Session - ${id}</div>
+            <h2 style="font-weight:900; font-size:2rem; text-transform:uppercase;">Currently Live on Asphalt</h2>
+
+            <div class="live-grid">
+                <div class="live-team" onmouseenter="previewTeam('${t1}')" onclick="showTeamDetails('${t1}')">
+                    <span class="f1-tag" style="color:var(--f1-text-dim)">Seed Contender A</span>
+                    <h3>${t1}</h3>
+                </div>
+                <div class="vs-circle">VS</div>
+                <div class="live-team" onmouseenter="previewTeam('${t2}')" onclick="showTeamDetails('${t2}')">
+                    <span class="f1-tag" style="color:var(--f1-text-dim)">Seed Contender B</span>
+                    <h3>${t2}</h3>
+                </div>
+            </div>
+        `;
     }
 
-    function renderBrackets() {
-        const area = document.getElementById('bracket-render');
-        area.innerHTML = dataStore.brackets.map(round => `
+    function renderDoubleEliminationBrackets() {
+        document.getElementById('winner-bracket-render').innerHTML = generateBracketHTML(dataStore.winners);
+        document.getElementById('loser-bracket-render').innerHTML = generateBracketHTML(dataStore.losers);
+    }
+
+    function generateBracketHTML(bracketData) {
+        if(bracketData.length === 0) {
+            return `<div style="color:var(--f1-text-dim); padding:20px; font-weight:600;">No structural matchups recorded for this ladder.</div>`;
+        }
+        return bracketData.map(round => `
             <div class="round-col">
-                <div class="f1-tag" style="text-align:center; padding-bottom: 20px;">${round.round}</div>
+                <div class="f1-tag" style="text-align:center; padding-bottom: 20px; border-bottom:1px dashed #222; margin-bottom:15px;">${round.round}</div>
                 ${round.matches.map(m => `
                     <div class="matchup">
+                        <span class="match-id-tag">${m.id}</span>
                         <div class="team-box ${m.winner === m.t1 && m.t1 !== 'TBD' ? 'winner' : ''}" onmouseenter="previewTeam('${m.t1}')" onclick="showTeamDetails('${m.t1}')">
                              <span>${m.t1}</span> ${m.winner === m.t1 && m.t1 !== 'TBD' ? '<i class="fas fa-trophy" style="color:#e10600; font-size:12px;"></i>' : ''}
                         </div>
@@ -267,5 +385,9 @@
 
     init();
 </script>
+
+<style>
+    @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.3;} 100% {opacity: 1;} }
+</style>
 </body>
 </html>

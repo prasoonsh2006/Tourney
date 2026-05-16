@@ -5,13 +5,20 @@
     <meta charset="utf-8" />
     <title>Souls Of Soulcity - Crews</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Poppins:ital,wght@0,700;0,900;1,900&family=Space+Mono:wght@400;700&display=swap');
 
-        /* -------------------- BASE STYLES -------------------- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
             --f1-red: #e10600;
@@ -21,22 +28,33 @@
         }
 
         body {
-            width: 100vw; font-family: var(--font-racing); color: #fff;
-            background-color: var(--f1-black); overflow-x: hidden;
-            background-image: url('images/carbg3.jpg'); background-size: cover; background-attachment: fixed;
+            width: 100vw;
+            font-family: var(--font-racing);
+            color: #fff;
+            background-color: var(--f1-black);
+            overflow-x: hidden;
+            background-image: url('images/carbg3.jpg');
+            background-size: cover;
+            background-attachment: fixed;
         }
 
         body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(0,0,0,0.4), rgba(0,0,0,0.9)); z-index: -1;
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center,
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.9));
+            z-index: -1;
         }
 
-        /* -------------------- LOGO & NAV -------------------- */
+        /* -------------------- FIXED NAVBAR -------------------- */
+
         .logo {
             position: fixed;
-            top: 23px;
+            top: 18px;
             left: 40px;
-            z-index: 101;
+            z-index: 1001;
             font-family: "Kaushan Script", sans-serif;
             font-weight: bolder;
             font-size: 24px;
@@ -47,20 +65,24 @@
 
         nav {
             position: fixed;
-            top: 30px;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: var(--navbar-h);
-            z-index: 99;
+            height: 80px;
+            z-index: 999;
+
             display: flex;
             align-items: center;
-            background-color: transparent;
-            transition: all 0.4s ease;
+
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(10px);
+
+            transition: background 0.3s ease;
         }
 
         nav.scrolled {
             background-color: rgba(18, 18, 18, 0.95);
             backdrop-filter: blur(10px);
-            height: 70px;
         }
 
         .nav-bar {
@@ -72,8 +94,15 @@
             padding: 0 40px;
         }
 
-        .menu { display: flex; list-style: none; }
-        .menu li { padding-left: 30px; }
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            padding-left: 30px;
+        }
+
         .menu li a {
             color: #fff;
             text-decoration: none;
@@ -82,143 +111,340 @@
             font-weight: 600;
             transition: 0.3s;
         }
-        .menu li a:hover { color: var(--f1-red); }
 
-        .open-menu, .close-menu { display: none; color: #fff; cursor: pointer; font-size: 1.5rem; }
-        #check { display: none; }
-
-        /* -------------------- CLEAN SEARCH BAR -------------------- */
-        .search-container { max-width: 500px; margin: 40px auto; padding: 0 20px; }
-        .search-box {
-            width: 100%; padding: 12px 0; background: transparent;
-            border: none; border-bottom: 2px solid rgba(255,255,255,0.2);
-            color: #fff; font-family: var(--font-mono); font-size: 1.1rem;
-            outline: none; transition: 0.4s; text-align: center;
+        .menu li a:hover {
+            color: var(--f1-red);
         }
-        .search-box::placeholder { color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; }
-        .search-box:focus { border-bottom-color: var(--f1-red); }
 
-        /* -------------------- CREWS SECTION -------------------- */
-        #crews { padding: 120px 20px 80px; text-align: center; }
-        .crews-container h1 { font-size: clamp(2rem, 8vw, 5rem); font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -3px; }
-        .subtitle { font-family: var(--font-mono); color: var(--f1-red); letter-spacing: 5px; margin-bottom: 20px; font-size: 0.8rem; }
+        .open-menu,
+        .close-menu {
+            display: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
 
-        /* -------------------- HUD SLIDE CARDS -------------------- */
-        .crew-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        #check {
+            display: none;
+        }
+
+        /* -------------------- PAGE -------------------- */
+
+        #crews {
+            padding: 140px 20px 80px;
+            text-align: center;
+        }
+
+        .crews-container h1 {
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: -3px;
+        }
+
+        .subtitle {
+            font-family: var(--font-mono);
+            color: var(--f1-red);
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+        }
+
+        /* -------------------- SEARCH -------------------- */
+
+        .search-container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.4s;
+            text-align: center;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        .search-box:focus {
+            border-bottom-color: var(--f1-red);
+        }
+
+        /* -------------------- CREW CARDS -------------------- */
+
+        .crew-grid {
+            display: grid;
+            /* FIX: Changed auto-fit to auto-fill to prevent stretching when rows are sparse */
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            justify-content: center;
+        }
 
         .crew-card {
-            position: relative; height: 450px; background: #111;
-            border-radius: 0 30px 0 30px; overflow: hidden;
-            border: 1px solid #222; opacity: 0; transform: scale(0.9);
+            position: relative;
+            height: 450px;
+            /* FIX: Added max-width and structural alignment properties so cards stay proportional */
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            background: #111;
+            border-radius: 0 30px 0 30px;
+            overflow: hidden;
+            border: 1px solid #222;
+
+            opacity: 0;
+            transform: scale(0.9);
+
             transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        .crew-card.in-view { opacity: 1; transform: scale(1); }
-        .crew-card.hidden { display: none; }
+
+        .crew-card.in-view {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .crew-card.hidden {
+            display: none;
+        }
 
         .card-display {
-            height: 100%; width: 100%; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 40px;
-            background: linear-gradient(145deg, #151515, #050505); transition: 0.5s;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            padding: 40px;
+
+            background: linear-gradient(145deg, #151515, #050505);
+
+            transition: 0.5s;
         }
-        .crew-card:hover .card-display { transform: scale(0.9); opacity: 0.3; filter: blur(5px); }
 
-        .card-display h2 { font-size: 2.2rem; font-style: italic; font-weight: 900; text-transform: uppercase; line-height: 0.9; text-align: center; }
-        .card-display .owner-tag { font-family: var(--font-mono); font-size: 0.7rem; color: var(--f1-red); margin-bottom: 10px; border: 1px solid var(--f1-red); padding: 2px 10px; }
-        .specialty-tag { font-family: var(--font-mono); font-size: 0.65rem; color: #888; margin-top: 15px; text-transform: uppercase; }
+        .crew-card:hover .card-display {
+            transform: scale(0.9);
+            opacity: 0.3;
+            filter: blur(5px);
+        }
 
-        /* HUD Overlay */
+        .card-display h2 {
+            font-size: 2.2rem;
+            font-style: italic;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.9;
+            text-align: center;
+        }
+
+        .card-display .owner-tag {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--f1-red);
+            margin-bottom: 10px;
+            border: 1px solid var(--f1-red);
+            padding: 2px 10px;
+        }
+
+        .specialty-tag {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: #888;
+            margin-top: 15px;
+            text-transform: uppercase;
+        }
+
+        /* HUD */
+
         .card-hud {
-            position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
-            background: rgba(225, 6, 0, 0.98); transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1);
-            display: flex; flex-direction: column; padding: 30px; justify-content: flex-start;
-        }
-        .crew-card:hover .card-hud { top: 0; }
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
 
-        /* Scanline */
+            background: rgba(225, 6, 0, 0.98);
+
+            transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1);
+
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+
+        .crew-card:hover .card-hud {
+            top: 0;
+        }
+
         .crew-card:hover::after {
-            content: ""; position: absolute; top: -10%; left: 0; width: 100%; height: 3px;
-            background: #fff; box-shadow: 0 0 10px #fff;
-            animation: scan-once 0.6s ease-out forwards; z-index: 10;
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #fff;
+            box-shadow: 0 0 10px #fff;
+            animation: scan-once 0.6s ease-out forwards;
+            z-index: 10;
         }
-        @keyframes scan-once { 0% { top: -10%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-        .card-hud h3 { font-family: var(--font-mono); font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.3); margin-bottom: 15px; text-transform: uppercase; padding-top: 10px; letter-spacing: 3px; }
+        @keyframes scan-once {
+            0% {
+                top: -10%;
+                opacity: 0;
+            }
 
-        /* Roster & New Amount Design */
-        .roster-list { overflow-y: auto; max-height: 280px; list-style: none; }
-        .roster-list::-webkit-scrollbar { width: 2px; }
-        .roster-list::-webkit-scrollbar-thumb { background: #fff; }
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        .card-hud h3 {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            padding-top: 10px;
+            letter-spacing: 3px;
+        }
+
+        .roster-list {
+            overflow-y: auto;
+            max-height: 280px;
+            list-style: none;
+        }
 
         .roster-list li {
-            font-family: var(--font-mono); font-weight: 700; font-size: 0.9rem;
-            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
-            transform: translateX(-20px); opacity: 0; transition: 0.3s;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .crew-card:hover .roster-list li { transform: translateX(0); opacity: 1; }
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 0.9rem;
 
-        /* New Amount Styling */
+            padding: 12px 0;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+            transform: translateX(-20px);
+            opacity: 0;
+
+            transition: 0.3s;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crew-card:hover .roster-list li {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
         .price-badge {
-            display: flex; align-items: center; gap: 5px;
-            font-size: 0.75rem; color: #fff;
-            background: #000; padding: 2px 8px; border-radius: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            font-size: 0.75rem;
+            color: #fff;
+
+            background: #000;
+
+            padding: 2px 8px;
+
+            border-radius: 2px;
             border-left: 3px solid #fff;
         }
-        .price-badge span { color: rgba(255,255,255,0.5); font-weight: 400; font-size: 0.6rem; }
 
-        /* -------------------- FOOTER (FIXED) -------------------- */
+        .price-badge span {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+            font-size: 0.6rem;
+        }
+
+        /* -------------------- FOOTER -------------------- */
+
         .site-footer {
             background-color: var(--f1-black);
             color: white;
             padding: 60px 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: left;
         }
 
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
+
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             gap: 40px;
         }
 
-        .footer-logo, .footer-links, .footer-contact {
+        .footer-logo,
+        .footer-links,
+        .footer-contact {
             flex: 1 1 300px;
         }
 
         .footer-logo h3 {
             font-family: "Kaushan Script", sans-serif;
             font-size: 2.2rem;
-            color: white;
             margin-bottom: 15px;
         }
 
-        .footer-logo p { opacity: 0.8; line-height: 1.6; }
+        .footer-logo p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
 
-        .footer-links h4, .footer-contact h4 {
-            color: white;
+        .footer-links h4,
+        .footer-contact h4 {
             font-size: 1.2rem;
             margin-bottom: 20px;
-            text-transform: capitalize;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* The line from your screenshot */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             padding-bottom: 10px;
             width: fit-content;
             min-width: 200px;
         }
 
-        .footer-links ul { list-style: none; }
+        .footer-links ul {
+            list-style: none;
+        }
+
         .footer-links a {
             color: white;
-            text-decoration: none; /* Removed link underline */
+            text-decoration: none;
             display: block;
             margin-bottom: 12px;
             transition: 0.3s;
-            opacity: 0.9;
         }
 
-        .footer-links a:hover { color: var(--f1-red); padding-left: 5px; opacity: 1; }
+        .footer-links a:hover {
+            color: var(--f1-red);
+            padding-left: 5px;
+        }
 
         .footer-contact .social-icons {
             display: flex;
@@ -227,82 +453,145 @@
             margin-top: 15px;
         }
 
-        .footer-contact div a:hover .fa-discord {
-            color: #5865F2 !important;
+        .footer-contact a {
+            color: #fff;
+            transition: 0.3s;
+            text-decoration: none;
         }
 
-        .footer-contact div a:hover .fa-instagram {
-            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; !important;
+        .footer-contact a:hover {
+            color: var(--f1-red);
+            transform: translateY(-3px);
         }
 
-        .footer-contact a { color: #fff; transition: 0.3s; text-decoration: none; }
-        .footer-contact a:hover { color: var(--f1-red); transform: translateY(-3px); }
+        /* -------------------- MOBILE -------------------- */
 
         @media (max-width: 950px) {
-            .open-menu { display: block; }
-            .menu {
-                position: fixed; top: 0; right: -100%; width: 70%; height: 100vh;
-                background: #0a0a0a; flex-direction: column; align-items: center;
-                justify-content: center; transition: 0.3s; z-index: 100;
-            }
-            .menu li { padding: 20px 0; }
-            .close-menu { display: block; position: absolute; top: 25px; right: 25px; }
-            #check:checked ~ .menu { right: 0; }
 
-            .footer-content { flex-direction: column; text-align: center; }
-            .footer-links h4, .footer-contact h4 { margin: 0 auto 20px; }
-            .footer-contact .social-icons { justify-content: center; }
+            .open-menu {
+                display: block;
+            }
+
+            .menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+
+                width: 70%;
+                height: 100vh;
+
+                background: #0a0a0a;
+
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                transition: 0.3s;
+                z-index: 1000;
+            }
+
+            .menu li {
+                padding: 20px 0;
+            }
+
+            .close-menu {
+                display: block;
+                position: absolute;
+                top: 25px;
+                right: 25px;
+            }
+
+            #check:checked~.menu {
+                right: 0;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links h4,
+            .footer-contact h4 {
+                margin: 0 auto 20px;
+            }
+
+            .footer-contact .social-icons {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<a href="index.html" class="logo" id="main-logo">Souls Of Soulcity</a>
+<a href="index.html" class="logo">Souls Of Soulcity</a>
 
 <nav id="main-nav">
     <ul class='nav-bar'>
+
         <input type='checkbox' id='check' />
+
         <span class="menu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="crews.html" style="color:var(--f1-red)">Crews</a></li>
-            <li><a href="rankings.html">Rankings</a></li>
-            <li><a href="Watch.html">Watch</a></li>
-            <li><a href="login.html">Login</a></li>
-            <label for="check" class="close-menu"><i class="fas fa-times"></i></label>
-        </span>
-        <label for="check" class="open-menu"><i class="fas fa-bars"></i></label>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="crews.html" style="color:var(--f1-red)">Crews</a></li>
+                <li><a href="rankings.html">Rankings</a></li>
+                <li><a href="Watch.html">Watch</a></li>
+                <li><a href="login.html">Login</a></li>
+
+                <label for="check" class="close-menu">
+                    <i class="fas fa-times"></i>
+                </label>
+            </span>
+
+        <label for="check" class="open-menu">
+            <i class="fas fa-bars"></i>
+        </label>
+
     </ul>
 </nav>
 
 <main>
+
     <section id="crews">
+
         <div class="crews-container">
-            <h1>TEAM_GRID</h1>
-            <p class="subtitle">DATA_SYNC // ACTIVE</p>
+
+            <h1>Crews</h1>
+
+            <p class="subtitle">Meet The Grid</p>
 
             <div class="search-container">
-                <input type="text" id="crewSearch" class="search-box" placeholder="Find Crew or Racer...">
+                <input type="text"
+                       id="crewSearch"
+                       class="search-box"
+                       placeholder="Find Crew or Racer...">
             </div>
 
-            <div class="crew-grid" id="crew-grid">
-            </div>
+            <div class="crew-grid" id="crew-grid"></div>
+
         </div>
+
     </section>
+
 </main>
 
 <footer class="site-footer">
+
     <div class="footer-content">
+
         <div class="footer-logo">
             <h3>Souls Of Soulcity</h3>
-            <p>The premier underground racing league. <br>Draft. Race. Survive. Conquer.</p>
+            <p>
+                The premier underground racing league.
+                <br>
+                Draft. Race. Survive. Conquer.
+            </p>
         </div>
 
         <div class="footer-links">
             <h4>Quick Lanes</h4>
+
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">Tournament Info</a></li>
@@ -313,101 +602,177 @@
         </div>
 
         <div class="footer-contact">
+
             <h4>Connect</h4>
+
             <p>Join the community:</p>
+
             <div class="social-icons">
-                <a href="https://www.youtube.com/headflicker" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://discord.gg/phmcfrQ4" target="_blank"><i class="fab fa-discord"></i></a>
-                <a href="https://www.instagram.com/8bit_headflicker/" target="_blank"><i class="fab fa-instagram"></i></a>
+
+                <a href="https://www.youtube.com/headflicker" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+
+                <a href="https://discord.gg/phmcfrQ4" target="_blank">
+                    <i class="fab fa-discord"></i>
+                </a>
+
+                <a href="https://www.instagram.com/8bit_headflicker/" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
             </div>
+
         </div>
+
     </div>
+
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
 <script>
-    const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSIuui-HVDxX_XP9KsR2Tp1tRD8GGXLKyReLCin1DQPLsalXjtZV_5Wa0_Sy3W6tGDYs8SeSPksvVHK/pub?gid=868866381&single=true&output=csv';
+    // FIREBASE CONFIGURATION
+    const firebaseConfig = {
+        apiKey: "AIzaSyCFA20hwEGRGXeiX0LrPKhc-VL5K4umGv0",
+        authDomain: "souls-of-soulcity.firebaseapp.com",
+        projectId: "souls-of-soulcity",
+        storageBucket: "souls-of-soulcity.firebaseapp.com",
+        messagingSenderId: "402427120355",
+        appId: "1:402427120355:web:f0fa030a0a9034198213d6"
+    };
+
+    // Initialize Global Firebase Instantiation
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
     async function fetchCrews() {
         const grid = document.getElementById('crew-grid');
+
         try {
-            const response = await fetch(SHEET_URL);
-            const csv = await response.text();
+            // 1. Concurrently look up teams records and sold racers profiles
+            const [teamsSnapshot, racersSnapshot] = await Promise.all([
+                db.collection("teams").get(),
+                db.collection("racers").where("status", "==", "Sold").get()
+            ]);
 
-            Papa.parse(csv, {
-                header: true,
-                complete: (results) => {
-                    const activeCrews = results.data.filter(r => r['Crew Name'] && r['Crew Name'].trim() !== "");
-
-                    grid.innerHTML = activeCrews.map(crew => {
-                        const crewName = crew['Crew Name'];
-                        const owner = crew['Owner'] || '---';
-                        const specialty = crew['Specialty'] || '';
-
-                        let racerHTML = "";
-                        let racerCount = 0;
-
-                        // Check Racer columns based on image structure
-                        const keys = ["Racer 1", "Racer 2", "Racer 3", "Racer4", "Racer5"];
-
-                        keys.forEach((key, i) => {
-                            const name = crew[key];
-                            // Match Price (for Racer 1) or Amount (for Racer 2) based on table image
-                            let amt = "";
-                            if (i === 0 && crew['Price']) amt = crew['Price'];
-                            if (i === 1 && crew['Amount']) amt = crew['Amount'];
-
-                            if(name && name.trim() !== "") {
-                                racerCount++;
-                                racerHTML += `
-                                    <li>
-                                        ${name}
-                                        ${amt ? `<div class="price-badge"><span>VAL</span> $${amt}</div>` : ''}
-                                    </li>`;
-                            }
-                        });
-
-                        if(racerCount === 0) racerHTML = '<li style="justify-content:center; opacity:0.5;">RECRUITING</li>';
-
-                        return `
-                        <div class="crew-card">
-                            <div class="card-display">
-                                <span class="owner-tag">${owner}</span>
-                                <h2>${crewName}</h2>
-                                <p class="specialty-tag">${specialty}</p>
-                            </div>
-                            <div class="card-hud">
-                                <h3>ROSTER_FILES</h3>
-                                <ul class="roster-list">${racerHTML}</ul>
-                            </div>
-                        </div>`;
-                    }).join('');
-
-                    setupSearch();
-                    const cards = document.querySelectorAll('.crew-card');
-                    cards.forEach((c, i) => setTimeout(() => c.classList.add('in-view'), i * 50));
+            // 2. Index active winning bids by lowercase names for fast dynamic assignment
+            const racerPriceMap = {};
+            racersSnapshot.forEach(doc => {
+                const rData = doc.data();
+                if (rData.name) {
+                    racerPriceMap[rData.name.toLowerCase()] = rData.winningBid || "";
                 }
             });
-        } catch (e) { grid.innerHTML = "<h2>ERROR_LOADING_DATA</h2>"; }
+
+            const activeCrews = [];
+
+            // 3. Loop over teams to convert roster string elements into complete data items
+            teamsSnapshot.forEach((doc) => {
+                const teamData = doc.data();
+                const teamName = teamData.teamName;
+                const owner = teamData.ownerName || "---";
+                const roster = teamData.roster || [];
+
+                if (teamName && teamName.trim() !== "") {
+                    const mappedRacers = roster.map(racerName => {
+                        const cleanName = String(racerName).trim();
+                        return {
+                            name: cleanName,
+                            bid: racerPriceMap[cleanName.toLowerCase()] || ""
+                        };
+                    });
+
+                    activeCrews.push({
+                        crewName: teamName,
+                        owner: owner,
+                        racers: mappedRacers
+                    });
+                }
+            });
+
+            if (activeCrews.length === 0) {
+                grid.innerHTML = "<h2>NO_TEAMS_FOUND</h2>";
+                return;
+            }
+
+            // 4. Inject structural card blueprints back to browser viewport (Tagline elements removed)
+            grid.innerHTML = activeCrews.map(crew => {
+                let racerHTML = "";
+
+                crew.racers.forEach((racer) => {
+                    racerHTML += `
+                        <li>
+                            ${racer.name}
+                            ${racer.bid
+                        ? `<div class="price-badge">
+                                    <span>VAL</span>
+                                    $${racer.bid}
+                                   </div>`
+                        : ''
+                    }
+                        </li>`;
+                });
+
+                if (crew.racers.length === 0) {
+                    racerHTML = '<li style="justify-content:center; opacity:0.5;">RECRUITING</li>';
+                }
+
+                return `
+                    <div class="crew-card">
+                        <div class="card-display">
+                            <span class="owner-tag">${crew.owner}</span>
+                            <h2>${crew.crewName}</h2>
+                        </div>
+                        <div class="card-hud">
+                            <h3>ROSTER_FILES</h3>
+                            <ul class="roster-list">
+                                ${racerHTML}
+                            </ul>
+                        </div>
+                    </div>`;
+            }).join('');
+
+            // Instantiate Search Controls and Card Zoom Animations
+            setupSearch();
+
+            const cards = document.querySelectorAll('.crew-card');
+            cards.forEach((c, i) =>
+                setTimeout(() => c.classList.add('in-view'), i * 50)
+            );
+
+        } catch (e) {
+            console.error("Firestore loading error: ", e);
+            grid.innerHTML = "<h2>ERROR_LOADING_DATA</h2>";
+        }
     }
 
     function setupSearch() {
         const input = document.getElementById('crewSearch');
         const cards = document.querySelectorAll('.crew-card');
+
         input.addEventListener('input', () => {
             const val = input.value.toLowerCase();
             cards.forEach(card => {
-                card.innerText.toLowerCase().includes(val) ? card.classList.remove('hidden') : card.classList.add('hidden');
+                card.innerText.toLowerCase().includes(val)
+                    ? card.classList.remove('hidden')
+                    : card.classList.add('hidden');
             });
         });
     }
 
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('main-nav');
-        window.scrollY > 50 ? nav.classList.add('scrolled') : nav.classList.remove('scrolled');
+        if (window.scrollY > 20) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
     });
 
     document.addEventListener('DOMContentLoaded', fetchCrews);
 </script>
+
 </body>
 </html>
